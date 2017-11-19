@@ -13,7 +13,7 @@ public class Profile extends BusinessObject {
 	
 	private String hairColor = "";
 	
-	private int bodyHeight = 0;
+	private double bodyHeight;
 	
 	private boolean smoker;
 	
@@ -58,15 +58,27 @@ public class Profile extends BusinessObject {
 		this.hairColor = haarfarbe;
 	}
 	
-	/* Körpergröße*/
+	public double getBodyHeight() {
+		return this.bodyHeight;
+	}
+	
+	public void setBodyHeight (double koerpergroeße){
+		this.bodyHeight = koerpergroeße;
+	}
 	
 	public boolean isSmoker() {
 		return smoker;
 	}
 	
+	public void setSmoker(boolean raucher){
+		this.smoker = raucher;
+	}
+	
 	public boolean isNonsmoker() {
 		return nonsmoker;
 	}
+	
+	/* ich weiß nicht ob wir noch ne setmethode brauchen für die boolean Sachen*/
 	
 	public String getReligiousDenomination() { /* wir sollten glaub das anders benennen*/
 		return this.religiousDenomination;
