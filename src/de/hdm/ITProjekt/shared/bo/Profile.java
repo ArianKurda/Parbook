@@ -15,7 +15,9 @@ public class Profile extends BusinessObject {
 	
 	private int bodyHeight = 0;
 	
-	/** private boolean smoker */
+	private boolean smoker;
+	
+	private boolean nonsmoker;
 	
 	private String religiousDenomination = "";
 	
@@ -23,7 +25,11 @@ public class Profile extends BusinessObject {
 	
 	private String password = "";
 	
-	/** private boolean gender oder mit enum KLasse müssen uns da einlesen*/
+	private boolean male;
+	
+	private boolean female;
+	
+	
 	
 	
 	public String getFirstName() {
@@ -54,7 +60,13 @@ public class Profile extends BusinessObject {
 	
 	/* Körpergröße*/
 	
-	/*Raucherstatus*/
+	public boolean isSmoker() {
+		return smoker;
+	}
+	
+	public boolean isNonsmoker() {
+		return nonsmoker;
+	}
 	
 	public String getReligiousDenomination() { /* wir sollten glaub das anders benennen*/
 		return this.religiousDenomination;
@@ -81,7 +93,13 @@ public class Profile extends BusinessObject {
 		this.password = password;
 	}
 	
-	/*Geschlecht*/
+
+	public boolean isMale(){
+		return male;	
+	}
 	
+	public boolean isFemale() {
+		return female;
+	}
 		
 }
