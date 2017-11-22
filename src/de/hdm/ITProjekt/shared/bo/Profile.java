@@ -9,7 +9,7 @@ public class Profile extends BusinessObject {
 	
 	private String lastName = "";
 	
-	private int birthDay = 0; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
+	private int birthDay = 0; /** mï¿½ssen nachschauen wie wir das mit dem Geburtsdatum machen*/
 	
 	private String hairColor = "";
 	
@@ -62,8 +62,8 @@ public class Profile extends BusinessObject {
 		return this.bodyHeight;
 	}
 	
-	public void setBodyHeight (double koerpergroeße){
-		this.bodyHeight = koerpergroeße;
+	public void setBodyHeight (double koerpergroeï¿½e){
+		this.bodyHeight = koerpergroeï¿½e;
 	}
 	
 	public boolean isSmoker() {
@@ -82,7 +82,7 @@ public class Profile extends BusinessObject {
 		this.nonsmoker = nichtraucher;
 	}
 	
-	/* ich weiß nicht ob wir noch ne setmethode brauchen für die boolean Sachen*/
+	/* ich weiï¿½ nicht ob wir noch ne setmethode brauchen fï¿½r die boolean Sachen*/
 	
 	public String getReligiousDenomination() { /* wir sollten glaub das anders benennen*/
 		return this.religiousDenomination;
@@ -120,6 +120,16 @@ public class Profile extends BusinessObject {
 	
 	public boolean isFemale() {
 		return female;
+	}
+
+	public void setOwnerID(int int1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getOwnerID() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 		
 }

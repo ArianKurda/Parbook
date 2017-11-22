@@ -1,14 +1,8 @@
 package de.hdm.ITProjekt.shared.bo;
 
-
-import de.hdm.ITProjekt.shared.bo.Notepad;
-import de.hdm.ITProjekt.shared.bo.Profile;
-import de.hdm.ITProjekt.shared.bo.BusinessObject;
-
 /**
  * Realisierung eines exemplarischen Merkzettels. Ein Merkzettel wird von einem Profil besitzt.
  * 
- * @author kurda
  */
 public class Notepad extends BusinessObject {
 
@@ -39,7 +33,7 @@ public class Notepad extends BusinessObject {
    */
   @Override
 public String toString() {
-    return super.toString() + " inhaber, Notepad-ID: #" + this.ownerID;
+    return super.toString() + " inhaber, Profile-ID: #" + this.ownerID;
   }
 
   /**
