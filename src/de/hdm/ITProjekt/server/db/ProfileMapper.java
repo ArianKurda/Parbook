@@ -323,4 +323,9 @@ public class ProfileMapper {
     return ProfileMapper.profileMapper().findByKey(p.getOwnerID());
   }
 
+public Profile findByKey(int ownerID) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 }
