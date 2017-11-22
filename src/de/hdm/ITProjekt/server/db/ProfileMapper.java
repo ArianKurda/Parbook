@@ -161,7 +161,7 @@ public class ProfileMapper {
         p.setOwnerID(rs.getInt("owner"));
 
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.addElement(a);
+        result.addElement(p);
       }
     }
     catch (SQLException e2) {
