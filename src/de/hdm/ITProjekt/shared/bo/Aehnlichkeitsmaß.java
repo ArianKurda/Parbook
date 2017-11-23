@@ -11,7 +11,7 @@ import de.hdm.ITProjekt.shared.bo.BusinessObject;
  * @author kurda
  * @version 1.0
  */
-public class Aehnlichkeitsmaß extends BusinessObject {
+public class SimilarityMeasure extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
 
