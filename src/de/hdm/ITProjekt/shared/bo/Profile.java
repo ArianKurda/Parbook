@@ -9,9 +9,9 @@ public class Profile extends BusinessObject {
 
 	private String firstName = "";
 	
-	private String lastName = "";
+	private String lastName = "";  
 	
-	private Date dob; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
+	private Date dob; /** müssen nachschauen wie bwir das mit dem Geburtsdatum machen*/
 	
 	private String hairColor = "";
 	
