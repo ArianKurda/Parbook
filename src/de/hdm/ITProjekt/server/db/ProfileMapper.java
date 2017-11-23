@@ -13,7 +13,6 @@ import de.hdm.ITProjekt.shared.bo.Profile;
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * @see CustomerMapper, TransactionMapper
- * @author Thies
  */
 public class ProfileMapper {
 
