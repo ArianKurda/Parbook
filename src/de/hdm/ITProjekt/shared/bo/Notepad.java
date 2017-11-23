@@ -1,50 +1,44 @@
 package de.hdm.ITProjekt.shared.bo;
 
-import de.hdm.ITProjekt.shared.bo.Eigenschaft;
-import de.hdm.ITProjekt.shared.bo.BusinessObject;
-
 /**
- * Realisierung eines exemplarischen Profilkontos. Ein Profil besitzt einen Inhaber
- * sowie eine Reihe von Attributen, mit deren.
+ * Realisierung eines exemplarischen Merkzettels. Ein Merkzettel wird von einem Profil besitzt.
  * 
- * @author kurda
- * @version 1.0
  */
-public class Eigenschaft extends BusinessObject {
+public class Notepad extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
 
   /**
-   * Fremdschlüsselbeziehung zum Inhaber der Eigenschaft.
+   * Fremdschlüsselbeziehung zum Inhaber des Merkzettels.
    */
   private int ownerID = 0;
 
   /**
-   * Auslesen des Fremdschlüssels zum Eigenschaftsinhaber.
+   * Auslesen des Fremdschlüssels zum Merkzettelinhaber.
    */
   public int getOwnerID() {
     return this.ownerID;
   }
 
   /**
-   * Setzen des Fremdschlüssels zum Profilinhaber.
+   * Setzen des Fremdschlüssels zum Merkzettelinhaber.
    */
-  public void setOwnerID(int infoID) {
-    this.ownerID = infoID;
+  public void setOwnerID(int profileID) {
+    this.ownerID = profileID;
   }
 
   /**
    * Erzeugen einer einfachen textuellen Repräsentation der jeweiligen
-   * Profilinstanz.
+   * Merkzettelinstanz.
    */
   @Override
 public String toString() {
-    return super.toString() + " inhaber, Eigenschaft-ID: #" + this.ownerID;
+    return super.toString() + " inhaber, Profile-ID: #" + this.ownerID;
   }
 
   /**
    * <p>
-   * Feststellen der <em>inhaltlichen</em> Gleichheit zweier Profil-Objekte.
+   * Feststellen der <em>inhaltlichen</em> Gleichheit zweier Merkzettel-Objekte.
    * Die Gleichheit wird in diesem Beispiel auf eine identische Profilnummer
    * beschränkt.
    * </p>
@@ -67,10 +61,10 @@ public boolean equals(Object o) {
      * Abfragen, ob ein Objekt ungl. NULL ist und ob ein Objekt gecastet werden
      * kann, sind immer wichtig!
      */
-    if (o != null && o instanceof Eigenschaft) {
-      Eigenschaft eg = (Eigenschaft) o;
+    if (o != null && o instanceof Notepad) {
+    	Notepad n = (Notepad) o;
       try {
-        return super.equals(eg);
+        return super.equals(n);
       }
       catch (IllegalArgumentException e) {
         return false;

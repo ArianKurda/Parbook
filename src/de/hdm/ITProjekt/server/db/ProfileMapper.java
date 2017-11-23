@@ -1,70 +1,70 @@
 package de.hdm.ITProjekt.server.db;
 
-
 import java.sql.*;
 import java.util.Vector;
-import de.hdm.ITProjekt.shared.bo.Profil;
+
+import de.hdm.ITProjekt.shared.bo.Profile;
 
 /**
- * Mapper-Klasse, die <code>Profil</code>-Objekte auf eine relationale
+ * Mapper-Klasse, die <code>Account</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
  * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
- * @author Kurda
+ * @see CustomerMapper, TransactionMapper
  */
-public class ProfilMapper {
+public class ProfileMapper {
 
   /**
-   * Die Klasse ProfilMapper wird nur einmal instantiiert. Man spricht hierbei
+   * Die Klasse ProfileMapper wird nur einmal instantiiert. Man spricht hierbei
    * von einem sogenannten <b>Singleton</b>.
    * <p>
    * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
    * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
    * einzige Instanz dieser Klasse.
    * 
-   * @see profilMapper()
+   * @see accountMapper()
    */
-  private static ProfilMapper profilMapper = null;
+  private static ProfileMapper profileMapper = null;
 
   /**
    * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
    * neue Instanzen dieser Klasse zu erzeugen.
    */
-  protected ProfilMapper() {
+  protected ProfileMapper() {
   }
 
   /**
    * Diese statische Methode kann aufgrufen werden durch
-   * <code>ProfilMapper.profilMapper()</code>. Sie stellt die
+   * <code>AccountMapper.accountMapper()</code>. Sie stellt die
    * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
-   * Instanz von <code>ProfilMapper</code> existiert.
+   * Instanz von <code>AccountMapper</code> existiert.
    * <p>
    * 
-   * <b>Fazit:</b> ProfilMapper sollte nicht mittels <code>new</code>
+   * <b>Fazit:</b> AccountMapper sollte nicht mittels <code>new</code>
    * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
    * 
-   * @return DAS <code>ProfilMapper</code>-Objekt.
-   * @see profilMapper
+   * @return DAS <code>AccountMapper</code>-Objekt.
+   * @see accountMapper
    */
-  public static ProfilMapper profilMapper() {
-    if (profilMapper == null) {
-      profilMapper = new ProfilMapper();
+  public static ProfileMapper profileMapper() {
+    if (profileMapper == null) {
+      profileMapper = new ProfileMapper();
     }
 
-    return profilMapper;
+    return profileMapper;
   }
 
   /**
-   * Suchen eines Profils mit vorgegebener Profilnummer. Da diese eindeutig ist,
+   * Suchen eines Kontos mit vorgegebener Kontonummer. Da diese eindeutig ist,
    * wird genau ein Objekt zur�ckgegeben.
    * 
-   * @param id Primärschlüsselattribut (->DB)
-   * @return Profil-Objekt, das dem übergebenen Schlüssel entspricht, null bei
+   * @param string Primärschlüsselattribut (->DB)
+   * @return Konto-Objekt, das dem übergebenen Schlüssel entspricht, null bei
    *         nicht vorhandenem DB-Tupel.
    */
-  public Profil findByKey(int id) {
+  public Profile findByKey(String string) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 
@@ -74,7 +74,7 @@ public class ProfilMapper {
 
       // Statement ausfüllen und als Query an die DB schicken
       ResultSet rs = stmt.executeQuery("SELECT id, owner FROM profiles "
-          + "WHERE id=" + id + " ORDER BY owner");
+          + "WHERE id=" + string + " ORDER BY owner");
 
       /*
        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -82,8 +82,8 @@ public class ProfilMapper {
        */
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
-        Profil p = new Profil();
-        p.setId(rs.getInt("id"));
+        Profile p = new Profile();
+        p.setID(rs.getInt("id"));
         p.setOwnerID(rs.getInt("owner"));
         return p;
       }
@@ -97,17 +97,17 @@ public class ProfilMapper {
   }
 
   /**
-   * Auslesen aller Profile.
+   * Auslesen aller Konten.
    * 
-   * @return Ein Vektor mit Profil-Objekten, die sämtliche Profile
+   * @return Ein Vektor mit Account-Objekten, die sämtliche Konten
    *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public Vector<Profil> findAll() {
+  public Vector<Profile> findAll() {
     Connection con = DBConnection.connection();
 
     // Ergebnisvektor vorbereiten
-    Vector<Profil> result = new Vector<Profil>();
+    Vector<Profile> result = new Vector<Profile>();
 
     try {
       Statement stmt = con.createStatement();
@@ -115,10 +115,10 @@ public class ProfilMapper {
       ResultSet rs = stmt.executeQuery("SELECT id, owner FROM profiles "
           + " ORDER BY id");
 
-      // Für jeden Eintrag im Suchergebnis wird nun ein Profil-Objekt erstellt.
+      // Für jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
       while (rs.next()) {
-        Profil p = new Profil();
-        p.setId(rs.getInt("id"));
+        Profile p = new Profile();
+        p.setID(rs.getInt("id"));
         p.setOwnerID(rs.getInt("owner"));
 
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
@@ -134,18 +134,18 @@ public class ProfilMapper {
   }
 
   /**
-   * Auslesen aller Profile eines durch Fremdschlüssel (Kundennr.) gegebenen
+   * Auslesen aller Konten eines durch Fremdschlüssel (Kundennr.) gegebenen
    * Kunden.
    * 
-   * @see findByOwner(Profil owner)
-   * @param ownerID Schlüssel des zugehörigen Profils.
-   * @return Ein Vektor mit Profil-Objekten, die das Profil des
-   *         betreffenden Nutzers repräsentiert. Bei evtl. Exceptions wird ein
+   * @see findByOwner(Customer owner)
+   * @param ownerID Schlüssel des zugehörigen Kunden.
+   * @return Ein Vektor mit Account-Objekten, die sämtliche Konten des
+   *         betreffenden Kunden repräsentieren. Bei evtl. Exceptions wird ein
    *         partiell gefüllter oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public Vector<Profil> findByOwner(int ownerID) {
+  public Vector<Profile> findByOwner(int ownerID) {
     Connection con = DBConnection.connection();
-    Vector<Profil> result = new Vector<Profil>();
+    Vector<Profile> result = new Vector<Profile>();
 
     try {
       Statement stmt = con.createStatement();
@@ -153,10 +153,10 @@ public class ProfilMapper {
       ResultSet rs = stmt.executeQuery("SELECT id, owner FROM profiles "
           + "WHERE owner=" + ownerID + " ORDER BY id");
 
-      // Für jeden Eintrag im Suchergebnis wird nun ein Profil-Objekt erstellt.
+      // Für jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
       while (rs.next()) {
-        Profil p = new Profil();
-        p.setId(rs.getInt("id"));
+    	  Profile p = new Profile();
+        p.setID(rs.getInt("id"));
         p.setOwnerID(rs.getInt("owner"));
 
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
@@ -172,24 +172,24 @@ public class ProfilMapper {
   }
 
   /**
-   * Auslesen des Profils eines Nutzers (durch <code>Profil</code>-Objekt
+   * Auslesen aller Konten eines Kunden (durch <code>Customer</code>-Objekt
    * gegeben).
    * 
    * @see findByOwner(int ownerID)
-   * @param owner Nutzerobjekt, dessen Profil wir auslesen möchten.
-   * @return Profil des Kunden
+   * @param owner Kundenobjekt, dessen Konten wir auslesen möchten.
+   * @return alle Konten des Kunden
    */
-  public Vector<Profil> findByOwner(Profil owner) {
+  public Vector<Profile> findByOwner(Profile owner) {
 
     /*
-     * Wir lesen einfach die Profilnummer (Primärschlüssel) des Profil-Objekts
+     * Wir lesen einfach die Kundennummer (Primärschlüssel) des Customer-Objekts
      * aus und delegieren die weitere Bearbeitung an findByOwner(int ownerID).
      */
-    return findByOwner(owner.getId());
+    return findByOwner(owner.getID());
   }
 
   /**
-   * Einfügen eines <code>Profil</code>-Objekts in die Datenbank. Dabei wird
+   * Einfügen eines <code>Account</code>-Objekts in die Datenbank. Dabei wird
    * auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
    * berichtigt.
    * 
@@ -197,7 +197,7 @@ public class ProfilMapper {
    * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
    *         <code>id</code>.
    */
-  public Profil insert(Profil p) {
+  public Profile insert(Profile p) {
     Connection con = DBConnection.connection();
 
     try {
@@ -213,16 +213,16 @@ public class ProfilMapper {
       // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
       if (rs.next()) {
         /*
-         * p erhält den bisher maximalen, nun um 1 inkrementierten
+         * a erhält den bisher maximalen, nun um 1 inkrementierten
          * Primärschlüssel.
          */
-        p.setId(rs.getInt("maxid") + 1);
+        p.setID(rs.getInt("maxid") + 1);
 
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
         stmt.executeUpdate("INSERT INTO accounts (id, owner) " + "VALUES ("
-            + p.getId() + "," + p.getOwnerID() + ")");
+            + p.getID() + "," + p.getOwnerID() + ")");
       }
     }
     catch (SQLException e2) {
@@ -233,9 +233,9 @@ public class ProfilMapper {
      * Rückgabe, des evtl. korrigierten Accounts.
      * 
      * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-     * Objekte übergeben werden, wäre die Anpassung des Profil-Objekts auch
+     * Objekte übergeben werden, wäre die Anpassung des Account-Objekts auch
      * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
-     * explizite Rückgabe von p ist eher ein Stilmittel, um zu signalisieren,
+     * explizite Rückgabe von a ist eher ein Stilmittel, um zu signalisieren,
      * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
      */
     return p;
@@ -244,39 +244,39 @@ public class ProfilMapper {
   /**
    * Wiederholtes Schreiben eines Objekts in die Datenbank.
    * 
-   * @param p das Objekt, das in die DB geschrieben werden soll
+   * @param a das Objekt, das in die DB geschrieben werden soll
    * @return das als Parameter übergebene Objekt
    */
-  public Profil update(Profil p) {
+  public Profile update(Profile p) {
     Connection con = DBConnection.connection();
 
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE accounts " + "SET owner=\"" + p.getOwnerID()
-          + "\" " + "WHERE id=" + p.getId());
+      stmt.executeUpdate("UPDATE profiles " + "SET owner=\"" + p.getOwnerID()
+          + "\" " + "WHERE id=" + p.getID());
 
     }
     catch (SQLException e2) {
       e2.printStackTrace();
     }
 
-    // Um Analogie zu insert(Profil p) zu wahren, geben wir p zurück
+    // Um Analogie zu insert(Profile p) zu wahren, geben wir a zurück
     return p;
   }
 
   /**
-   * Löschen der Daten eines <code>Profil</code>-Objekts aus der Datenbank.
+   * Löschen der Daten eines <code>Account</code>-Objekts aus der Datenbank.
    * 
-   * @param p das aus der DB zu löschende "Objekt"
+   * @param a das aus der DB zu löschende "Objekt"
    */
-  public void delete(Profil p) {
+  public void delete(Profile p) {
     Connection con = DBConnection.connection();
 
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM profiles " + "WHERE id=" + p.getId());
+      stmt.executeUpdate("DELETE FROM profiles " + "WHERE id=" + p.getID());
 
     }
     catch (SQLException e2) {
@@ -285,19 +285,19 @@ public class ProfilMapper {
   }
 
   /**
-   * Löschen des Profils (<code>Profil</code>-Objekt) eines Nutzers.
-   * Diese Methode sollte aufgerufen werden, bevor ein <code>Profil</code>
+   * Löschen sämtlicher Konten (<code>Profile</code>-Objekte) eines Kunden.
+   * Diese Methode sollte aufgerufen werden, bevor ein <code>Customer</code>
    * -Objekt gelöscht wird.
    * 
-   * @param p das <code>Profil</code>-Objekt, zu dem der Nutzer gehört.
+   * @param c das <code>Customer</code>-Objekt, zu dem die Konten gehören
    */
-  public void deleteProfilOf(Profil p) {
+  public void deleteProfileOf(Profile p) {
     Connection con = DBConnection.connection();
 
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM profiles " + "WHERE owner=" + p.getId());
+      stmt.executeUpdate("DELETE FROM profiles " + "WHERE owner=" + p.getID());
 
     }
     catch (SQLException e2) {
@@ -306,21 +306,25 @@ public class ProfilMapper {
   }
 
   /**
-   * Auslesen des zugehörigen <code>Profil</code>-Objekts zu einem gegebenen
-   * Nutzer.
+   * Auslesen des zugehörigen <code>Customer</code>-Objekts zu einem gegebenen
+   * Konto.
    * 
-   * @param p das Profil, dessen Inhaber wir auslesen möchten
-   * @return ein Objekt, das den Eigentümer des Profils darstellt
+   * @param a das Konto, dessen Inhaber wir auslesen möchten
+   * @return ein Objekt, das den Eigentümer des Kontos darstellt
    */
-  public Profil getOwner(Profil p) {
+  public Profile getOwner(Profile p) {
     /*
      * Wir bedienen uns hier einfach des CustomerMapper. Diesem geben wir
      * einfach den in dem Account-Objekt enthaltenen Fremdschlüssel für den
      * Kontoinhaber. Der CustomerMapper lässt uns dann diese ID in ein Objekt
      * auf.
      */
-    return ProfilMapper.profilMapper().findByKey(p.getOwnerID());
+    return ProfileMapper.profileMapper().findByKey(p.getOwnerID());
   }
 
+public Profile findByKey(int ownerID) {
+	// TODO Auto-generated method stub
+	return null;
 }
 
+}

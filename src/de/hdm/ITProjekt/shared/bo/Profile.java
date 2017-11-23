@@ -1,5 +1,7 @@
 package de.hdm.ITProjekt.shared.bo;
 
+import java.sql.Date;
+
 public class Profile extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
@@ -7,9 +9,9 @@ public class Profile extends BusinessObject {
 
 	private String firstName = "";
 	
-	private String lastName = "";
+	private String lastName = "";  
 	
-	private int birthDay = 0; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
+	private Date dob; /** mÃ¼ssen nachschauen wie bwir das mit dem Geburtsdatum machen*/
 	
 	private String hairColor = "";
 	
@@ -62,8 +64,8 @@ public class Profile extends BusinessObject {
 		return this.bodyHeight;
 	}
 	
-	public void setBodyHeight (double koerpergroeße){
-		this.bodyHeight = koerpergroeße;
+	public void setBodyHeight (double koerpergroesse){
+		this.bodyHeight = koerpergroesse;
 	}
 	
 	public boolean isSmoker() {
@@ -82,7 +84,7 @@ public class Profile extends BusinessObject {
 		this.nonsmoker = nichtraucher;
 	}
 	
-	/* ich weiß nicht ob wir noch ne setmethode brauchen für die boolean Sachen*/
+	/* ich weiï¿½ nicht ob wir noch ne setmethode brauchen fï¿½r die boolean Sachen*/
 	
 	public String getReligiousDenomination() { /* wir sollten glaub das anders benennen*/
 		return this.religiousDenomination;
@@ -120,6 +122,20 @@ public class Profile extends BusinessObject {
 	
 	public boolean isFemale() {
 		return female;
+	}
+	
+	public void setDateOfBirth(Date newDoB){
+		dob = newDoB;
+	}
+
+	public void setOwnerID(int int1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getOwnerID() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 		
 }
