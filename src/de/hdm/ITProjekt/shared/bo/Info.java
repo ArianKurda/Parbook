@@ -1,8 +1,5 @@
 package de.hdm.ITProjekt.shared.bo;
 
-import de.hdm.ITProjekt.shared.bo.Info;
-import de.hdm.ITProjekt.shared.bo.BusinessObject;
-
 /**
  * Realisierung eines exemplarischen Profilkontos. Ein Profil besitzt ein Info.
  * 
