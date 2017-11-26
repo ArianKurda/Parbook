@@ -3,6 +3,7 @@ package de.hdm.ITProjekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
+import de.hdm.ITProjekt.shared.bo.Character;
 import de.hdm.ITProjekt.shared.bo.Info;
 
 /**
