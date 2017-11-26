@@ -7,7 +7,7 @@ import de.hdm.ITProjekt.shared.bo.Info;
 import de.hdm.ITProjekt.shared.bo.Profile;
 
 /**
- * Mapper-Klasse, die <code>Merkzettel</code>-Objekte auf eine relationale
+ * Mapper-Klasse, die <code>Info</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
  * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
@@ -37,15 +37,15 @@ public class InfoMapper {
 
   /**
    * Diese statische Methode kann aufgrufen werden durch
-   * <code>CharacterMapper.characterMapper()</code>. Sie stellt die
+   * <code>InfoMapper.infoMapper()</code>. Sie stellt die
    * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
-   * Instanz von <code>ProfilMapper</code> existiert.
+   * Instanz von <code>InfoMapper</code> existiert.
    * <p>
    * 
-   * <b>Fazit:</b> NotepadMapper sollte nicht mittels <code>new</code>
+   * <b>Fazit:</b> InfoMapper sollte nicht mittels <code>new</code>
    * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
    * 
-   * @return DAS <code>EigenschaftMapper</code>-Objekt.
+   * @return DAS <code>InfoMapper</code>-Objekt.
    * @see infoMapper
    */
   public static InfoMapper infoMapper() {
@@ -57,11 +57,11 @@ public class InfoMapper {
   }
 
   /**
-   * Suchen eines Eigenschaftes mit vorgegebener Eigenschaftnummer. Da diese eindeutig ist,
+   * Suchen eines Infos mit vorgegebener Infonummer. Da diese eindeutig ist,
    * wird genau ein Objekt zur�ckgegeben.
    * 
    * @param id Primärschlüsselattribut (->DB)
-   * @return Eigenschaft-Objekt, das dem übergebenen Schlüssel entspricht, null bei
+   * @return Info-Objekt, das dem übergebenen Schlüssel entspricht, null bei
    * nicht vorhandenem DB-Tupel.
    */
   public Info findByKey(int id) {
@@ -97,9 +97,9 @@ public class InfoMapper {
   }
 
   /**
-   * Auslesen aller Eigenschaften.
+   * Auslesen aller Infos.
    * 
-   * @return Ein Vektor mit Eigenschaft-Objekten, die sämtliche Profile
+   * @return Ein Vektor mit Info-Objekten, die sämtliche Profile
    *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
@@ -115,7 +115,7 @@ public class InfoMapper {
       ResultSet rs = stmt.executeQuery("SELECT id, owner FROM infos "
           + " ORDER BY id");
 
-      // Für jeden Eintrag im Suchergebnis wird nun ein Eigenschaft-Objekt erstellt.
+      // Für jeden Eintrag im Suchergebnis wird nun ein Info-Objekt erstellt.
       while (rs.next()) {
     	  Info i = new Info();
         i.setID(rs.getInt("id"));
@@ -134,12 +134,12 @@ public class InfoMapper {
   }
 
   /**
-   * Auslesen aller Profile eines durch Fremdschlüssel (Kundennr.) gegebenen
-   * Kunden.
+   * Auslesen aller Infos eines durch Fremdschlüssel (ProfileID) gegebenen
+   * Profilen.
    * 
    * @see findByOwner(Merkzettel owner)
    * @param ownerID Schlüssel des zugehörigen Profils.
-   * @return Ein Vektor mit Merkzettel-Objekten, die dden Merkzettel des
+   * @return Ein Vektor mit Info-Objekten, die die Infos des
    *         betreffenden Profils repräsentiert. Bei evtl. Exceptions wird ein
    *         partiell gefüllter oder ggf. auch leerer Vetor zurückgeliefert.
    */
@@ -153,7 +153,7 @@ public class InfoMapper {
       ResultSet rs = stmt.executeQuery("SELECT id, owner FROM infos "
           + "WHERE owner=" + ownerID + " ORDER BY id");
 
-      // Für jeden Eintrag im Suchergebnis wird nun ein Merkzettel-Objekt erstellt.
+      // Für jeden Eintrag im Suchergebnis wird nun ein Info-Objekt erstellt.
       while (rs.next()) {
     	  Info i = new Info();
         i.setID(rs.getInt("id"));
@@ -172,11 +172,11 @@ public class InfoMapper {
   }
 
   /**
-   * Auslesen der Eigenschaft eines Profils (durch <code>Eigenschaft</code>-Objekt
+   * Auslesen der Info eines Infos (durch <code>Info</code>-Objekt
    * gegeben).
    * 
    * @see findByOwner(int ownerID)
-   * @param owner Infoobjekt, dessen Eigenschaft wir auslesen möchten.
+   * @param owner Infoobjekt, dessen Profil wir auslesen möchten.
    * @return Merkzettel des Profils
    */
   public Vector<Info> findByOwner(Profile owner) {
@@ -189,7 +189,7 @@ public class InfoMapper {
   }
 
   /**
-   * Einfügen eines <code>Eigenschaft</code>-Objekts in die Datenbank. Dabei wird
+   * Einfügen eines <code>Info</code>-Objekts in die Datenbank. Dabei wird
    * auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
    * berichtigt.
    * 
@@ -213,7 +213,7 @@ public class InfoMapper {
       // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
       if (rs.next()) {
         /*
-         * p erhält den bisher maximalen, nun um 1 inkrementierten
+         * i erhält den bisher maximalen, nun um 1 inkrementierten
          * Primärschlüssel.
          */
         i.setID(rs.getInt("maxid") + 1);
@@ -230,7 +230,7 @@ public class InfoMapper {
     }
 
     /*
-     * Rückgabe, des evtl. korrigierten Eigenschaftes.
+     * Rückgabe, des evtl. korrigierten Infos.
      * 
      * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
      * Objekte übergeben werden, wäre die Anpassung des Profil-Objekts auch
@@ -244,7 +244,7 @@ public class InfoMapper {
   /**
    * Wiederholtes Schreiben eines Objekts in die Datenbank.
    * 
-   * @param p das Objekt, das in die DB geschrieben werden soll
+   * @param i das Objekt, das in die DB geschrieben werden soll
    * @return das als Parameter übergebene Objekt
    */
   public Info update(Info i) {
@@ -261,14 +261,14 @@ public class InfoMapper {
       e2.printStackTrace();
     }
 
-    // Um Analogie zu insert(Character c) zu wahren, geben wir c zurück
+    // Um Analogie zu insert(Info i) zu wahren, geben wir i zurück
     return i;
   }
 
   /**
-   * Löschen der Daten eines <code>Eigenschaft</code>-Objekts aus der Datenbank.
+   * Löschen der Daten eines <code>Info</code>-Objekts aus der Datenbank.
    * 
-   * @param m das aus der DB zu löschende "Objekt"
+   * @param i das aus der DB zu löschende "Objekt"
    */
   public void delete(Info i) {
     Connection con = DBConnection.connection();
@@ -285,11 +285,11 @@ public class InfoMapper {
   }
 
   /**
-   * Löschen sämtlicher Merkzettel (<code>Merkzettel</code>-Objekt) eines Profils.
-   * Diese Methode sollte aufgerufen werden, bevor ein <code>Merkzettel</code>
+   * Löschen sämtlicher Infos (<code>Info</code>-Objekt) eines Profils.
+   * Diese Methode sollte aufgerufen werden, bevor ein <code>Info</code>
    * -Objekt gelöscht wird.
    * 
-   * @param m das <code>Merkzettel</code>-Objekt, zu dem das Profil gehört.
+   * @param p das <code>Merkzettel</code>-Objekt, zu dem das Profil gehört.
    */
   public void deleteInfosOf(Profile p) {
     Connection con = DBConnection.connection();
@@ -306,16 +306,16 @@ public class InfoMapper {
   }
 
   /**
-   * Auslesen des zugehörigen <code>Merkzettel</code>-Objekts zu einem gegebenen
+   * Auslesen des zugehörigen <code>Info</code>-Objekts zu einem gegebenen
    * Profil.
    * 
-   * @param p das Merkzettel, dessen Profil wir auslesen möchten
+   * @param i das Info, dessen Profil wir auslesen möchten
    * @return ein Objekt, das den Eigentümer des Profils darstellt
    */
   public Profile getOwner(Info i) {
     /*
      * Wir bedienen uns hier einfach des ProfilMapper. Diesem geben wir
-     * einfach den in dem Merkzettel-Objekt enthaltenen Fremdschlüssel für den
+     * einfach den in dem Info-Objekt enthaltenen Fremdschlüssel für den
      * Profilinhaber. Der ProfilMapper lässt uns dann diese ID in ein Objekt
      * auf.
      */

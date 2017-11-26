@@ -7,7 +7,7 @@ import de.hdm.ITProjekt.shared.bo.Character;
 import de.hdm.ITProjekt.shared.bo.Info;
 
 /**
- * Mapper-Klasse, die <code>Merkzettel</code>-Objekte auf eine relationale
+ * Mapper-Klasse, die <code>Eigenschaft</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
  * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
@@ -17,7 +17,7 @@ import de.hdm.ITProjekt.shared.bo.Info;
 public class CharacterMapper {
 
   /**
-   * Die Klasse NotepadMapper wird nur einmal instantiiert. Man spricht hierbei
+   * Die Klasse CharacterMapper wird nur einmal instantiiert. Man spricht hierbei
    * von einem sogenannten <b>Singleton</b>.
    * <p>
    * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
@@ -39,14 +39,14 @@ public class CharacterMapper {
    * Diese statische Methode kann aufgrufen werden durch
    * <code>CharacterMapper.characterMapper()</code>. Sie stellt die
    * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
-   * Instanz von <code>ProfilMapper</code> existiert.
+   * Instanz von <code>CharacterMapper</code> existiert.
    * <p>
    * 
-   * <b>Fazit:</b> NotepadMapper sollte nicht mittels <code>new</code>
+   * <b>Fazit:</b> CharacterMapper sollte nicht mittels <code>new</code>
    * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
    * 
    * @return DAS <code>EigenschaftMapper</code>-Objekt.
-   * @see infoMapper
+   * @see characterMapper
    */
   public static CharacterMapper characterMapper() {
     if (characterMapper == null) {
@@ -134,13 +134,13 @@ public class CharacterMapper {
   }
 
   /**
-   * Auslesen aller Profile eines durch Fremdschlüssel (Kundennr.) gegebenen
-   * Kunden.
+   * Auslesen aller Eigenschaften eines durch Fremdschlüssel (Infonr.) gegebenen
+   * Profilen.
    * 
-   * @see findByOwner(Merkzettel owner)
-   * @param ownerID Schlüssel des zugehörigen Profils.
-   * @return Ein Vektor mit Merkzettel-Objekten, die dden Merkzettel des
-   *         betreffenden Profils repräsentiert. Bei evtl. Exceptions wird ein
+   * @see findByOwner(Eigenschaft owner)
+   * @param ownerID Schlüssel der zugehörigen Eigenschaft.
+   * @return Ein Vektor mit Eigenschaft-Objekten, die die Eigenschaft des
+   *         betreffenden Infos repräsentiert. Bei evtl. Exceptions wird ein
    *         partiell gefüllter oder ggf. auch leerer Vetor zurückgeliefert.
    */
   public Vector<Character> findByOwner(int ownerID) {
@@ -153,7 +153,7 @@ public class CharacterMapper {
       ResultSet rs = stmt.executeQuery("SELECT id, owner FROM characters "
           + "WHERE owner=" + ownerID + " ORDER BY id");
 
-      // Für jeden Eintrag im Suchergebnis wird nun ein Merkzettel-Objekt erstellt.
+      // Für jeden Eintrag im Suchergebnis wird nun ein Eigenschaft-Objekt erstellt.
       while (rs.next()) {
     	  Character c = new Character();
         c.setID(rs.getInt("id"));
@@ -172,17 +172,17 @@ public class CharacterMapper {
   }
 
   /**
-   * Auslesen der Eigenschaft eines Profils (durch <code>Eigenschaft</code>-Objekt
+   * Auslesen der Eigenschaft eines Infos (durch <code>Eigenschaft</code>-Objekt
    * gegeben).
    * 
    * @see findByOwner(int ownerID)
    * @param owner Infoobjekt, dessen Eigenschaft wir auslesen möchten.
-   * @return Merkzettel des Profils
+   * @return Eigenschaft des Infos
    */
   public Vector<Character> findByOwner(Info owner) {
 
     /*
-     * Wir lesen einfach die Infonummer (Primärschlüssel) des Info-Objekts
+     * Wir lesen einfach die Eigenschaftummer (Primärschlüssel) des Eigenschaft-Objekts
      * aus und delegieren die weitere Bearbeitung an findByOwner(int ownerID).
      */
     return findByOwner(owner.getID());
@@ -213,7 +213,7 @@ public class CharacterMapper {
       // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
       if (rs.next()) {
         /*
-         * p erhält den bisher maximalen, nun um 1 inkrementierten
+         * c erhält den bisher maximalen, nun um 1 inkrementierten
          * Primärschlüssel.
          */
         c.setID(rs.getInt("maxid") + 1);
@@ -244,7 +244,7 @@ public class CharacterMapper {
   /**
    * Wiederholtes Schreiben eines Objekts in die Datenbank.
    * 
-   * @param p das Objekt, das in die DB geschrieben werden soll
+   * @param c das Objekt, das in die DB geschrieben werden soll
    * @return das als Parameter übergebene Objekt
    */
   public Character update(Character c) {
@@ -268,7 +268,7 @@ public class CharacterMapper {
   /**
    * Löschen der Daten eines <code>Eigenschaft</code>-Objekts aus der Datenbank.
    * 
-   * @param m das aus der DB zu löschende "Objekt"
+   * @param c das aus der DB zu löschende "Objekt"
    */
   public void delete(Character c) {
     Connection con = DBConnection.connection();
@@ -285,11 +285,11 @@ public class CharacterMapper {
   }
 
   /**
-   * Löschen sämtlicher Merkzettel (<code>Merkzettel</code>-Objekt) eines Profils.
-   * Diese Methode sollte aufgerufen werden, bevor ein <code>Merkzettel</code>
+   * Löschen sämtlicher Merkzettel (<code>Eigenschaft</code>-Objekt) eines Profils.
+   * Diese Methode sollte aufgerufen werden, bevor ein <code>Eigenschaft</code>
    * -Objekt gelöscht wird.
    * 
-   * @param m das <code>Merkzettel</code>-Objekt, zu dem das Profil gehört.
+   * @param m das <code>Eigenschaft</code>-Objekt, zu dem das Profil gehört.
    */
   public void deleteNotepadsOf(Info i) {
     Connection con = DBConnection.connection();
@@ -306,17 +306,17 @@ public class CharacterMapper {
   }
 
   /**
-   * Auslesen des zugehörigen <code>Merkzettel</code>-Objekts zu einem gegebenen
-   * Profil.
+   * Auslesen des zugehörigen <code>Eigenschaft</code>-Objekts zu einer gegebenen
+   * Info.
    * 
-   * @param p das Merkzettel, dessen Profil wir auslesen möchten
-   * @return ein Objekt, das den Eigentümer des Profils darstellt
+   * @param c die Eigenschaft, dessen Info wir auslesen möchten
+   * @return ein Objekt, das den Eigentümer des Infos darstellt
    */
   public Info getOwner(Character c) {
     /*
-     * Wir bedienen uns hier einfach des ProfilMapper. Diesem geben wir
-     * einfach den in dem Merkzettel-Objekt enthaltenen Fremdschlüssel für den
-     * Profilinhaber. Der ProfilMapper lässt uns dann diese ID in ein Objekt
+     * Wir bedienen uns hier einfach des InfoMapper. Diesem geben wir
+     * einfach den in dem Eigenschaft-Objekt enthaltenen Fremdschlüssel für den
+     * Infoinhaber. Der InfoMapper lässt uns dann diese ID in ein Objekt
      * auf.
      */
     return InfoMapper.infoMapper().findByKey(c.getOwnerID());
