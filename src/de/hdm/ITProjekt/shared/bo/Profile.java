@@ -8,17 +8,29 @@ public class Profile extends BusinessObject {
 	
 
 	private String firstName = "";
+	
 	private String lastName = "";
+	
 	private String email = "";
+	
 	private String password = "";
+	
 	private int googleID;
+	
 	private Date dob; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
+	
 	private String hairColor = "";
+	
 	private double bodyHeight;
+	
 	private boolean smoker;
+	
 	private boolean nonsmoker;
+	
 	private String religiousDenomination = "";
+	
 	private boolean male;
+	
 	private boolean female;
 	
 
