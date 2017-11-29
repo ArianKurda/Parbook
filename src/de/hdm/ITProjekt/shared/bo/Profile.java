@@ -8,17 +8,29 @@ public class Profile extends BusinessObject {
 	
 
 	private String firstName = "";
+	
 	private String lastName = "";
+	
 	private String email = "";
+	
 	private String password = "";
+	
 	private int googleID;
+	
 	private Date dob; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
+	
 	private String hairColor = "";
+	
 	private double bodyHeight;
+	
 	private boolean smoker;
+	
 	private boolean nonsmoker;
-	private String religiousDenomination = "";
+	
+	private String religion = "";
+	
 	private boolean male;
+	
 	private boolean female;
 	
 
@@ -55,8 +67,8 @@ public class Profile extends BusinessObject {
 		return this.bodyHeight;
 	}
 	
-	public void setBodyHeight (double koerpergroesse){
-		this.bodyHeight = koerpergroesse;
+	public void setBodyHeight (double bodyheight ){
+		this.bodyHeight = bodyheight ;
 	}
 	
 	public boolean isSmoker() {
@@ -77,12 +89,12 @@ public class Profile extends BusinessObject {
 	
 	/* ich wei� nicht ob wir noch ne setmethode brauchen f�r die boolean Sachen*/
 	
-	public String getReligiousDenomination() { /* wir sollten glaub das anders benennen*/
-		return this.religiousDenomination;
+	public String getReligion() { 
+		return this.religion;
 	}
 	
-	public void setReligiousDenomination (String religion) {
-		this.religiousDenomination = religion;
+	public void setReligion (String religion) {
+		this.religion = religion;
 	}
 	
 	
@@ -119,8 +131,12 @@ public class Profile extends BusinessObject {
 		this.male = maennlich;
 	}
 	
-	public boolean isFemale() {
+	public boolean isFemale(boolean weiblich) {
 		return female;
+	}
+	
+	public void setFemale (boolean weiblich){
+		this.female = weiblich;
 	}
 	
 	public void setDateOfBirth(Date newDoB){
