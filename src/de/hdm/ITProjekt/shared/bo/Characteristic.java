@@ -4,10 +4,55 @@ package de.hdm.ITProjekt.shared.bo;
  * Realisierung eines exemplarischen Merkzettels. Ein Merkzettel wird von einem Profil besitzt.
  * 
  */
-public class Character extends BusinessObject {
+public class Characteristic extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
-
+  
+  /**
+   * Deklaration der Parameter
+   * 
+   * @param name Überbegriff, d.h. Begriffsbezeichnung eines Hobbies
+   * @param descriptiontext Der eigentliche Name eines Hobbies
+   */
+  private String name = "";
+  private String descriptiontext = "";
+  
+  /**
+   * Auslesen des Parameters Name
+   * 
+   * @return name
+   */
+  public String getName() {
+	  return name;
+  }
+  
+  /**
+   * Setzen des Parameters Name
+   * 
+   * @param name
+   */
+  public void setName(String name) {
+	  this.name = name;
+  }
+  
+  /**
+   * Auslesen des Beschreibungstextes
+   * 
+   *@return descriptiontext 
+   */
+  public String getBeschreibungstext() {
+	  return descriptiontext;
+  }
+  
+  /**
+   * Setzen des Beschreibungstextes
+   * 
+   * @param descriptiontext
+   */
+  public void setBeschreibungstext(String descriptiontext) {
+	  this.descriptiontext = descriptiontext;
+  }
+  
   /**
    * Fremdschlüsselbeziehung zum Inhaber der Eigenschaft.
    */
@@ -61,8 +106,8 @@ public boolean equals(Object o) {
      * Abfragen, ob ein Objekt ungl. NULL ist und ob ein Objekt gecastet werden
      * kann, sind immer wichtig!
      */
-    if (o != null && o instanceof Character) {
-    	Character c = (Character) o;
+    if (o != null && o instanceof Characteristic) {
+    	Characteristic c = (Characteristic) o;
       try {
         return super.equals(c);
       }
@@ -72,4 +117,5 @@ public boolean equals(Object o) {
     }
     return false;
   }
+
 }
