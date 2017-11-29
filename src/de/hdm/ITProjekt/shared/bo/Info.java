@@ -8,69 +8,104 @@ package de.hdm.ITProjekt.shared.bo;
 public class Info extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
+  
+  /**
+   * Deklaration der Parameter eines Infoobjektes
+   *
+   * @param text Die Bezeichnung der Eigenschaft
+   * @param eigenschaftId Die ID der Eigenschaft, zu der das Infoobjekt gehört
+   * @param profilId Die ID des Profils des eingeloggten Users, zu dem das Infoobjekt gehört
+   */
+  private String text = "";
+  private int characteristicID = 0;
+  private int profileID = 0;
 
   /**
-   * Fremdschlüsselbeziehung zum Inhaber des Infos.
+   * Auslesen des Parameters text
+   * 
+   * @param text
    */
-  private int ownerID = 0;
-
-  /**
-   * Auslesen des Fremdschlüssels zum Infoinhaber.
-   */
-  public int getOwnerID() {
-    return this.ownerID;
+  public String getText() {
+	  return text;
   }
-
+  
   /**
-   * Setzen des Fremdschlüssels zum Infoinhaber.
+   * Setzen des Parameters Text
+   * 
+   * @param text
    */
-  public void setOwnerID(int profilID) {
-    this.ownerID = profilID;
+  public void setText(String text) {
+	  this.text = text;
   }
-
+  
   /**
-   * Erzeugen einer einfachen textuellen Repräsentation der jeweiligen
-   * Profilinstanz.
+   * Erzeugen einer ganzen Zahl, die das Info-Objekt charakterisiert.
+   * 
+   * @see java.lang.Object#hashcode()
    */
   @Override
-public String toString() {
-    return super.toString() + " inhaber, Info-ID: #" + this.ownerID;
+  public int hashCode() {
+	  final int prime = 31;
+	  int result = super.hashCode();
+	  result = (prime * result) + characteristicID;
+	  result = (prime * result) + ((text == null) ? 0 : text.hashCode());
+	  return result;
   }
-
+  
   /**
-   * <p>
-   * Feststellen der <em>inhaltlichen</em> Gleichheit zweier Profil-Objekte.
-   * Die Gleichheit wird in diesem Beispiel auf eine identische Profilnummer
-   * beschränkt.
-   * </p>
-   * <p>
-   * <b>ACHTUNG:</b> Die inhaltliche Gleichheit nicht mit dem Vergleich der
-   * <em>Identität</em> eines Objekts mit einem anderen verwechseln!!! Dies
-   * würde durch den Operator <code>==</code> bestimmt. Bei Unklarheit hierzu
-   * können Sie nocheinmal in die Definition des Sprachkerns von Java schauen.
-   * Die Methode <code>equals(...)</code> ist für jeden Referenzdatentyp
-   * definiert, da sie bereits in der Klasse <code>Object</code> in einfachster
-   * Form realisiert ist. Dort ist sie allerdings auf die simple Bestimmung der 
-   * Gleicheit der Java-internen Objekt-ID der verglichenen Objekte beschränkt.
-   * In unseren eigenen Klassen können wir diese Methode überschreiben und ihr
-   * mehr Intelligenz verleihen.
-   * </p>
+   * Feststellen der inhaltlichen Gleichheit zweier Info-Objekte anhand
+   * der CharacteristicID
+   * 
+   * @see java.lang.Object#equals(Object)
    */
   @Override
-public boolean equals(Object o) {
-    /*
-     * Abfragen, ob ein Objekt ungl. NULL ist und ob ein Objekt gecastet werden
-     * kann, sind immer wichtig!
-     */
-    if (o != null && o instanceof Info) {
-      Info i = (Info) o;
-      try {
-        return super.equals(i);
-      }
-      catch (IllegalArgumentException e) {
-        return false;
-      }
-    }
-    return false;
+  public boolean equals(Object object) {
+	  boolean result = false;
+	  if ((object == null) || (object.getClass() != this.getClass())) {
+		  result = false;
+	  } else {
+		  Info i = (Info) object;
+		  if (getText().equals(i.getText()) && (getCharacteristicID() == i.getCharacteristicID())) {
+			  result = true;
+		  }
+	    }
+	    return result;
+	  }
+  
+  /**
+   * Auslesen der CharacteristicID
+   * 
+   * @return characteristicID
+   */
+  public int getCharacteristicID() {
+	  return characteristicID;
   }
+  
+  /**
+   * Setzen der CharateristicID
+   * 
+   * @param characteristicID
+   */
+  public void setCharaceristicID(int characteristicID) {
+	  characteristicID = characteristicID;
+  }
+  
+  /**
+   * Auslesen der ProfileID
+   * 
+   * @return profileID
+   */
+  public int getProfileID() {
+	  return profileID;
+  }
+  
+  /**
+   * Setzen der ProfileID
+   * 
+   * @param profileID
+   */
+  public void setProfileID(int profileID) {
+	  this.profileID = profileID;
+  }
+
 }
