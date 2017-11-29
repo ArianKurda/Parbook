@@ -3,7 +3,7 @@ package de.hdm.ITProjekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.ITProjekt.shared.bo.Notepad;
+import de.hdm.ITProjekt.shared.bo.Notepad2;
 import de.hdm.ITProjekt.shared.bo.Profile;
 
 /**
@@ -64,7 +64,7 @@ public class NotepadMapper {
    * @return Merkzettel-Objekt, das dem übergebenen Schlüssel entspricht, null bei
    *         nicht vorhandenem DB-Tupel.
    */
-  public Notepad findByKey(int id) {
+  public Notepad2 findByKey(int id) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 
@@ -82,7 +82,7 @@ public class NotepadMapper {
        */
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
-        Notepad n = new Notepad();
+        Notepad2 n = new Notepad2();
         n.setID(rs.getInt("id"));
         n.setOwnerID(rs.getInt("owner"));
         return n;
@@ -103,11 +103,11 @@ public class NotepadMapper {
    *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public Vector<Notepad> findAll() {
+  public Vector<Notepad2> findAll() {
     Connection con = DBConnection.connection();
 
     // Ergebnisvektor vorbereiten
-    Vector<Notepad> result = new Vector<Notepad>();
+    Vector<Notepad2> result = new Vector<Notepad2>();
 
     try {
       Statement stmt = con.createStatement();
@@ -117,7 +117,7 @@ public class NotepadMapper {
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Merkzettel-Objekt erstellt.
       while (rs.next()) {
-    	  Notepad n = new Notepad();
+    	  Notepad2 n = new Notepad2();
         n.setID(rs.getInt("id"));
         n.setOwnerID(rs.getInt("owner"));
 
@@ -143,9 +143,9 @@ public class NotepadMapper {
    *         betreffenden Profils repräsentiert. Bei evtl. Exceptions wird ein
    *         partiell gefüllter oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public Vector<Notepad> findByOwner(int ownerID) {
+  public Vector<Notepad2> findByOwner(int ownerID) {
     Connection con = DBConnection.connection();
-    Vector<Notepad> result = new Vector<Notepad>();
+    Vector<Notepad2> result = new Vector<Notepad2>();
 
     try {
       Statement stmt = con.createStatement();
@@ -155,7 +155,7 @@ public class NotepadMapper {
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Merkzettel-Objekt erstellt.
       while (rs.next()) {
-    	  Notepad n = new Notepad();
+    	  Notepad2 n = new Notepad2();
         n.setID(rs.getInt("id"));
         n.setOwnerID(rs.getInt("owner"));
 
@@ -179,7 +179,7 @@ public class NotepadMapper {
    * @param owner Profilobjekt, dessen Merkzettel wir auslesen möchten.
    * @return Merkzettel des Profils
    */
-  public Vector<Notepad> findByOwner(Profile owner) {
+  public Vector<Notepad2> findByOwner(Profile owner) {
 
     /*
      * Wir lesen einfach die Profilnummer (Primärschlüssel) des Profil-Objekts
@@ -197,7 +197,7 @@ public class NotepadMapper {
    * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
    *         <code>id</code>.
    */
-  public Notepad insert(Notepad n) {
+  public Notepad2 insert(Notepad2 n) {
     Connection con = DBConnection.connection();
 
     try {
@@ -247,7 +247,7 @@ public class NotepadMapper {
    * @param p das Objekt, das in die DB geschrieben werden soll
    * @return das als Parameter übergebene Objekt
    */
-  public Notepad update(Notepad n) {
+  public Notepad2 update(Notepad2 n) {
     Connection con = DBConnection.connection();
 
     try {
@@ -270,7 +270,7 @@ public class NotepadMapper {
    * 
    * @param m das aus der DB zu löschende "Objekt"
    */
-  public void delete(Notepad n) {
+  public void delete(Notepad2 n) {
     Connection con = DBConnection.connection();
 
     try {
@@ -312,7 +312,7 @@ public class NotepadMapper {
    * @param p das Merkzettel, dessen Profil wir auslesen möchten
    * @return ein Objekt, das den Eigentümer des Profils darstellt
    */
-  public Profile getOwner(Notepad n) {
+  public Profile getOwner(Notepad2 n) {
     /*
      * Wir bedienen uns hier einfach des ProfilMapper. Diesem geben wir
      * einfach den in dem Merkzettel-Objekt enthaltenen Fremdschlüssel für den

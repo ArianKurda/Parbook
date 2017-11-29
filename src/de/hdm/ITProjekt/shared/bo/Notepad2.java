@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author kurda
  */
-public class Notepad extends BusinessObject {
+public class Notepad2 extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
 
