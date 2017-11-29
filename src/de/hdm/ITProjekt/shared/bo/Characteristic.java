@@ -4,7 +4,7 @@ package de.hdm.ITProjekt.shared.bo;
  * Realisierung eines exemplarischen Merkzettels. Ein Merkzettel wird von einem Profil besitzt.
  * 
  */
-public class Character extends BusinessObject {
+public class Characteristic extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
 
@@ -61,8 +61,8 @@ public boolean equals(Object o) {
      * Abfragen, ob ein Objekt ungl. NULL ist und ob ein Objekt gecastet werden
      * kann, sind immer wichtig!
      */
-    if (o != null && o instanceof Character) {
-    	Character c = (Character) o;
+    if (o != null && o instanceof Characteristic) {
+    	Characteristic c = (Characteristic) o;
       try {
         return super.equals(c);
       }

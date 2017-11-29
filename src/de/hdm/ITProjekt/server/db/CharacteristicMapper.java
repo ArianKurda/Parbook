@@ -3,7 +3,7 @@ package de.hdm.ITProjekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.ITProjekt.shared.bo.Character;
+import de.hdm.ITProjekt.shared.bo.Characteristic;
 import de.hdm.ITProjekt.shared.bo.Info;
 
 /**
@@ -14,7 +14,7 @@ import de.hdm.ITProjekt.shared.bo.Info;
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  */
-public class CharacterMapper {
+public class CharacteristicMapper {
 
   /**
    * Die Klasse CharacterMapper wird nur einmal instantiiert. Man spricht hierbei
@@ -26,13 +26,13 @@ public class CharacterMapper {
    * 
    * @see characterMapper()
    */
-  private static CharacterMapper characterMapper = null;
+  private static CharacteristicMapper characterMapper = null;
 
   /**
    * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
    * neue Instanzen dieser Klasse zu erzeugen.
    */
-  protected CharacterMapper() {
+  protected CharacteristicMapper() {
   }
 
   /**
@@ -48,9 +48,9 @@ public class CharacterMapper {
    * @return DAS <code>EigenschaftMapper</code>-Objekt.
    * @see characterMapper
    */
-  public static CharacterMapper characterMapper() {
+  public static CharacteristicMapper characterMapper() {
     if (characterMapper == null) {
-      characterMapper = new CharacterMapper();
+      characterMapper = new CharacteristicMapper();
     }
 
     return characterMapper;
@@ -64,7 +64,7 @@ public class CharacterMapper {
    * @return Eigenschaft-Objekt, das dem übergebenen Schlüssel entspricht, null bei
    * nicht vorhandenem DB-Tupel.
    */
-  public Character findByKey(int id) {
+  public Characteristic findByKey(int id) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 
@@ -82,7 +82,7 @@ public class CharacterMapper {
        */
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
-    	  Character c = new Character();
+    	  Characteristic c = new Characteristic();
         c.setID(rs.getInt("id"));
         c.setOwnerID(rs.getInt("owner"));
         return c;
@@ -103,11 +103,11 @@ public class CharacterMapper {
    *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public Vector<Character> findAll() {
+  public Vector<Characteristic> findAll() {
     Connection con = DBConnection.connection();
 
     // Ergebnisvektor vorbereiten
-    Vector<Character> result = new Vector<Character>();
+    Vector<Characteristic> result = new Vector<Characteristic>();
 
     try {
       Statement stmt = con.createStatement();
@@ -117,7 +117,7 @@ public class CharacterMapper {
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Eigenschaft-Objekt erstellt.
       while (rs.next()) {
-    	  Character c = new Character();
+    	  Characteristic c = new Characteristic();
         c.setID(rs.getInt("id"));
         c.setOwnerID(rs.getInt("owner"));
 
@@ -143,9 +143,9 @@ public class CharacterMapper {
    *         betreffenden Infos repräsentiert. Bei evtl. Exceptions wird ein
    *         partiell gefüllter oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public Vector<Character> findByOwner(int ownerID) {
+  public Vector<Characteristic> findByOwner(int ownerID) {
     Connection con = DBConnection.connection();
-    Vector<Character> result = new Vector<Character>();
+    Vector<Characteristic> result = new Vector<Characteristic>();
 
     try {
       Statement stmt = con.createStatement();
@@ -155,7 +155,7 @@ public class CharacterMapper {
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Eigenschaft-Objekt erstellt.
       while (rs.next()) {
-    	  Character c = new Character();
+    	  Characteristic c = new Characteristic();
         c.setID(rs.getInt("id"));
         c.setOwnerID(rs.getInt("owner"));
 
@@ -179,7 +179,7 @@ public class CharacterMapper {
    * @param owner Infoobjekt, dessen Eigenschaft wir auslesen möchten.
    * @return Eigenschaft des Infos
    */
-  public Vector<Character> findByOwner(Info owner) {
+  public Vector<Characteristic> findByOwner(Info owner) {
 
     /*
      * Wir lesen einfach die Eigenschaftummer (Primärschlüssel) des Eigenschaft-Objekts
@@ -197,7 +197,7 @@ public class CharacterMapper {
    * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
    * <code>id</code>.
    */
-  public Character insert(Character c) {
+  public Characteristic insert(Characteristic c) {
     Connection con = DBConnection.connection();
 
     try {
@@ -247,7 +247,7 @@ public class CharacterMapper {
    * @param c das Objekt, das in die DB geschrieben werden soll
    * @return das als Parameter übergebene Objekt
    */
-  public Character update(Character c) {
+  public Characteristic update(Characteristic c) {
     Connection con = DBConnection.connection();
 
     try {
@@ -270,7 +270,7 @@ public class CharacterMapper {
    * 
    * @param c das aus der DB zu löschende "Objekt"
    */
-  public void delete(Character c) {
+  public void delete(Characteristic c) {
     Connection con = DBConnection.connection();
 
     try {
@@ -312,7 +312,7 @@ public class CharacterMapper {
    * @param c die Eigenschaft, dessen Info wir auslesen möchten
    * @return ein Objekt, das den Eigentümer des Infos darstellt
    */
-  public Info getOwner(Character c) {
+  public Info getOwner(Characteristic c) {
     /*
      * Wir bedienen uns hier einfach des InfoMapper. Diesem geben wir
      * einfach den in dem Eigenschaft-Objekt enthaltenen Fremdschlüssel für den
