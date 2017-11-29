@@ -12,10 +12,10 @@ public class Characteristic extends BusinessObject {
    * Deklaration der Parameter
    * 
    * @param name Überbegriff, d.h. Begriffsbezeichnung eines Hobbies
-   * @param beschreibungstext Der eigentliche Name eines Hobbies
+   * @param descriptiontext Der eigentliche Name eines Hobbies
    */
   private String name = "";
-  private String beschreibungstext = "";
+  private String descriptiontext = "";
   
   /**
    * Auslesen des Parameters Name
@@ -38,21 +38,21 @@ public class Characteristic extends BusinessObject {
   /**
    * Auslesen des Beschreibungstextes
    * 
-   *@return beschreibungstext 
+   *@return descriptiontext 
    */
   public String getBeschreibungstext() {
-	  return beschreibungstext;
+	  return descriptiontext;
   }
   
   /**
    * Setzen des Beschreibungstextes
    * 
-   * @param beschreibungstext
+   * @param descriptiontext
    */
-  public void setBeschreibungstext(String beschreibungstext) {
-	  this.beschreibungstext = beschreibungstext;
+  public void setBeschreibungstext(String descriptiontext) {
+	  this.descriptiontext = descriptiontext;
   }
-
+  
   /**
    * Fremdschlüsselbeziehung zum Inhaber der Eigenschaft.
    */
@@ -117,4 +117,5 @@ public boolean equals(Object o) {
     }
     return false;
   }
+
 }
