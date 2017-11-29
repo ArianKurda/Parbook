@@ -4,7 +4,7 @@ package de.hdm.ITProjekt.shared.bo;
 /**
  * BO-Klasse Beschreibung, welche die Klasse Eigenschaft erweitert.
  * Sie enthält lediglich einen String (die Beschreibung) und die
- * dazugehörigen getter und setter
+ * dazugehörigen getter- und setter-Methoden
  * 
  * @author kurda
  */
@@ -24,8 +24,8 @@ public class Description extends Characteristic {
   }
 
   /**
-   * setzen des Textes
-   * @param text Inhalt der Beschreibung
+   * Setzen des Textes
+   * @param text: Inhalt der Beschreibung
    */
   public void setText(String text) {
     this.text = text;

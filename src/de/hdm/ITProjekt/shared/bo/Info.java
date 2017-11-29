@@ -1,7 +1,8 @@
 package de.hdm.ITProjekt.shared.bo;
 
 /**
- * Realisierung eines exemplarischen Profilkontos. Ein Profil besitzt ein Info.
+ * Realisierung eines exemplarischen Infoobjekts eines Profils.
+ * Ein Profil besitzt also ein oder mehrere Infos.
  * 
  * @author kurda
  */
@@ -12,9 +13,9 @@ public class Info extends BusinessObject {
   /**
    * Deklaration der Parameter eines Infoobjektes
    *
-   * @param text Die Bezeichnung der Eigenschaft
-   * @param eigenschaftId Die ID der Eigenschaft, zu der das Infoobjekt gehört
-   * @param profilId Die ID des Profils des eingeloggten Users, zu dem das Infoobjekt gehört
+   * @param text: Eigenschaftsbezeichnung
+   * @param eigenschaftID: Die ID der Eigenschaft, zu der das Infoobjekt gehört.
+   * @param profilID: Die ID des Profils des eingeloggten Nutzers, zu dem das Infoobjekt gehört.
    */
   private String text = "";
   private int characteristicID = 0;
@@ -30,7 +31,7 @@ public class Info extends BusinessObject {
   }
   
   /**
-   * Setzen des Parameters Text
+   * Setzen des Parameters text
    * 
    * @param text
    */
