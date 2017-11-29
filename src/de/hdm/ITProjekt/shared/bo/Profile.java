@@ -8,29 +8,20 @@ public class Profile extends BusinessObject {
 	
 
 	private String firstName = "";
-	
-	private String lastName = "";  
-	
-	private Date dob; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
-	
-	private String hairColor = "";
-	
-	private double bodyHeight;
-	
-	private boolean smoker;
-	
-	private boolean nonsmoker;
-	
-	private String religiousDenomination = "";
-	
+	private String lastName = "";
 	private String email = "";
-	
 	private String password = "";
-	
+	private int googleID;
+	private Date dob; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
+	private String hairColor = "";
+	private double bodyHeight;
+	private boolean smoker;
+	private boolean nonsmoker;
+	private String religiousDenomination = "";
 	private boolean male;
-	
 	private boolean female;
 	
+
 
 	
 	
@@ -109,6 +100,14 @@ public class Profile extends BusinessObject {
 	
 	public void setPassword (String password) {
 		this.password = password;
+	}
+	
+	public int getGoogleID() {
+		return googleID;
+	}
+	
+	public void setGoogleID(int googleID) {
+		this.googleID = googleID;
 	}
 	
 
