@@ -7,6 +7,51 @@ package de.hdm.ITProjekt.shared.bo;
 public class Characteristic extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
+  
+  /**
+   * Deklaration der Parameter
+   * 
+   * @param name Überbegriff, d.h. Begriffsbezeichnung eines Hobbies
+   * @param beschreibungstext Der eigentliche Name eines Hobbies
+   */
+  private String name = "";
+  private String beschreibungstext = "";
+  
+  /**
+   * Auslesen des Parameters Name
+   * 
+   * @return name
+   */
+  public String getName() {
+	  return name;
+  }
+  
+  /**
+   * Setzen des Parameters Name
+   * 
+   * @param name
+   */
+  public void setName(String name) {
+	  this.name = name;
+  }
+  
+  /**
+   * Auslesen des Beschreibungstextes
+   * 
+   *@return beschreibungstext 
+   */
+  public String getBeschreibungstext() {
+	  return beschreibungstext;
+  }
+  
+  /**
+   * Setzen des Beschreibungstextes
+   * 
+   * @param beschreibungstext
+   */
+  public void setBeschreibungstext(String beschreibungstext) {
+	  this.beschreibungstext = beschreibungstext;
+  }
 
   /**
    * Fremdschlüsselbeziehung zum Inhaber der Eigenschaft.
