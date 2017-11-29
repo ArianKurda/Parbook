@@ -1,6 +1,5 @@
 package de.hdm.ITProjekt.shared.bo;
 
-import de.hdm.ITProjekt.shared.bo.Aehnlichkeitsmaß;
 import de.hdm.ITProjekt.shared.bo.BusinessObject;
 
 
