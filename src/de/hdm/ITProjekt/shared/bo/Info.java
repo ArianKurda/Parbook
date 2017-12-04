@@ -87,7 +87,7 @@ public class Info extends BusinessObject {
    * 
    * @param characteristicID
    */
-  public void setCharaceristicID(int characteristicID) {
+  public void setCharacteristicID(int characteristicID) {
 	  this.characteristicID = characteristicID;
   }
   

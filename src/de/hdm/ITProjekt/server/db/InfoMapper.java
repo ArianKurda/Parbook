@@ -1,10 +1,12 @@
 package de.hdm.ITProjekt.server.db;
 
-import java.sql.*;
-import java.util.Vector;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import de.hdm.ITProjekt.shared.bo.Info;
-import de.hdm.ITProjekt.shared.bo.Profile;
 
 /**
  * Mapper-Klasse, die <code>Info</code>-Objekte auf eine relationale
@@ -57,14 +59,15 @@ public class InfoMapper {
   }
 
   /**
-   * Suchen eines Infos mit vorgegebener Infonummer. Da diese eindeutig ist,
+   * Suchen eines Info-Objekts durch die profileID. Da diese eindeutig ist,
    * wird genau ein Objekt zur�ckgegeben.
    * 
-   * @param id Primärschlüsselattribut (->DB)
+   * @param id Fremdschlüsselattribut (->DB)
+   * 
    * @return Info-Objekt, das dem übergebenen Schlüssel entspricht, null bei
    * nicht vorhandenem DB-Tupel.
    */
-  public Info findByKey(int id) {
+  public ArrayList<Info> findAllByProfileID(int id) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 
@@ -73,56 +76,67 @@ public class InfoMapper {
       Statement stmt = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs = stmt.executeQuery("SELECT id, owner FROM infos "
-          + "WHERE id=" + id + " ORDER BY owner");
+      ResultSet rs = stmt.executeQuery("SELECT id, Text, ProfileID, CharacteristicID FROM Infos "
+          + "WHERE ProfileID=" + id + " ORDER BY id");
 
-      /*
-       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
-       * werden. Prüfe, ob ein Ergebnis vorliegt.
+      /**
+       * Da die ID den Primärschlüssel wiederspiegelt,
+       * kann max. nur ein Tupel zurückgegeben werden. Prüfe, ob ein
+       * Ergebnis vorliegt.
        */
-      if (rs.next()) {
+      ArrayList<Info> result = new ArrayList<>();
+      
+      
+      while (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
-    	  Info i = new Info();
-        i.setID(rs.getInt("id"));
-        i.setOwnerID(rs.getInt("owner"));
-        return i;
+    	Info i = new Info();
+        i.setId(rs.getInt("id"));
+        i.setText(rs.getString("Text"));
+        i.setProfileID(rs.getInt("ProfileID"));
+        i.setCharacteristicID(rs.getInt("CharacteristicID"));
+        result.add(i);
       }
+      return result;
     }
     catch (SQLException e2) {
       e2.printStackTrace();
+
       return null;
     }
 
-    return null;
   }
 
   /**
-   * Auslesen aller Infos.
+   * Auslesen eines Info-Objekts.
    * 
-   * @return Ein Vektor mit Info-Objekten, die sämtliche Profile
-   *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
-   *         oder ggf. auch leerer Vetor zurückgeliefert.
+   * Die Methode findByKey implementiert die Suche nach einer id aus der DB.
+   * Dadurch wird nur ein Objekt zurückgegeben.
+   * 
+   * @param id
+   * 
+   * @return Info-Objekt, das der id entspricht.
    */
-  public Vector<Info> findAll() {
+  public Info findByKey(int id) {
+	//DB-Verbindung holen
     Connection con = DBConnection.connection();
 
-    // Ergebnisvektor vorbereiten
-    Vector<Info> result = new Vector<Info>();
-
     try {
+      // Leeres SQL-Statement anlegen.
       Statement stmt = con.createStatement();
 
-      ResultSet rs = stmt.executeQuery("SELECT id, owner FROM infos "
-          + " ORDER BY id");
+      // Statement ausfüllen und an die DB zurückschicken.
+      ResultSet rs = stmt.executeQuery("SELECT id, Text, ProfileID, CharacteristicID FROM Info WHERE id="
+          + id);
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Info-Objekt erstellt.
-      while (rs.next()) {
-    	  Info i = new Info();
-        i.setID(rs.getInt("id"));
-        i.setOwnerID(rs.getInt("owner"));
+      if (rs.next()) {
+    	Info i = new Info();
+        i.setId(rs.getInt("id"));
+        i.setText(rs.getString("Text"));
+        i.setProfileID(rs.getInt("ProfileID"));
+        i.setCharacteristicID(rs.getInt("CharacteristicID"));
 
-        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.addElement(i);
+        return i;
       }
     }
     catch (SQLException e2) {
@@ -130,37 +144,41 @@ public class InfoMapper {
     }
 
     // Ergebnisvektor zurückgeben
-    return result;
+    return null;
   }
 
   /**
    * Auslesen aller Infos eines durch Fremdschlüssel (ProfileID) gegebenen
    * Profilen.
    * 
-   * @see findByOwner(Merkzettel owner)
-   * @param ownerID Schlüssel des zugehörigen Profils.
-   * @return Ein Vektor mit Info-Objekten, die die Infos des
-   *         betreffenden Profils repräsentiert. Bei evtl. Exceptions wird ein
-   *         partiell gefüllter oder ggf. auch leerer Vetor zurückgeliefert.
+   * @return Eine ArrayList mit Info-Objekten.
    */
-  public Vector<Info> findByOwner(int ownerID) {
+  public ArrayList<Info> findAll() {
     Connection con = DBConnection.connection();
-    Vector<Info> result = new Vector<Info>();
+    // Ergebnisvektor vorbereiten
+    ArrayList<Info> result = new ArrayList<Info>();
 
     try {
+      // Leeres SQL-Statement (JDBC) anlegen.
       Statement stmt = con.createStatement();
+      
+      // Statement ausfüllen und an die DB zurückgeben.
+      ResultSet rs = stmt.executeQuery("SELECT id, Text, ProfileID, CharacteristicID "
+      		+ "FROM Info ORDER BY id DESC");
 
-      ResultSet rs = stmt.executeQuery("SELECT id, owner FROM infos "
-          + "WHERE owner=" + ownerID + " ORDER BY id");
-
-      // Für jeden Eintrag im Suchergebnis wird nun ein Info-Objekt erstellt.
+      /**
+       * Da die id den Primärschlüssel wiederspiegelt, kann höchstens
+       * nur ein Tupel zurückgegeben werden.
+       * Prüfen, ob ein Ergebnis vorliegt.
+       */
       while (rs.next()) {
-    	  Info i = new Info();
-        i.setID(rs.getInt("id"));
-        i.setOwnerID(rs.getInt("owner"));
+    	Info i = new Info();
+        i.setId(rs.getInt("id"));
+        i.setText(rs.getString("Text"));
+        i.setProfileID(rs.getInt("ProfileID"));
+        i.setCharacteristicID(rs.getInt("CharacteristicID"));
 
-        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.addElement(i);
+        result.add(i);
       }
     }
     catch (SQLException e2) {
@@ -172,30 +190,13 @@ public class InfoMapper {
   }
 
   /**
-   * Auslesen der Info eines Infos (durch <code>Info</code>-Objekt
-   * gegeben).
-   * 
-   * @see findByOwner(int ownerID)
-   * @param owner Infoobjekt, dessen Profil wir auslesen möchten.
-   * @return Merkzettel des Profils
-   */
-  public Vector<Info> findByOwner(Profile owner) {
-
-    /*
-     * Wir lesen einfach die Infonummer (Primärschlüssel) des Info-Objekts
-     * aus und delegieren die weitere Bearbeitung an findByOwner(int ownerID).
-     */
-    return findByOwner(owner.getID());
-  }
-
-  /**
-   * Einfügen eines <code>Info</code>-Objekts in die Datenbank. Dabei wird
+   * Einfügen eines Info-Objekts in die Datenbank. Dabei wird
    * auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
    * berichtigt.
    * 
-   * @param m das zu speichernde Objekt
+   * @param i das zu speichernde Objekt
    * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
-   * <code>id</code>.
+   * id.
    */
   public Info insert(Info i) {
     Connection con = DBConnection.connection();
@@ -208,7 +209,7 @@ public class InfoMapper {
        * Primärschlüsselwert ist.
        */
       ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-          + "FROM infos ");
+          + "FROM Info ");
 
       // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
       if (rs.next()) {
@@ -216,13 +217,13 @@ public class InfoMapper {
          * i erhält den bisher maximalen, nun um 1 inkrementierten
          * Primärschlüssel.
          */
-        i.setID(rs.getInt("maxid") + 1);
+        i.setId(rs.getInt("maxid") + 1);
 
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-        stmt.executeUpdate("INSERT INTO infos (id, owner) " + "VALUES ("
-            + i.getID() + "," + i.getOwnerID() + ")");
+        stmt.executeUpdate("INSERT INTO Info (Text, ProfileID, CharacteristidID, id) " + "VALUES ('"
+            + i.getText() + "'," + i.getProfileID() + "," + i.getCharacteristicID() + i.getId() + ")");
       }
     }
     catch (SQLException e2) {
@@ -242,9 +243,9 @@ public class InfoMapper {
   }
 
   /**
-   * Wiederholtes Schreiben eines Objekts in die Datenbank.
+   * Die Methode update() modifiziert ein auf die DB abgebildetes Info-Objekt.
    * 
-   * @param i das Objekt, das in die DB geschrieben werden soll
+   * @param i das Objekt, das in der DB abgeändert werden soll
    * @return das als Parameter übergebene Objekt
    */
   public Info update(Info i) {
@@ -253,8 +254,8 @@ public class InfoMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE infos " + "SET owner=\"" + i.getOwnerID()
-          + "\" " + "WHERE id=" + i.getID());
+      stmt.executeUpdate("UPDATE Info SET Text='" + i.getText() + "' WHERE ProfileID="
+    		  + i.getProfileID() + " AND CharacteristicID=" + i.getCharacteristicID());
 
     }
     catch (SQLException e2) {
@@ -276,50 +277,12 @@ public class InfoMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM infos " + "WHERE id=" + i.getID());
+      stmt.executeUpdate("DELETE FROM Info " + "WHERE id=" + i.getId());
 
     }
     catch (SQLException e2) {
       e2.printStackTrace();
     }
-  }
-
-  /**
-   * Löschen sämtlicher Infos (<code>Info</code>-Objekt) eines Profils.
-   * Diese Methode sollte aufgerufen werden, bevor ein <code>Info</code>
-   * -Objekt gelöscht wird.
-   * 
-   * @param p das <code>Merkzettel</code>-Objekt, zu dem das Profil gehört.
-   */
-  public void deleteInfosOf(Profile p) {
-    Connection con = DBConnection.connection();
-
-    try {
-      Statement stmt = con.createStatement();
-
-      stmt.executeUpdate("DELETE FROM profiles " + "WHERE owner=" + p.getID());
-
-    }
-    catch (SQLException e2) {
-      e2.printStackTrace();
-    }
-  }
-
-  /**
-   * Auslesen des zugehörigen <code>Info</code>-Objekts zu einem gegebenen
-   * Profil.
-   * 
-   * @param i das Info, dessen Profil wir auslesen möchten
-   * @return ein Objekt, das den Eigentümer des Profils darstellt
-   */
-  public Profile getOwner(Info i) {
-    /*
-     * Wir bedienen uns hier einfach des ProfilMapper. Diesem geben wir
-     * einfach den in dem Info-Objekt enthaltenen Fremdschlüssel für den
-     * Profilinhaber. Der ProfilMapper lässt uns dann diese ID in ein Objekt
-     * auf.
-     */
-    return ProfileMapper.profileMapper().findByKey(i.getOwnerID());
   }
 
 }

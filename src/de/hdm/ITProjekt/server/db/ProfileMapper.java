@@ -47,18 +47,16 @@ public class ProfileMapper {
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
         Profile p = new Profile();
-        p.setID(rs.getInt("id"));
+        p.setId(rs.getInt("id"));
         p.setFirstName(rs.getString("firstname"));
         p.setLastName(rs.getString("lastname"));
         p.setEmail(rs.getString("email"));
-        p.setHairColor(rs.getString("haircolo"));
+        p.setHairColor(rs.getString("haircolor"));
         p.setBodyHeight(rs.getDouble("bodyheight"));
        /* p.setBirthdate(rs.getString("firstname")); */
         p.setSmoker(rs.getBoolean("smoker"));
-        p.setNonSmoker(rs.getBoolean("nonsmoker"));
         p.setReligion(rs.getString("religion"));
-        p.setMale(rs.getBoolean("male"));
-        p.setFemale(rs.getBoolean("female"));
+        p.setGender(rs.getBoolean("gender"));
         
         return p;
       }
@@ -82,25 +80,24 @@ public class ProfileMapper {
 	      Statement stmt = con.createStatement();
 	  
 	  ResultSet rs = stmt.executeQuery("SELECT id,firstname,lastname,email,haircolor,bodyheight,"
-	      		+ "smoker, nonsmoker, religion, male, female, dbo "
+	      		+ "smoker, religion,gender, dbo "
 	    		  + "FROM Profile");
 	  
 	  while (rs.next()) {
 		  
 	  }
 		  Profile p = new Profile();
-	        p.setID(rs.getInt("id"));
+	        p.setId(rs.getInt("id"));
 	        p.setFirstName(rs.getString("firstname"));
 	        p.setLastName(rs.getString("lastname"));
 	        p.setEmail(rs.getString("email"));
-	        p.setHairColor(rs.getString("haircolo"));
+	        p.setHairColor(rs.getString("haircolor"));
 	        p.setBodyHeight(rs.getDouble("bodyheight"));
 	       /* p.setBirthdate(rs.getString("birthdate")); */
 	        p.setSmoker(rs.getBoolean("smoker"));
-	        p.setNonSmoker(rs.getBoolean("nonsmoker"));
 	        p.setReligion(rs.getString("religion"));
-	        p.setMale(rs.getBoolean("male"));
-	        p.setFemale(rs.getBoolean("female"));
+	        p.setGender(rs.getBoolean("gender"));
+	       
 	  
 	        result.add(p);
 	        
@@ -110,9 +107,67 @@ public class ProfileMapper {
 	  }
 	return result;
   }
-}
-  
 
-  
+  /** Profil abbilden*/
+public Profile insert(Profile p) {
+	Connection con = DBConnection.connection();
+	try{
+		Statement stmt = con.createStatement();
+		
+		/* Zunaechst wird ueberprueft , 
+		 * welches momentan der hoechste Primaerschluesselwert ist*/
+		
+		ResultSet rs1 = stmt.executeQuery("SELECT MAX(id) As maxid FROM Profile");
+				
+				if (rs1.next()) {
+					
+					p.setId(rs1.getInt("maxid")+1);
+					
+					stmt = con.createStatement();
+					
+					stmt.executeUpdate("INSERT INTO Profile (id,firstname,lastname,email,"
+							+ "haircolor, bodyheight, smoker, religion, gender, dbo)	"
+							+ "VALUES (" + p.getId() + ",'" + p.getFirstName() + "','" + p.getLastName()
+				            + "','" + p.getEmail() + "','" + p.getHairColor() + "'," + p.getBodyHeight() + ",'"
+				            + p.Smoker() + "','" + p.getReligion() + "','" + p.gender() + "','"
+				           /* + p.getdbo()*/ + "')");
+							
+				}
+	} catch (SQLException e) {
+	      e.printStackTrace();
+}
+    return p;
+
+}
+/** Profil ändern**/
+
+public Profile update(Profile p) {
+	Connection con = DBConnection.connection();
+	
+	try{
+		Statement stmt = con.createStatement();
+		
+		stmt.executeUpdate("UPDATE Profile SET  Firstname='" + p.getFirstName() + "', Lastname='"
+		          + p.getLastName() + "', Haircolor ='" + p.getHairColor() + "', Bodyheight="
+		          + p.getBodyHeight() + ", Smoker='" + p.Smoker() + "', Religion='" + p.getReligion()
+		          + /*"', Dbo='" + p.getDbo() +*/ "' WHERE id=" + p.getId());
+		
+	}catch (SQLException e) {
+		      e.printStackTrace();
+}
+	return p;
+} 
+/** Profil loeschen*/
+
+public void delete(Profile p) {
+	Connection con = DBConnection.connection();
+	
+	try{
+		Statement stmt = con.createStatement()
+	}
+}
+}
+
+
 
 

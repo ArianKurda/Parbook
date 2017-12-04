@@ -10,7 +10,7 @@ import de.hdm.ITProjekt.shared.bo.BusinessObject;
  * @author kurda
  * @version 1.0
  */
-public class SimilarityMeasure extends BusinessObject {
+public class Similarity extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
 
