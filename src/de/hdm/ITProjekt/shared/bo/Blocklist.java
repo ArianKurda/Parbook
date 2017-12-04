@@ -39,7 +39,7 @@ public class Blocklist extends BusinessObject {
 	}
 
 	public void setTitle(String title) {
-		this.title = "Sperrliste";
+		this.title = "Kontaktsperre";
 	} 
 	
 
@@ -47,7 +47,7 @@ public class Blocklist extends BusinessObject {
 	public Blocklist() {};
 	
 	public Blocklist(Profile blocker, String title) {
-		this.title = "Speerliste";
+		this.title = "Kontaktsperre";
 		this.blocker = blocker;
 		this.blocklist.add(blocker);	
 		}
