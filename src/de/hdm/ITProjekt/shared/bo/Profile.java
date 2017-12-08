@@ -23,17 +23,17 @@ public class Profile extends BusinessObject {
 	
 	private double bodyHeight;
 	
-	private boolean smoker;
-	
-	private boolean nonsmoker;
+	private boolean smoker = true; /* true = raucher , false = nichtraucher*/
 	
 	private String religion = "";
 	
-	private boolean male;
-	
-	private boolean female;
+	private boolean gender = true;  /* true = maennlich , false = weiblich*/
 	
 
+	public static final boolean raucher = true;
+	public static final boolean nichtraucher = false;
+	public static final boolean maennlich = true;
+	public static final boolean weiblich = false;
 
 	
 	
@@ -71,23 +71,14 @@ public class Profile extends BusinessObject {
 		this.bodyHeight = bodyheight ;
 	}
 	
-	public boolean isSmoker() {
-		return smoker;
+	public boolean Smoker() {
+		return this.smoker;
 	}
 	
-	public void setSmoker(boolean raucher){
+	public void setSmoker(boolean smoker){
 		this.smoker = raucher;
 	}
-	
-	public boolean isNonsmoker() {
-		return nonsmoker;
-	}
-	
-	public void setNonSmoker (boolean nichtraucher){
-		this.nonsmoker = nichtraucher;
-	}
-	
-	/* ich wei� nicht ob wir noch ne setmethode brauchen f�r die boolean Sachen*/
+
 	
 	public String getReligion() { 
 		return this.religion;
@@ -123,21 +114,14 @@ public class Profile extends BusinessObject {
 	}
 	
 
-	public boolean isMale(){
-		return male;	
+	public boolean gender(){
+		return this.gender;	
 	}
 	
-	public void setMale (boolean maennlich){
-		this.male = maennlich;
+	public void setGender (boolean maennlich){
+		this.gender = maennlich;
 	}
 	
-	public boolean isFemale(boolean weiblich) {
-		return female;
-	}
-	
-	public void setFemale (boolean weiblich){
-		this.female = weiblich;
-	}
 	
 	public void setDateOfBirth(Date newDoB){
 		dob = newDoB;
