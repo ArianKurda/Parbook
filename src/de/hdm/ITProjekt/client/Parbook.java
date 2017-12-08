@@ -14,9 +14,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import de.hdm.ITProjekt.client.gui.editor.Impressum;
-import de.hdm.ITProjekt.client.gui.editor.NotepadList;
-import de.hdm.ITProjekt.client.gui.editor.UserEditor;
+
 import de.hdm.ITProjekt.shared.LoginInfo;
 import de.hdm.ITProjekt.shared.LoginService;
 import de.hdm.ITProjekt.shared.LoginServiceAsync;
