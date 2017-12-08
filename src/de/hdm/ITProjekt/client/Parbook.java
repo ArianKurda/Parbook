@@ -33,18 +33,18 @@ import de.hdm.ITProjekt.shared.bo.Profile;
  */
 public class Parbook implements EntryPoint {
 	
-	public IT_Projekt_Team6() {
+	public Parbook() {
 
 	}
 
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private static LoginInfo loginInfo = null;
-	private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an um Zugang zu NoteStar zu erhalten.");
+	private Label loginLabel = new Label("Bitte melde dich mit deinem Google Account an um Zugang zu Parbook zu erhalten.");
 	private Anchor signInLink = new Anchor("Einloggen");
 	private Button signOutLink = new Button("Abmelden");
-	public static User activeUser = new User();
+	public static Profile activeProfile = new Profile();
 
-	NotepadAdministrationAsync asyncNote = GWT.create(NotepadAdministration.class);
+	ParbookAdministrationAsync asyncNote = GWT.create(ParbookAdministration.class);
 
 	public static LoginInfo getLoggedInUser() {
 		return loginInfo;
@@ -61,7 +61,7 @@ public class Parbook implements EntryPoint {
 		loginService.login(GWT.getHostPageBaseURL(),
 				new AsyncCallback<LoginInfo>() {
 			public void onFailure(Throwable error) {
-				//						handleError(error);
+				// handleError(error);
 			}
 
 			public void onSuccess(LoginInfo result) {
@@ -82,7 +82,7 @@ public class Parbook implements EntryPoint {
 	private void loadLogin() {
 		// Assemble login panel.
 		signInLink.setHref(loginInfo.getLoginUrl());
-		Label welcomeLabel = new Label("Willkommen zu NoteStar");
+		Label welcomeLabel = new Label("Willkommen zu Parbook");
 		welcomeLabel.setStyleName("welcomeLabel");
 		loginPanel.add(welcomeLabel);
 		loginPanel.add(loginLabel);
@@ -92,13 +92,13 @@ public class Parbook implements EntryPoint {
 	}
 
 	/**
-	 * Mit dieser Methode checkIfUserExist wird in der Datenbank geprüft, ob ein Nutzer bereits existiert.
-	 * Sollte der Nutzer vorhanden sein wird die Methode loadMainPage aufgerufen, andernfalls die Methode
+	 * Mit dieser Methode checkIfUserExist wird in der Datenbank geprüft, ob ein Profil bereits existiert.
+	 * Sollte das Profil vorhanden sein wird die Methode loadMainPage aufgerufen, andernfalls die Methode
 	 * createUser um einen neuen Nutzer zu erstellen. 
 	 */
-	public void checkIfUserExist() {
+	public void checkIfProfileExist() {
 
-		asyncNote.findByEmail(loginInfo.getEmailAddress(), new AsyncCallback<User>() {
+		asyncNote.findByEmail(loginInfo.getEmailAddress(), new AsyncCallback<Profile>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -106,12 +106,12 @@ public class Parbook implements EntryPoint {
 			}
 
 			@Override
-			public void onSuccess(User result) {
+			public void onSuccess(Profile result) {
 
 				String s = Integer.toString(result.getId());
 				if(s == "0") {
 
-					// Ist der User in der Datenbank nicht vorhanden, wird das Formular zur Erstellung eines Accounts bei NoteStar aufgerufen
+					// Ist das Profil in der Datenbank nicht vorhanden, wird das Formular zur Erstellung eines Profils bei Parbook aufgerufen.
 					createUser();
 
 					// SignOut Button
@@ -126,24 +126,29 @@ public class Parbook implements EntryPoint {
 					});
 					RootPanel.get("footer").add(signOutLink);	
 				} else {
-					activeUser.setId(result.getId());
-					activeUser.setGoogleID(result.getGoogleID());
-					activeUser.setFirstname(result.getFirstname());
-					activeUser.setLastname(result.getLastname());
-					activeUser.setEmail(result.getEmail());
+					activeProfile.setId(result.getId());
+					activeProfile.setGoogleID(result.getGoogleID());
+					activeProfile.setFirstName(result.getFirstName());
+					activeProfile.setLastName(result.getLastName());
+					activeProfile.setEmail(result.getEmail());
 					loadMainPage();
 				}
+			}
+
+			public void onSuccess(Profile result) {
+				// TODO Auto-generated method stub
+				
 			}
 		});	
 	}
 	
 	/**
-	 * Ist ein User noch nicht in der Datenbank vorhanden. Wird mit der Methode <code>createUser</code>
-	 * der UserEditor zum Erstellen eines neuen Nutzers aufgerufen und in den DIV: content mittels
+	 * Ist ein Profil noch nicht in der Datenbank vorhanden. Wird mit der Methode <code>createProfile</code>
+	 * der ProfileEditor zum Erstellen eines neuen Profils aufgerufen und in den DIV: content mittels
 	 * RootPanel.get hinzugefügt.
 	 */
-	public void createUser() {	
-		VerticalPanel ese = new UserEditor().showCreateEditor();
+	public void createProfile() {	
+		VerticalPanel ese = new ProfileEditor().showCreateEditor();
 		RootPanel.get("content").add(ese);
 	}
 	
@@ -156,7 +161,7 @@ public class Parbook implements EntryPoint {
 		VerticalPanel headerPanel = new VerticalPanel();
 		HorizontalPanel headerPanelBtn = new HorizontalPanel();
 		headerPanel.setStyleName("headerPanel");
-		Label welcomeMsg = new Label("Willkommen zu NoteStar " + activeUser.getFirstname());
+		Label welcomeMsg = new Label("Willkommen zu Parbook " + activeProfile.getFirstName());
 		welcomeMsg.setStyleName("welcomeMsg");
 		Button editProfil = new Button();
 		editProfil.setText("Profil bearbeiten");
@@ -177,45 +182,15 @@ public class Parbook implements EntryPoint {
 		
 		
 		/**
-		 * Klickt man auf "Profil bearbeiten" erscheint eine DialogBox mit dem UserEditor.
+		 * Klickt man auf "Profil bearbeiten" erscheint eine DialogBox mit dem ProfileEditor.
 		 */
 		editProfil.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				DialogBox userEditor = new UserEditor().showEditor();
+				DialogBox userEditor = new ProfileEditor().showEditor();
 				userEditor.show();
 			}
 		});
-
-
-		// NotepadListe - Enthält Notizbücher und Notizen
-		NotepadList notepadList = new NotepadList();
-
-		/**
-		 * Klickt man auf den Button "Abmelden" wird der Nutzer von der Seite abgemeldet.
-		 */
-		signOutLink.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				Window.Location.assign(loginInfo.getLogoutUrl());
-				RootPanel.get("content").clear();
-				RootPanel.get("right-view").clear();
-				RootPanel.get("footer").clear();
-				loadLogin();
-			}
-		});
-
-
-		// Widgets zu den Panels hinzufügen
-		headerPanel.add(welcomeMsg);
-		headerPanelBtn.add(editProfil);
-		headerPanelBtn.add(signOutLink);
-		headerPanelBtn.add(impressumbtn);
-		headerPanel.add(headerPanelBtn);
-
-
-		//	     Add it to the root panel.
-		RootPanel.get("header").add(headerPanel);
-		RootPanel.get("controller").add(notepadList);
 	}
 }
