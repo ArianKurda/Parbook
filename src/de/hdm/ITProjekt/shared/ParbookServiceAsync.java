@@ -1,5 +1,6 @@
 package de.hdm.ITProjekt.shared;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -72,3 +73,8 @@ public interface ParbookServiceAsync {
 	void deleteBlocklist(Blocklist b, AsyncCallback<Void> callback);
 
 }
+=======
+public interface ParbookServiceAsync {
+
+}
+>>>>>>> refs/remotes/origin/arian
