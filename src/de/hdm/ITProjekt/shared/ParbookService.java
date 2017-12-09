@@ -1,5 +1,5 @@
 package de.hdm.ITProjekt.shared;
 
-public class ParbookAdministration {
+public class ParbookService {
 
 }
