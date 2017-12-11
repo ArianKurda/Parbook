@@ -2,8 +2,11 @@ package de.hdm.ITProjekt.server.db;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import de.hdm.ITProjekt.shared.bo.Profile;
+import de.hdm.thies.bankProjekt.server.db.DBConnection;
+import de.hdm.thies.bankProjekt.shared.bo.Customer;
 
 
 
@@ -139,7 +142,7 @@ public Profile insert(Profile p) {
     return p;
 
 }
-/** Profil �ndern**/
+/** Profil �ndern**/
 
 public Profile update(Profile p) {
 	Connection con = DBConnection.connection();
@@ -164,8 +167,40 @@ public void delete(Profile p) {
 	
 	try{
 		Statement stmt = con.createStatement()
-	}
+	
 }
+
+
+public Vector<Profile> findByLastName(String name) {
+	Connection con = DBConnection.connection();
+    Vector<Profile> result = new Vector<Profile>();
+
+    try {
+      Statement stmt = con.createStatement();
+
+      ResultSet rs = stmt.executeQuery("SELECT id, firstName, lastName "
+          + "FROM profiles " + "WHERE lastName LIKE '" + name
+          + "' ORDER BY lastName");
+
+      // Für jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
+      // erstellt.
+      while (rs.next()) {
+        Profile p = new Profile();
+        p.setId(rs.getInt("id"));
+        p.setFirstName(rs.getString("firstName"));
+        p.setLastName(rs.getString("lastName"));
+
+        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+        result.addElement(p);
+      }
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    // Ergebnisvektor zurückgeben
+    return result;
+  }
 }
 
 
