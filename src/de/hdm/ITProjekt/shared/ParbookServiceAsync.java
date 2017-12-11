@@ -18,23 +18,58 @@ public interface ParbookServiceAsync {
 	void init(AsyncCallback<Void> callback);
 	
 	//------Profil Methoden------
-	void createProfile(String firstname, String lastname, String email, Date birthdate,
-			String haircolor, double bodyheight, boolean smoker, String religion, boolean gender, AsyncCallback<Profile> callback);
-		
-	void editStandardProfileAttributes(Profile p, String firstName, String lastName, String email, String password, Date dob,
-				String hairColor, double bodyHeight, boolean smoker, String religion, boolean gender, AsyncCallback<Profile> callback);
-		
-	void editProfile(Profile p, AsyncCallback<Profile> callback);
-		
-	void deleteProfile(Profile p, AsyncCallback<Void> callback);
-		
-	void findProfileByName(String firstName, String lastName, AsyncCallback<ArrayList<Profile>> callback);
+	
+	void createProfile(String firstname, String lastname, String email, Date birthdate, String haircolor,
+			double bodyheight, boolean smoker, String religion, boolean gender, AsyncCallback<Profile> callback) throws IllegalArgumentException;
+	
+	/**
+	 * Methode, um ein bestehendes Profil zu löschen.
+	 */
+	void deleteProfile(Profile profile, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	
+	/**
+	 * Methode, um ein Profil zu speichern.
+	 */
+	void saveProfile(Profile profile, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	
+	/**
+	   * Auslesen aller Profile
+	   */
+	  void getAllProfiles(AsyncCallback<ArrayList<Profile>> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen eines Profils mit einer bestimmten Id
+	   */
+	  void getProfileById(int id, AsyncCallback<Profile> callback);
+
+	  /**
+	   * Auslesen eines Profils mit einer bestimmten E-Mail-Adresse
+	   */
+	  void getProfileByMail(String email, AsyncCallback<Profile> callback);
+
+	  void editStandardProfileAttributes(Profile p, String firstName, String lastName, String email,
+			String password, java.util.Date dob, String hairColor, double bodyHeight, boolean smoker, String religion,
+			boolean gender, AsyncCallback<Profile> callback);
 	
 	//-----Match-Methode, muss noch ausformuliert werden------
-	void findMatch(AsyncCallback<ArrayList<Profile>> callback);
+	  void findMatch(AsyncCallback<ArrayList<Profile>> callback);
+	
 	
 		//------Merkzettel Methoden------
+	/**
+	   * Erstellen eines Merkzettels für ein Profil
+	   */
 	void createNotepad(Profile a, Profile b, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Löschen einer Notiz für ein Profil.
+	   */
+	  void deleteNote(Profile remover, Profile remoter, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen des Merkzettels für ein Profil
+	   */
+	  void getNotepadForProfile(Profile profile, AsyncCallback<Notepad> callback) throws IllegalArgumentException;
 	
 		
 		//------Eigenschaft Methoden------

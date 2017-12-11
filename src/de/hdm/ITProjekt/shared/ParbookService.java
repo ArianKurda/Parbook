@@ -7,6 +7,7 @@ import java.util.Vector;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import de.hdm.ITProjekt.client.ClientsideSettings;
 import de.hdm.ITProjekt.shared.bo.Blocklist;
 import de.hdm.ITProjekt.shared.bo.Characteristic;
 import de.hdm.ITProjekt.shared.bo.Description;
@@ -21,23 +22,59 @@ public interface ParbookService extends RemoteService {
 	public void init() throws IllegalArgumentException;
 	
 	//------Profil Methoden------
-	Profile createProfile(String firstname, String lastname, String email, Date birthdate, String haircolor,
+	
+	public Profile createProfile(String firstname, String lastname, String email, Date birthdate, String haircolor,
 			double bodyheight, boolean smoker, String religion, boolean gender) throws IllegalArgumentException;
 	
-	public Profile editStandardProfileAttributes(Profile p, String firstName, String lastName, String email, String password, Date dob,
-			String hairColor, double bodyHeight, boolean smoker, String religion, boolean gender);
+	/**
+	 * Methode, um ein bestehendes Profil zu löschen.
+	 */
+	public void deleteProfile(Profile profile) throws IllegalArgumentException;
 	
-	public Profile editProfile(Profile p);
+	/**
+	 * Methode, um ein Profil zu speichern.
+	 */
+	public void saveProfile(Profile profile) throws IllegalArgumentException;
 	
-	public void deleteProfile(Profile p);
-	
-	public ArrayList<Profile> findProfileByName(String firstName, String lastName);
+	/**
+	   * Auslesen aller Profile
+	   */
+	  public ArrayList<Profile> getAllProfiles() throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen eines Profils mit einer bestimmten Id
+	   */
+	  public Profile getProfileById(int id);
+
+	  /**
+	   * Auslesen eines Profils mit einer bestimmten E-Mail-Adresse
+	   */
+	  public Profile getProfileByMail(String email);
+
+	public Profile editStandardProfileAttributes(Profile p, String firstName, String lastName, String email,
+			String password, java.util.Date dob, String hairColor, double bodyHeight, boolean smoker, String religion,
+			boolean gender);
 	
 	//-----Match-Methode, muss noch ausformuliert werden------
 	public ArrayList<Profile> findMatch();
 	
 	//------Merkzettel Methoden------
+	
+	/**
+	   * Erstellen eines Merkzettels für ein Profil
+	   */
 	public void createNotepad(Profile a, Profile b) throws IllegalArgumentException;
+
+	  /**
+	   * Löschen einer Notiz für ein Profil.
+	   */
+	  public void deleteNote(Profile remover, Profile remoter) throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen des Merkzettels für ein Profil
+	   */
+	  public Notepad getNotepadForProfile(Profile profile) throws IllegalArgumentException;
+	  
 	
 	//------Eigenschaft-Methoden------
 	

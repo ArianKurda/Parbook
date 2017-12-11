@@ -81,12 +81,10 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 
 	}
 	
-	//------Login-Methoden------
-	
-	  @Override
+	//------Login Methoden------
 	  public Profile login(String requestUri) {
-	    // seed();
-//	    addInfosToUsers();
+
+	// addInfosToUsers();
 	    UserService userService = UserServiceFactory.getUserService();
 	    User user = userService.getCurrentUser();
 
@@ -206,7 +204,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		    Notepad n = notepadMapper.findAllForProfile(a);
 		    ArrayList<Profile> profile = n.getNoticedProfiles();
 		    if (!profile.contains(b)) {
-		      notepadMapper.insertNotepadForProfile(a, b);
+		      notepadMapper.insertProfileNotepad(a, b);
 		    }
 
 		  }
@@ -214,14 +212,15 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		  /**
 		   * Löschen einer Notiz für ein Profil.
 		   */
+		  @Override
 		  public void deleteNote(Profile remover, Profile remoter) throws IllegalArgumentException {
-		    notepadMapper.deleteNoteForProfile(remover, remoter);
+		    notepadMapper.deleteProfileNote(remover, remoter);
 		  }
 
 		  /**
 		   * Auslesen des Merkzettels für ein Profil
 		   */
-		  public Notepad getNotepadForProfile(Profile profile) throws IllegalArgumentException {
+		  public Notepad getProfileNotepad(Profile profile) throws IllegalArgumentException {
 
 		    Notepad n = notepadMapper.findAllForProfile(profile);
 		    Kontaktsperre k = kMapper.findAllForProfile(profile);
