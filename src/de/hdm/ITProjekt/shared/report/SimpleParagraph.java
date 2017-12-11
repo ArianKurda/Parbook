@@ -18,8 +18,9 @@ public class SimpleParagraph extends Paragraph implements Serializable {
 
 /**
  * NO-Argument-Konstruktor von SimpleParagraph
+ * @param b 
  */
-  public SimpleParagraph() {
+  public SimpleParagraph(boolean b) {
 	  
   }
 

@@ -23,4 +23,9 @@ public class ProfileReport extends SimpleReport implements Serializable {
     this.profileId = profileId;
   }
 
+public void addRow(Row infoRow) {
+	// TODO Auto-generated method stub
+	
+}
+
 }

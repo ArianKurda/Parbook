@@ -2,6 +2,8 @@ package de.hdm.ITProjekt.shared.report;
 
 import java.util.Vector;
 
+import com.ibm.icu.impl.Row;
+
 /**
  * Ein einfacher Report, der neben den Informationen der Superklasse
  * Report eine Tabelle mit "Attributen" aufweist. Die Tabelle greift auf zwei
