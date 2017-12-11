@@ -1,6 +1,5 @@
 package de.hdm.ITProjekt.shared;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,13 +18,13 @@ public interface ParbookServiceAsync {
 	void init(AsyncCallback<Void> callback);
 	
 	//------Profil Methoden------
-	void createProfile(String firstName, String lastName, String email, String password, AsyncCallback<Profile> callback);
+	void createProfile(String firstname, String lastname, String email, Date birthdate,
+			String haircolor, double bodyheight, boolean smoker, String religion, boolean gender, AsyncCallback<Profile> callback);
 		
 	void editStandardProfileAttributes(Profile p, String firstName, String lastName, String email, String password, Date dob,
 				String hairColor, double bodyHeight, boolean smoker, String religion, boolean gender, AsyncCallback<Profile> callback);
 		
-	void editProfile(Profile p, String firstName, String lastName, String email, String password, Date dob,
-				String hairColor, double bodyHeight, boolean smoker, String religion, boolean gender, AsyncCallback<Profile> callback);
+	void editProfile(Profile p, AsyncCallback<Profile> callback);
 		
 	void deleteProfile(Profile p, AsyncCallback<Void> callback);
 		
@@ -35,46 +34,137 @@ public interface ParbookServiceAsync {
 	void findMatch(AsyncCallback<ArrayList<Profile>> callback);
 	
 		//------Merkzettel Methoden------
-	void createNotepad(AsyncCallback<Notepad> callback);
-		
-	void editNotepad(Notepad n, String text, AsyncCallback<Void> callback);
-		
-	void addProfileToNotepad(Profile p, AsyncCallback<Notepad> callback);
-		
-	void deleteProfileFromNotepad(Notepad n, Profile p, AsyncCallback<Void> callback);
-		
-	void findNotepadByProfileID(int profileId, AsyncCallback<ArrayList<Notepad>> callback);
+	void createNotepad(Profile a, Profile b, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	
 		
 		//------Eigenschaft Methoden------
-	void createCharacteristic(String text, AsyncCallback<Characteristic> callback);
-		
-	void deleteCharacteristic(Characteristic c, AsyncCallback<Void> callback);
-		
-	void createDescription(String text, AsyncCallback<Description> callback);
-	void deleteDescription(Description description, AsyncCallback<Void> callback);
-		
-	void createSelection(String text, AsyncCallback<Selection> callback);
-	void deleteSelection(Selection selection, AsyncCallback<Void> callback);
-		
+	void getAllSelection(AsyncCallback<ArrayList<Selection>> callback) throws IllegalArgumentException;
+	
+	  /**
+	   * Auslesen der Auswahl mit einer bestimmten Id
+	   */
+	void getSelectionById(int id, AsyncCallback<Selection> callback) throws IllegalArgumentException;
+	
+	/**
+	   * Auslesen der Auswahl von Profilattributen mit einem bestimmten Namen
+	   */
+	  void getSelectionProfileAttributeByName(String name, AsyncCallback<Selection> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Löschen eines Auswahl-Objekts
+	   */
+	  void delete(Selection selection, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Speichern eines Auswahl-Objekts
+	   */
+	  void save(Selection selection, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Erstellen der Auswahl-Objekte
+	   */
+	  void createSelection(String name, String descriptiontext,
+	      ArrayList<String> alternatives, AsyncCallback<Selection> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen der Auswahl-Objekte eines Profilattributs
+	   */
+	  void getAllSelectionProfileAttributes(AsyncCallback<ArrayList<Selection>> callback);
+
+	  /**
+	   * Auslesen der Beschreibungs-Objekte von Profilattributen mit einem bestimmten Namen
+	   */
+	  void getDescriptionProfileAttributesByName(String name, AsyncCallback<Description> callback)
+	      throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen der Beschreibung mit einer bestimmten Id
+	   */
+	  void getDescriptionById(int id, AsyncCallback<Description> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen aller Beschreibungs-Objekte
+	   */
+	  void getAllDescription(AsyncCallback<ArrayList<Description>> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Löschen eines Beschreibungs-Objekt
+	   */
+
+	  void delete(Description description, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Speichern eines Beschreibungs-Objekt
+	   */
+	  void save(Description description, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	  
+	  /**
+	   * Erstellen eines Beschreibungs-Objekt
+	   */
+
+	  void createDescription(String name, String descriptiontext, AsyncCallback<Description> callback)
+	      throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen aller Beschreibungs-Objekte eines Profils
+	   */
+
+	  void getAllDescriptionProfileAttributes(AsyncCallback<ArrayList<Description>> callback);
+	  
 		//------Info Methoden------
-	void createInfo(String text, AsyncCallback<Info> callback);
-		
-	void addCharacteristicToInfo(Characteristic c, AsyncCallback<Info> callback);
-	void addDescriptionToInfo(Description description, AsyncCallback<Info> callback);
-	void addSelectionToInfo(Selection selection, AsyncCallback<Info> callback);
-		
-	void deleteInfo(Info i, AsyncCallback<Void> callback);
-		
-		//------Sperrliste Methoden------
-	void createBlocklist(Blocklist b, AsyncCallback<Blocklist> callback);
-		
-	void addProfileToBlocklist(Profile p, AsyncCallback<Blocklist> callback);
-		
-	void deleteBlocklist(Blocklist b, AsyncCallback<Void> callback);
+	  
+	  /**
+	   * Erstellen von Info-Objekte für ein Profil mit vorgegebener Auswahl
+	   */
+	  void createInfoFor(Profile profile, Selection selection, String text, AsyncCallback<Info> callback)
+	      throws IllegalArgumentException;
+
+	  /**
+	   * Erstellen von Info-Objekten für ein Profil mit Freitext
+	   */
+	  void createInfoFor(Profile profile, Description description, String text, AsyncCallback<Info> callback)
+	      throws IllegalArgumentException;
+
+	  /**
+	   * Speichern von Info-Objekten
+	   */
+	  void save(Info info, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	  
+	  /**
+	   * Löschen von Info-Objekten
+	   */
+	  void delete(Info info, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen von Info-Objekten eines Profils
+	   */
+	  void getInfoByProfile(Profile profile, AsyncCallback<ArrayList<Info>> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen von Info-Objekten mit einer bestimmten Eigenschafts-Id
+	   */
+	  void getInfoByCharacteristicID(int id, AsyncCallback<Info> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen eines Infoobjekts über seine ID
+	   */
+	  void getInfoById(int id, AsyncCallback<Info> callback) throws IllegalArgumentException;
+	
+	  //------Sperrliste-Methoden------
+	  
+	  /**
+	   * Erstellen einer Kontaktsperre
+	   */
+	  void createLock(Profile a, Profile b, AsyncCallback<Void> callback) throws IllegalArgumentException;
+
+	  /**
+	   * Löschen einer Kontaktsperre
+	   */
+	  void deleteLock(Profile remover, Profile remoter, AsyncCallback<Void> callback);
+
+	  /**
+	   * Auslesen der gesamten gesperrten Profile eines Profils
+	   */
+	  void getBlocklistForProfile(Profile profile, AsyncCallback<Blocklist> callback) throws IllegalArgumentException;
 
 }
-=======
-public interface ParbookServiceAsync {
-
-}
->>>>>>> refs/remotes/origin/arian
