@@ -28,6 +28,21 @@ public class Profile extends BusinessObject {
 	private String religion = "";
 	
 	private boolean gender = true;  /* true = maennlich , false = weiblich*/
+
+
+	private boolean loggedIn;
+
+
+	private int match;
+
+
+	private String loginUrl;
+
+
+	private String logoutUrl;
+
+
+	private boolean isCreated;
 	
 
 	public static final boolean raucher = true;
@@ -133,7 +148,7 @@ public class Profile extends BusinessObject {
      */
 	
 	public boolean isCreated() {
-		return isCreated;
+		return isCreated();
 	}
 
 	 /**
@@ -164,5 +179,59 @@ public class Profile extends BusinessObject {
 	  public void setMatch(int match) {
 	    this.match = match;
 	}
+	  
+	  /**
+	   * Überprüfen ob User eingeloggt ist
+	   *
+	   * @return loggedIn Wert ob User eingeloggt ist
+	   */
+	  public boolean isLoggedIn() {
+	    return loggedIn;
+	  }
+
+	  /**
+	   * Setzen des Parameters loggedIn
+	   *
+	   * @param loggedIn
+	   */
+	  public void setLoggedIn(boolean loggedIn) {
+	    this.loggedIn = loggedIn;
+	  }
+
+	  /**
+	   * Auslesen des Logins
+	   *
+	   * @return loginUrl Wert mit welcher ID User eingeloggt ist
+	   */
+	  public String getLoginUrl() {
+	    return getLoginUrl();
+	  }
+
+	  /**
+	   * Setzen des Logins
+	   *
+	   * @param loginUrl
+	   */
+	  public void setLoginUrl(String loginUrl) {
+	    this.loginUrl = loginUrl;
+	  }
+
+	  /**
+	   * Auslesen des Logouts
+	   *
+	   * @return logoutUrl
+	   */
+	  public String getLogoutUrl() {
+	    return getLogoutUrl();
+	  }
+
+	  /**
+	   * Setzen des Logouts
+	   *
+	   * @param logoutUrl
+	   */
+	  public void setLogoutUrl(String logoutUrl) {
+	    this.logoutUrl = logoutUrl;
+	  }
 		
 }
