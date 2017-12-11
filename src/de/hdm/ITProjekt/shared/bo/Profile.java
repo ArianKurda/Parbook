@@ -7,9 +7,9 @@ public class Profile extends BusinessObject {
 	private static final long serialVersionUID = 1L;
 	
 
-	private String firstName = "";
+	private String firstname = "";
 	
-	private String lastName = "";
+	private String lastname = "";
 	
 	private String email = "";
 	
@@ -17,11 +17,11 @@ public class Profile extends BusinessObject {
 	
 	private int googleID;
 	
-	private Date dob; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
+	private Date birthdate; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
 	
-	private String hairColor = "";
+	private String haircolor = "";
 	
-	private double bodyHeight;
+	private double bodyheight;
 	
 	private boolean smoker = true; /* true = raucher , false = nichtraucher*/
 	
@@ -38,37 +38,37 @@ public class Profile extends BusinessObject {
 	
 	
 	public String getFirstName() {
-		return this.firstName;	
+		return this.firstname;	
 	}
 	
 	public void setFirstName(String name) {
-		this.firstName = name;
+		this.firstname = name;
 	}
 	
 	public String getLastName() {
-		return this.lastName;
+		return this.lastname;
 	}
 	
 	public void setLastName (String name) {
-		this.lastName = name;
+		this.lastname = name;
 	}
 	
 	/* geburtsdatum*/
 	
 	public String getHairColor() {
-		return this.hairColor;
+		return this.haircolor;
 	}
 	
 	public void setHairColor (String haarfarbe) {
-		this.hairColor = haarfarbe;
+		this.haircolor = haarfarbe;
 	}
 	
 	public double getBodyHeight() {
-		return this.bodyHeight;
+		return this.bodyheight;
 	}
 	
 	public void setBodyHeight (double bodyheight ){
-		this.bodyHeight = bodyheight ;
+		this.bodyheight = bodyheight ;
 	}
 	
 	public boolean Smoker() {
@@ -123,8 +123,8 @@ public class Profile extends BusinessObject {
 	}
 	
 	
-	public void setDateOfBirth(Date newDoB){
-		dob = newDoB;
+	public void setDateOfBirth(Date newBirthdate){
+		birthdate = newBirthdate;
 	}
 
 	public void setOwnerID(int int1) {
