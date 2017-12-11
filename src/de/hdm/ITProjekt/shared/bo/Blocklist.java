@@ -52,6 +52,11 @@ public class Blocklist extends BusinessObject {
 		this.blocklist.add(blocker);	
 		}
 
+	public ArrayList<Profile> getBlockedProfiles() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 	

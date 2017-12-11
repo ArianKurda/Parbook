@@ -323,4 +323,19 @@ public class BlocklistMapper {
     return ProfileMapper.profileMapper().findByKey(b.getOwnerID());
   }
 
+public void insertForProfile(Profile a, Profile b) {
+	// TODO Auto-generated method stub
+	
+}
+
+public void deleteLockFor(Profile remover, Profile remoter) {
+	// TODO Auto-generated method stub
+	
+}
+
+public Blocklist findAllForProfile(Profile profile) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 }
