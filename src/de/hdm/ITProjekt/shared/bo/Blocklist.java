@@ -57,6 +57,16 @@ public class Blocklist extends BusinessObject {
 		return null;
 	}
 
+	public int getOwnerID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setOwnerId(int int1) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 	

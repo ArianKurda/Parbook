@@ -83,8 +83,8 @@ public class BlocklistMapper {
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
     	Blocklist b = new Blocklist();
-        b.setID(rs.getInt("id"));
-        b.setOwnerID(rs.getInt("owner"));
+        b.setId(rs.getInt("id"));
+        b.setOwnerId(rs.getInt("owner"));
         return b;
       }
     }
@@ -119,8 +119,8 @@ public class BlocklistMapper {
       // Für jeden Eintrag im Suchergebnis wird nun ein Sperrlisten-Objekt erstellt.
       while (rs.next()) {
     	  Blocklist b = new Blocklist();
-        b.setID(rs.getInt("id"));
-        b.setOwnerID(rs.getInt("owner"));
+        b.setId(rs.getInt("id"));
+        b.setOwnerId(rs.getInt("owner"));
 
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(b);
@@ -157,8 +157,8 @@ public class BlocklistMapper {
       // Für jeden Eintrag im Suchergebnis wird nun ein Sperrlisten-Objekt erstellt.
       while (rs.next()) {
     	  Blocklist b = new Blocklist();
-        b.setID(rs.getInt("id"));
-        b.setOwnerID(rs.getInt("owner"));
+        b.setId(rs.getInt("id"));
+        b.setOwnerId(rs.getInt("owner"));
 
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(b);
@@ -186,7 +186,7 @@ public class BlocklistMapper {
      * Wir lesen einfach die Profilnummer (Primärschlüssel) des Profil-Objekts
      * aus und delegieren die weitere Bearbeitung an findByOwner(int ownerID).
      */
-    return findByOwner(owner.getID());
+    return findByOwner(owner.getId());
   }
 
   /**
@@ -217,13 +217,13 @@ public class BlocklistMapper {
          * b erhält den bisher maximalen, nun um 1 inkrementierten
          * Primärschlüssel.
          */
-        b.setID(rs.getInt("maxid") + 1);
+        b.setId(rs.getInt("maxid") + 1);
 
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
         stmt.executeUpdate("INSERT INTO blocklists (id, owner) " + "VALUES ("
-            + b.getID() + "," + b.getOwnerID() + ")");
+            + b.getId() + "," + b.getOwnerID() + ")");
       }
     }
     catch (SQLException e2) {
@@ -255,7 +255,7 @@ public class BlocklistMapper {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE blocklists " + "SET owner=\"" + b.getOwnerID()
-          + "\" " + "WHERE id=" + b.getID());
+          + "\" " + "WHERE id=" + b.getId());
 
     }
     catch (SQLException e2) {
@@ -277,7 +277,7 @@ public class BlocklistMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM blocklists " + "WHERE id=" + b.getID());
+      stmt.executeUpdate("DELETE FROM blocklists " + "WHERE id=" + b.getId());
 
     }
     catch (SQLException e2) {
@@ -298,7 +298,7 @@ public class BlocklistMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM blocklists " + "WHERE owner=" + p.getID());
+      stmt.executeUpdate("DELETE FROM blocklists " + "WHERE owner=" + p.getId());
 
     }
     catch (SQLException e2) {
