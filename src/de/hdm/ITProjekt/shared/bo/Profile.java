@@ -29,18 +29,13 @@ public class Profile extends BusinessObject {
 	
 	private boolean gender = true;  /* true = maennlich , false = weiblich*/
 
-
 	private boolean loggedIn;
-
 
 	private int match;
 
-
 	private String loginUrl;
 
-
 	private String logoutUrl;
-
 
 	private boolean isCreated;
 	
@@ -49,8 +44,6 @@ public class Profile extends BusinessObject {
 	public static final boolean nichtraucher = false;
 	public static final boolean maennlich = true;
 	public static final boolean weiblich = false;
-
-	
 	
 	public String getFirstName() {
 		return this.firstname;	
@@ -86,14 +79,13 @@ public class Profile extends BusinessObject {
 		this.bodyheight = bodyheight ;
 	}
 	
-	public boolean Smoker() {
+	public boolean isSmoker() {
 		return this.smoker;
 	}
 	
 	public void setSmoker(boolean smoker){
 		this.smoker = raucher;
 	}
-
 	
 	public String getReligion() { 
 		return this.religion;
@@ -102,7 +94,6 @@ public class Profile extends BusinessObject {
 	public void setReligion (String religion) {
 		this.religion = religion;
 	}
-	
 	
 	public String getEmail() {
 		return this.email;
@@ -127,9 +118,8 @@ public class Profile extends BusinessObject {
 	public void setGoogleID(int googleID) {
 		this.googleID = googleID;
 	}
-	
 
-	public boolean gender(){
+	public boolean isGender(){
 		return this.gender;	
 	}
 	
@@ -232,6 +222,5 @@ public class Profile extends BusinessObject {
 	   */
 	  public void setLogoutUrl(String logoutUrl) {
 	    this.logoutUrl = logoutUrl;
-	  }
-		
+	  }	
 }
