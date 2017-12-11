@@ -126,15 +126,43 @@ public class Profile extends BusinessObject {
 	public void setDateOfBirth(Date newBirthdate){
 		birthdate = newBirthdate;
 	}
-
-	public void setOwnerID(int int1) {
-		// TODO Auto-generated method stub
-		
+	
+	/** Überprüfung, ob Profil angelegt wurde
+     *
+     * @return isCreated
+     */
+	
+	public boolean isCreated() {
+		return isCreated;
 	}
 
-	public String getOwnerID() {
-		// TODO Auto-generated method stub
-		return null;
+	 /**
+	   * Setzen des Parameters isCreated
+	   *
+	   * @param isCreated
+	   */
+	
+	public void setCreated(boolean isCreated) {
+		this.isCreated = isCreated;
+		
+	}
+	
+	/**
+	   * Auslesen der Ähnlichkeit zu einem anderen Profil
+	   *
+	   * @return match
+	   */
+	public int getMatch() {
+		return match;
+	}
+	
+	/**
+	   * Setzen des Parameter Match
+	   *
+	   * @param match
+	   */
+	  public void setMatch(int match) {
+	    this.match = match;
 	}
 		
 }

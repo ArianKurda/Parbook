@@ -71,6 +71,53 @@ public class ProfileMapper {
 
     return null;
   }
+  
+  /**
+   * Suchen eines Profils anhand der E-Mail-Adresse
+   *
+   * @param email
+   *
+   * @return Profile p
+   */
+  public Profile findByEmail(String email) {
+    // DB-Verbindung holen
+    Connection con = DBConnection.connection();
+
+    try {
+      // Leeres SQL-Statement (JDBC) anlegen
+      Statement stmt = con.createStatement();
+
+      // Statement ausfüllen und als Query an die DB schicken
+      ResultSet rs = stmt.executeQuery(
+          "SELECT id, Firstname, Lastname, Email, DateOfBirth, HairColor, "
+              + "BodyHeight, Smoker, Religion, Gender FROM Profile " + "WHERE Email LIKE '"
+              + email + "'");
+
+      if (rs.next()) {
+        // Ergebnis-Tupel in Objekt umwandeln
+        Profile p = new Profile();
+        p.setId(rs.getInt("id"));
+        p.setFirstName(rs.getString("Vorname"));
+        p.setLastName(rs.getString("Nachname"));
+        p.setEmail(rs.getString("Email"));
+        p.setDateOfBirth(rs.getDate("Geburtsdatum"));
+        p.setHairColor(rs.getString("Haarfarbe"));
+        p.setBodyHeight(rs.getInt("Koerpergroesse"));
+        p.setSmoker(rs.getBoolean("Raucher"));
+        p.setReligion(rs.getString("Religion"));
+        p.setGender(rs.getBoolean("Geschlecht"));
+        p.setCreated(true);
+
+        return p;
+      }
+    } catch (SQLException e) {
+      //
+      ClientsideSettings.getLogger().severe("Fehler beim Zurückgbeen byEmail");
+      return null;
+    }
+
+    return null;
+  }
 
   /** Ausgabe aller Profile**/
   
