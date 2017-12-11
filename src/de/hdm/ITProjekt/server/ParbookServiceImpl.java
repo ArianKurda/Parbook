@@ -13,6 +13,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import de.hdm.ITProjekt.client.ClientsideSettings;
 import de.hdm.ITProjekt.server.db.*;
 import de.hdm.ITProjekt.shared.ParbookService;
+import de.hdm.ITProjekt.shared.ParbookServiceAsync;
 import de.hdm.ITProjekt.shared.bo.*;
 
 /**
@@ -82,6 +83,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	}
 	
 	//------Login Methoden------
+	@Override
 	  public Profile login(String requestUri) {
 
 	// addInfosToUsers();
@@ -198,36 +200,37 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		//------Merkzettel Methoden------
 		
 		/**
-		   * Erstellen eines Merkzettels für ein Profil
-		   */
-		public void createNotepad(Profile a, Profile b) throws IllegalArgumentException {
-		    Notepad n = notepadMapper.findAllForProfile(a);
-		    ArrayList<Profile> profile = n.getNoticedProfiles();
-		    if (!profile.contains(b)) {
-		      notepadMapper.insertProfileNotepad(a, b);
-		    }
+		 * Erstellen eines Merkzettels für ein Profil
+		 */
+	public Notepad createNotepad(Profile a, Profile b) throws IllegalArgumentException {
+		Notepad n = notepadMapper.findAllForProfile(a);
+		ArrayList<Profile> profile = n.getNoticedProfiles();
+		if (!profile.contains(b)) {
+			notepadMapper.insertProfileNotepad(a, b);
+			}
+		}
 
-		  }
-
-		  /**
-		   * Löschen einer Notiz für ein Profil.
-		   */
+		/**
+		 * Löschen einer Notiz für ein Profil.
+		 */
 		  @Override
-		  public void deleteNote(Profile remover, Profile remoter) throws IllegalArgumentException {
-		    notepadMapper.deleteProfileNote(remover, remoter);
+	public void deleteNote(Profile remover, Profile remoter) throws IllegalArgumentException {
+		notepadMapper.deleteProfileNote(remover, remoter);
+		    
 		  }
 
 		  /**
 		   * Auslesen des Merkzettels für ein Profil
 		   */
-		  public Notepad getProfileNotepad(Profile profile) throws IllegalArgumentException {
+		  @Override
+		  public Notepad getNotepadForProfile(Profile profile) throws IllegalArgumentException {
 
 		    Notepad n = notepadMapper.findAllForProfile(profile);
 		    Kontaktsperre k = kMapper.findAllForProfile(profile);
 		    ArrayList<Profil>nList = n.getNoticedProfiles();
 		    ArrayList<Profil> bList = b.getBlockedProfiles();
 
-		    for (Profiel p : bList) {
+		    for (Profile p : bList) {
 		      if (nList.contains(p)) {
 		        nList.remove(p);
 		      }
@@ -356,14 +359,12 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	   * Löschen eines Beschreibungs-Objekt
 	   */
 	  public void delete(Description description) throws IllegalArgumentException {
-	    // TODO Auto-generated method stub
 	  }
 
 	  /**
 	   * Speichern eines Beschreibungs-Objekt
 	   */
 	  public void save(Description description) throws IllegalArgumentException {
-	    // TODO Auto-generated method stub
 
 	  }
 
@@ -372,7 +373,6 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	   */
 	  public Description createDescription(String name, String descriptiontext)
 	      throws IllegalArgumentException {
-	    // TODO Auto-generated method stub
 	    return null;
 	  }
 
@@ -468,7 +468,6 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  /**
 	   * Auslesen von Info-Objekten eines Profils
 	   */
-
 	  @Override
 	  public ArrayList<Info> getInfoByProfile(Profile profile) throws IllegalArgumentException {
 	    return infoMapper.findAllByProfileID(profile.getId());
@@ -505,7 +504,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  /**
 	   * Löschen einer Kontaktsperre
 	   */
-	  public void deleteLock(Profile remover, Profile remoter) {
+	  public void deleteLock(Profile remover, Profile remoter) throws IllegalArgumentException {
 	    blocklistMapper.deleteLockFor(remover, remoter);
 	  }
 
@@ -517,6 +516,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	    ArrayList<Profile> bList = b.getBlockedProfiles();
 
 	    return b;
-	  }
+		
+	}
 
 }

@@ -17,6 +17,10 @@ public interface ParbookServiceAsync {
 	
 	void init(AsyncCallback<Void> callback);
 	
+	//------Login Methoden------
+	
+	  void login(String requestUri, AsyncCallback<Profile> callback);
+	
 		//------Profil Methoden------
 	
 	void createProfile(String firstname, String lastname, String email, Date birthdate, String haircolor,
@@ -76,7 +80,7 @@ public interface ParbookServiceAsync {
 	/**
 	 * Erstellen eines Merkzettels für ein Profil
 	 */
-	  void createNotepad(Profile a, Profile b, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	  void createNotepad(Profile a, Profile b, AsyncCallback<Notepad> callback) throws IllegalArgumentException;
 
 	/**
 	 * Löschen einer Notiz für ein Profil.

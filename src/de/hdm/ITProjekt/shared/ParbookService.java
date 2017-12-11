@@ -21,6 +21,10 @@ public interface ParbookService extends RemoteService {
 	
 	public void init() throws IllegalArgumentException;
 	
+	//------Login Methoden------
+	
+	  public Profile login(String requestUri);
+	
 		//------Profil Methoden------
 	
 	public Profile createProfile(String firstname, String lastname, String email, Date birthdate, String haircolor,
@@ -63,7 +67,7 @@ public interface ParbookService extends RemoteService {
 	/**
 	 * Erstellen eines Merkzettels für ein Profil
 	 */
-	public void createNotepad(Profile a, Profile b) throws IllegalArgumentException;
+	public Notepad createNotepad(Profile a, Profile b) throws IllegalArgumentException;
 
 	/**
 	 * Löschen einer Notiz für ein Profil.
