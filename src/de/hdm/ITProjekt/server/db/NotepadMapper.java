@@ -3,6 +3,7 @@ package de.hdm.ITProjekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
+import de.hdm.ITProjekt.shared.bo.Notepad;
 import de.hdm.ITProjekt.shared.bo.Notepad2;
 import de.hdm.ITProjekt.shared.bo.Profile;
 
@@ -64,7 +65,7 @@ public class NotepadMapper {
    * @return Merkzettel-Objekt, das dem übergebenen Schlüssel entspricht, null bei
    *         nicht vorhandenem DB-Tupel.
    */
-  public Notepad2 findByKey(int id) {
+  public Notepad findByKey(int id) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 
@@ -82,9 +83,9 @@ public class NotepadMapper {
        */
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
-        Notepad2 n = new Notepad2();
-        n.setID(rs.getInt("id"));
-        n.setOwnerID(rs.getInt("owner"));
+        Notepad n = new Notepad();
+        n.setId(rs.getInt("id"));
+        n.setOwnerId(rs.getInt("owner"));
         return n;
       }
     }
@@ -103,11 +104,11 @@ public class NotepadMapper {
    *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public Vector<Notepad2> findAll() {
+  public Vector<Notepad> findAll() {
     Connection con = DBConnection.connection();
 
     // Ergebnisvektor vorbereiten
-    Vector<Notepad2> result = new Vector<Notepad2>();
+    Vector<Notepad> result = new Vector<Notepad>();
 
     try {
       Statement stmt = con.createStatement();
@@ -117,9 +118,9 @@ public class NotepadMapper {
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Merkzettel-Objekt erstellt.
       while (rs.next()) {
-    	  Notepad2 n = new Notepad2();
-        n.setID(rs.getInt("id"));
-        n.setOwnerID(rs.getInt("owner"));
+    	  Notepad n = new Notepad();
+        n.setId(rs.getInt("id"));
+        n.setOwnerId(rs.getInt("owner"));
 
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(n);
@@ -143,9 +144,9 @@ public class NotepadMapper {
    *         betreffenden Profils repräsentiert. Bei evtl. Exceptions wird ein
    *         partiell gefüllter oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public Vector<Notepad2> findByOwner(int ownerID) {
+  public Vector<Notepad> findByOwner(int ownerID) {
     Connection con = DBConnection.connection();
-    Vector<Notepad2> result = new Vector<Notepad2>();
+    Vector<Notepad> result = new Vector<Notepad>();
 
     try {
       Statement stmt = con.createStatement();
@@ -155,9 +156,9 @@ public class NotepadMapper {
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Merkzettel-Objekt erstellt.
       while (rs.next()) {
-    	  Notepad2 n = new Notepad2();
-        n.setID(rs.getInt("id"));
-        n.setOwnerID(rs.getInt("owner"));
+    	  Notepad n = new Notepad();
+        n.setId(rs.getInt("id"));
+        n.setOwnerId(rs.getInt("owner"));
 
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(n);
@@ -179,13 +180,13 @@ public class NotepadMapper {
    * @param owner Profilobjekt, dessen Merkzettel wir auslesen möchten.
    * @return Merkzettel des Profils
    */
-  public Vector<Notepad2> findByOwner(Profile owner) {
+  public Vector<Notepad> findByOwner(Profile owner) {
 
     /*
      * Wir lesen einfach die Profilnummer (Primärschlüssel) des Profil-Objekts
      * aus und delegieren die weitere Bearbeitung an findByOwner(int ownerID).
      */
-    return findByOwner(owner.getID());
+    return findByOwner(owner.getId());
   }
 
   /**
@@ -197,7 +198,7 @@ public class NotepadMapper {
    * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
    *         <code>id</code>.
    */
-  public Notepad2 insert(Notepad2 n) {
+  public Notepad insert(Notepad n) {
     Connection con = DBConnection.connection();
 
     try {
@@ -216,13 +217,13 @@ public class NotepadMapper {
          * p erhält den bisher maximalen, nun um 1 inkrementierten
          * Primärschlüssel.
          */
-        n.setID(rs.getInt("maxid") + 1);
+        n.setId(rs.getInt("maxid") + 1);
 
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
         stmt.executeUpdate("INSERT INTO accounts (id, owner) " + "VALUES ("
-            + n.getID() + "," + n.getOwnerID() + ")");
+            + n.getId() + "," + n.getOwnerId() + ")");
       }
     }
     catch (SQLException e2) {
@@ -244,24 +245,24 @@ public class NotepadMapper {
   /**
    * Wiederholtes Schreiben eines Objekts in die Datenbank.
    * 
-   * @param p das Objekt, das in die DB geschrieben werden soll
+   * @param n das Objekt, das in die DB geschrieben werden soll
    * @return das als Parameter übergebene Objekt
    */
-  public Notepad2 update(Notepad2 n) {
+  public Notepad update(Notepad n) {
     Connection con = DBConnection.connection();
 
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE notepads " + "SET owner=\"" + n.getOwnerID()
-          + "\" " + "WHERE id=" + n.getID());
+      stmt.executeUpdate("UPDATE notepads " + "SET owner=\"" + n.getOwnerId()
+          + "\" " + "WHERE id=" + n.getId());
 
     }
     catch (SQLException e2) {
       e2.printStackTrace();
     }
 
-    // Um Analogie zu insert(Merkzettel m) zu wahren, geben wir m zurück
+    // Um Analogie zu insert(Notepad n) zu wahren, geben wir n zurück
     return n;
   }
 
@@ -270,13 +271,13 @@ public class NotepadMapper {
    * 
    * @param m das aus der DB zu löschende "Objekt"
    */
-  public void delete(Notepad2 n) {
+  public void delete(Notepad n) {
     Connection con = DBConnection.connection();
 
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM notepads " + "WHERE id=" + n.getID());
+      stmt.executeUpdate("DELETE FROM notepads " + "WHERE id=" + n.getId());
 
     }
     catch (SQLException e2) {
@@ -289,7 +290,7 @@ public class NotepadMapper {
    * Diese Methode sollte aufgerufen werden, bevor ein <code>Merkzettel</code>
    * -Objekt gelöscht wird.
    * 
-   * @param m das <code>Merkzettel</code>-Objekt, zu dem das Profil gehört.
+   * @param n das <code>Merkzettel</code>-Objekt, zu dem das Profil gehört.
    */
   public void deleteNotepadsOf(Profile p) {
     Connection con = DBConnection.connection();
@@ -297,7 +298,7 @@ public class NotepadMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM notepads " + "WHERE owner=" + p.getID());
+      stmt.executeUpdate("DELETE FROM notepads " + "WHERE owner=" + p.getId());
 
     }
     catch (SQLException e2) {
@@ -312,14 +313,14 @@ public class NotepadMapper {
    * @param p das Merkzettel, dessen Profil wir auslesen möchten
    * @return ein Objekt, das den Eigentümer des Profils darstellt
    */
-  public Profile getOwner(Notepad2 n) {
+  public Profile getOwner(Notepad n) {
     /*
      * Wir bedienen uns hier einfach des ProfilMapper. Diesem geben wir
      * einfach den in dem Merkzettel-Objekt enthaltenen Fremdschlüssel für den
      * Profilinhaber. Der ProfilMapper lässt uns dann diese ID in ein Objekt
      * auf.
      */
-    return ProfileMapper.profileMapper().findByKey(n.getOwnerID());
+    return ProfileMapper.profileMapper().findByKey(n.getOwnerId());
   }
 
 }

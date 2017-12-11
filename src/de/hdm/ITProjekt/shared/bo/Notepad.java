@@ -56,12 +56,26 @@ public class Notepad extends BusinessObject {
 	 public void setCreatorID(int creator ID) {
 	 this.creatorID = creatorID;
 	 
-	 weiß nicht ob das benötigt wird
+	 weiï¿½ nicht ob das benï¿½tigt wird
 	 */
 	 public Notepad (Profile creator, String title){
 		 this.title = "Merkzettel";
 		 this.creator = creator;
 		 this.profilelist.add(creator);
 	 }
+
+	public Notepad() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public String getOwnerId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setOwnerId(int int1) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

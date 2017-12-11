@@ -180,8 +180,8 @@ public Profile insert(Profile p) {
 							+ "haircolor, bodyheight, smoker, religion, gender, dbo)	"
 							+ "VALUES (" + p.getId() + ",'" + p.getFirstName() + "','" + p.getLastName()
 				            + "','" + p.getEmail() + "','" + p.getHairColor() + "'," + p.getBodyHeight() + ",'"
-				            + p.Smoker() + "','" + p.getReligion() + "','" + p.gender() + "','"
-				           /* + p.getdbo()*/ + "')");
+				            + p.Smoker() + "','" + p.getReligion() + "','" + p.Gender() + "','"
+				           /* + p.getdbo()*/ + "')"); // TODO
 							
 				}
 	} catch (SQLException e) {
@@ -201,7 +201,7 @@ public Profile update(Profile p) {
 		stmt.executeUpdate("UPDATE Profile SET  Firstname='" + p.getFirstName() + "', Lastname='"
 		          + p.getLastName() + "', Haircolor ='" + p.getHairColor() + "', Bodyheight="
 		          + p.getBodyHeight() + ", Smoker='" + p.Smoker() + "', Religion='" + p.getReligion()
-		          + /*"', Dbo='" + p.getDbo() +*/ "' WHERE id=" + p.getId());
+		          + /*"', Dbo='" + p.getDbo() +*/ "' WHERE id=" + p.getId()); // TODO
 		
 	}catch (SQLException e) {
 		      e.printStackTrace();
@@ -262,6 +262,12 @@ public Vector<Profile> findByLastName(String name) {
     // Ergebnisvektor zurückgeben
     return result;
   }
+
+
+public Profile findByKey(String ownerId) {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
 
 
