@@ -243,6 +243,43 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	
 	//------Eigenschaft-Methoden------
 	
+	/**
+	   * Auslesen der Eigenschaftsnamen mit einer bestimmten Id
+	   */
+
+	  @Override
+	  public String getCharacteristicsNameById(int id) throws IllegalArgumentException {
+	    if (descriptionMapper.findByKey(id) != null) {
+	      Description d = descriptionMapper.findByKey(id);
+	      String name = d.getName();
+	      return name;
+	    } else if (selectionMapper.findByKey(id) != null) {
+	      Selection s = selectionMapper.findByKey(id);
+	      String name = s.getName();
+	      return name;
+	    }
+	    return null;
+	  }
+
+	  /**
+	   * Auslesen der Eigenschaftsbeschreibung mit einer bestimmten Id
+	   */
+
+	  @Override
+	  public String getCharacteristicsDescriptionById(int id) throws IllegalArgumentException {
+	    if (descriptionMapper.findByKey(id) != null) {
+	      Description d = descriptionMapper.findByKey(id);
+	      String name = d.getDescriptiontext();
+	      return name;
+	    } else if (selectionMapper.findByKey(id) != null) {
+	      Selection s = selectionMapper.findByKey(id);
+	      String name = s.getDescriptiontext();
+	      return name;
+	    }
+	    return null;
+	  }
+
+	
 	public ArrayList<Selection> getAllSelection() throws IllegalArgumentException {
 	    return selectionMapper.findAll();
 	  }

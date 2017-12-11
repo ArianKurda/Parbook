@@ -77,8 +77,18 @@ public interface ParbookService extends RemoteService {
 	  
 	
 	//------Eigenschaft-Methoden------
-	
-		public ArrayList<Selection> getAllSelection() throws IllegalArgumentException;
+	  
+	  /**
+	   * Auslesen der Eigenschaftsnamen mit einer bestimmten Id
+	   */
+	  public String getCharacteristicsNameById(int id) throws IllegalArgumentException;
+
+	  /**
+	   * Auslesen der Eigenschaftsbeschreibung mit einer bestimmten Id
+	   */
+	  public String getCharacteristicsDescriptionById(int id) throws IllegalArgumentException;
+
+	  public ArrayList<Selection> getAllSelection() throws IllegalArgumentException;
 
 		  /**
 		   * Auslesen der Auswahl mit einer bestimmten Id
