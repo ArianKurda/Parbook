@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.ITProjekt.shared.bo.Profile;
+import de.hdm.ITProjekt.shared.report.AllProfilesReport;
 import de.hdm.ITProjekt.shared.report.ProfileReport;
 
 /**
@@ -20,7 +21,10 @@ public interface ReportGenerator extends RemoteService {
 
   public void init() throws IllegalArgumentException;
 
-  public abstract ProfileReport createProfilReport(Profile p) throws IllegalArgumentException;
+  public abstract ProfileReport createProfileReport(Profile p) throws IllegalArgumentException;
+  
+  public abstract AllProfilesReport createAllProfilesReport(Profile profile)
+	      throws IllegalArgumentException;
 
 // Was wollen wir noch als Report?
 
