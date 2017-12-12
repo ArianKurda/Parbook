@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.Vector;
 
 import de.hdm.ITProjekt.shared.bo.Notepad;
-import de.hdm.ITProjekt.shared.bo.Notepad2;
 import de.hdm.ITProjekt.shared.bo.Profile;
 
 /**
