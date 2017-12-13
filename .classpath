@@ -129,5 +129,5 @@
 			<attribute name="javadoc_location" value="file:/C:/Users/son/.p2/pool/plugins/com.google.appengine.eclipse.sdkbundle_1.9.34/appengine-java-sdk-1.9.34/docs/javadoc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="output" path="build/classes"/>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

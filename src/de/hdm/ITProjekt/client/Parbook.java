@@ -17,9 +17,7 @@ public class Parbook implements EntryPoint {
 	
 	private LoginInfo loginInfo = null;
 	  private VerticalPanel loginPanel = new VerticalPanel();
-	  private VerticalPanel mainPanel = new VerticalPanel();
-	  private Label loginLabel = new Label(
-	      "Bitte loggen Sie sich ein, um Parbook zu benutzen.");
+	  private Label loginLabel = new Label ("Bist du bereit dich zu paaren?");
 	  private Anchor signInLink = new Anchor("Sign In");
 	  private Anchor signOutLink = new Anchor("Sign Out");
 
@@ -46,26 +44,32 @@ public class Parbook implements EntryPoint {
 	        }
 	      }
 	    });
+	    
 	  }
 	
 	private void loadLogin() {
 	    // Assemble login panel.
 	    signInLink.setHref(loginInfo.getLoginUrl());
+	    Label welcomeLabel = new Label ("Willkommen zu Parbook");
+	    welcomeLabel.setStyleName("welcomeLabel");
+	    loginPanel.add(welcomeLabel);
 	    loginPanel.add(loginLabel);
 	    loginPanel.add(signInLink);
-	    RootPanel.get("abc").add(loginPanel);
+	    loginPanel.setStyleName("loginPanel");
+	    RootPanel.get("header").add(loginPanel);
 	  }
 	
 	private void loadParbook() {
 	    // Set up sign out hyperlink.
 	    signOutLink.setHref(loginInfo.getLogoutUrl());
 	    
-	    mainPanel.add(signOutLink);
+	    signOutLink.setStyleName("gwt-sign-out");
+	   
 	    
 	    RootPanel.get().add(signOutLink);
+	    
+	    
+}
 
-	
-		
-	}
 	
 }

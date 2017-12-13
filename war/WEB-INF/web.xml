@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <web-app>
+
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
@@ -8,6 +8,17 @@
 	</welcome-file-list>
 	
   <!-- Servlets -->
+  
+   <servlet>
+      <servlet-name>EditorServiceImpl</servlet-name>
+      <servlet-class>de.hdm.ITProjekt.server.ParbookServiceImpl</servlet-class>
+    </servlet>
+  
+    <servlet-mapping>
+      <servlet-name>EditorServiceImpl</servlet-name>
+      <url-pattern>/parbook/parbookservice</url-pattern>
+    </servlet-mapping>
+  
   <servlet>
     <servlet-name>loginService</servlet-name>
     <servlet-class>de.hdm.ITProjekt.server.LoginServiceImpl</servlet-class>

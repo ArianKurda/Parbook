@@ -1,6 +1,9 @@
 package de.hdm.ITProjekt.server.db;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+
+import com.google.appengine.api.utils.SystemProperty;
 
 
 public class DBConnection {
@@ -19,13 +22,13 @@ public class DBConnection {
 			String url = null;
 			
 			try{
-				if (SystemProperty.enviroment.value() == SystemProperty.Enviroment.Value.Production) {
+				if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
 					
 					Class.forName("com.mysql.jbdc.GoogleDriver");
-					url = googleUrl;
+					/*url = googleUrl;*/
 				} else {
 					
-					Class.forName("com.mysql.jbdc.Driver")
+					Class.forName("com.mysql.jbdc.Driver");
 				}
 				
 				con = DriverManager.getConnection(url);

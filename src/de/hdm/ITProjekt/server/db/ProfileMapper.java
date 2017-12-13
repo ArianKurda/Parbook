@@ -11,7 +11,6 @@ import de.hdm.ITProjekt.server.db.DBConnection;
 
 
 
-
 public class ProfileMapper {
 
 
