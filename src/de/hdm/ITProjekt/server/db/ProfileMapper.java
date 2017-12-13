@@ -6,8 +6,8 @@ import java.util.Vector;
 
 import de.hdm.ITProjekt.client.ClientsideSettings;
 import de.hdm.ITProjekt.shared.bo.Profile;
-import de.hdm.thies.bankProjekt.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.Customer;
+import de.hdm.ITProjekt.server.db.DBConnection;
+
 
 
 
@@ -180,7 +180,7 @@ public Profile insert(Profile p) {
 							+ "haircolor, bodyheight, smoker, religion, gender, dbo)	"
 							+ "VALUES (" + p.getId() + ",'" + p.getFirstName() + "','" + p.getLastName()
 				            + "','" + p.getEmail() + "','" + p.getHairColor() + "'," + p.getBodyHeight() + ",'"
-				            + p.Smoker() + "','" + p.getReligion() + "','" + p.Gender() + "','"
+				            + p.isSmoker() + "','" + p.getReligion() + "','" + p.isGender() + "','"
 				           /* + p.getdbo()*/ + "')"); // TODO
 							
 				}
@@ -200,7 +200,7 @@ public Profile update(Profile p) {
 		
 		stmt.executeUpdate("UPDATE Profile SET  Firstname='" + p.getFirstName() + "', Lastname='"
 		          + p.getLastName() + "', Haircolor ='" + p.getHairColor() + "', Bodyheight="
-		          + p.getBodyHeight() + ", Smoker='" + p.Smoker() + "', Religion='" + p.getReligion()
+		          + p.getBodyHeight() + ", Smoker='" + p.isSmoker() + "', Religion='" + p.getReligion()
 		          + /*"', Dbo='" + p.getDbo() +*/ "' WHERE id=" + p.getId()); // TODO
 		
 	}catch (SQLException e) {

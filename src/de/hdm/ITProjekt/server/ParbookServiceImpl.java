@@ -1,8 +1,6 @@
 package de.hdm.ITProjekt.server;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Vector;
 import java.sql.Date;
 
 import com.google.appengine.api.users.User;
@@ -13,7 +11,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import de.hdm.ITProjekt.client.ClientsideSettings;
 import de.hdm.ITProjekt.server.db.*;
 import de.hdm.ITProjekt.shared.ParbookService;
-import de.hdm.ITProjekt.shared.ParbookServiceAsync;
 import de.hdm.ITProjekt.shared.bo.*;
 
 /**
@@ -73,15 +70,19 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	public void init() throws IllegalArgumentException {
 		
 		this.profileMapper = ProfileMapper.profileMapper();
-		this.notepadMapper = NotepadMapper.notepadMapper();
+		this.notepadMapper(NotepadMapper.notepadMapper());
 		this.infoMapper = InfoMapper.infoMapper();
 		this.selectionMapper = SelectionMapper.selectionMapper();
 		this.descriptionMapper = DescriptionMapper.descriptionMapper();
-		this.notepadMapper = NotepadMapper.notepadMapper();
 		this.blocklistMapper = BlocklistMapper.blocklistMapper();
 
 	}
 	
+	private void notepadMapper(NotepadMapper notepadMapper) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	//------Login Methoden------
 	@Override
 	  public Profile login(String requestUri) {
@@ -190,59 +191,25 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 
 	  }
 
-	@Override
-	public Profile editStandardProfileAttributes(Profile p, String firstName, String lastName, String email,
-			String password, java.util.Date dob, String hairColor, double bodyHeight, boolean smoker, String religion,
-			boolean gender) {
-		// TODO Auto-generated method stub
-		return null;
+	
 		
 		//------Merkzettel Methoden------
 		
 		/**
 		 * Erstellen eines Merkzettels für ein Profil
 		 */
-	public Notepad createNotepad(Profile a, Profile b) throws IllegalArgumentException {
-		Notepad n = notepadMapper.findAllForProfile(a);
-		ArrayList<Profile> profile = n.getNoticedProfiles();
-		if (!profile.contains(b)) {
-			notepadMapper.insertProfileNotepad(a, b);
-			}
-		}
+
+			
+		
 
 		/**
 		 * Löschen einer Notiz für ein Profil.
 		 */
-		  @Override
-	public void deleteNote(Profile remover, Profile remoter) throws IllegalArgumentException {
-		notepadMapper.deleteProfileNote(remover, remoter);
-		    
-		  }
-
+		  
 		  /**
 		   * Auslesen des Merkzettels für ein Profil
 		   */
-		  @Override
-		  public Notepad getNotepadForProfile(Profile profile) throws IllegalArgumentException {
 
-		    Notepad n = notepadMapper.findAllForProfile(profile);
-		    Kontaktsperre k = kMapper.findAllForProfile(profile);
-		    ArrayList<Profil>nList = n.getNoticedProfiles();
-		    ArrayList<Profil> bList = b.getBlockedProfiles();
-
-		    for (Profile p : bList) {
-		      if (nList.contains(p)) {
-		        nList.remove(p);
-		      }
-		    }
-
-		    for (Profile p : nList) {
-		      p.setMatch(calculateMatch(profile, p));
-		    }
-
-		    return n;
-		  }
-	}
 	
 	//------Eigenschaft-Methoden------
 	
@@ -513,10 +480,59 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	   */
 	  public Blocklist getBlocklistForProfile(Profile profile) throws IllegalArgumentException {
 	    Blocklist b = blocklistMapper.findAllForProfile(profile);
-	    ArrayList<Profile> bList = b.getBlockedProfiles();
+	    b.getBlockedProfiles();
 
 	    return b;
 		
 	}
 
-}
+	@Override
+	public Profile createProfile(String firstname, String lastname, String email, java.util.Date birthdate,
+			String haircolor, double bodyheight, boolean smoker, String religion, boolean gender)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Profile> findMatch() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Notepad createNotepad(Profile a, Profile b) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteNote(Profile remover, Profile remoter) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Notepad getNotepadForProfile(Profile profile) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Profile editStandardProfileAttributes(Profile p, String firstName, String lastName, String email,
+			String password, java.util.Date dob, String hairColor, double bodyHeight, boolean smoker, String religion,
+			boolean gender) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public NotepadMapper getNotepadMapper() {
+		return notepadMapper;
+	}
+
+	public void setNotepadMapper(NotepadMapper notepadMapper) {
+		this.notepadMapper = notepadMapper;
+	}
+};
+
+	
