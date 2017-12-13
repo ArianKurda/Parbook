@@ -303,23 +303,6 @@ public class NotepadMapper {
     catch (SQLException e2) {
       e2.printStackTrace();
     }
-  }
+  }}
 
-  /**
-   * Auslesen des zugehörigen <code>Merkzettel</code>-Objekts zu einem gegebenen
-   * Profil.
-   * 
-   * @param p das Merkzettel, dessen Profil wir auslesen möchten
-   * @return ein Objekt, das den Eigentümer des Profils darstellt
-   */
-  public Profile getOwner(Notepad n) {
-    /*
-     * Wir bedienen uns hier einfach des ProfilMapper. Diesem geben wir
-     * einfach den in dem Merkzettel-Objekt enthaltenen Fremdschlüssel für den
-     * Profilinhaber. Der ProfilMapper lässt uns dann diese ID in ein Objekt
-     * auf.
-     */
-    return ProfileMapper.profileMapper().findByKey(n.getOwnerId());
-  }
-
-}
+ 

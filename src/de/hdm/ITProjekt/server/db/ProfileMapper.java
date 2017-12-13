@@ -2,7 +2,6 @@ package de.hdm.ITProjekt.server.db;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import de.hdm.ITProjekt.client.ClientsideSettings;
 import de.hdm.ITProjekt.shared.bo.Profile;
@@ -232,42 +231,6 @@ public void delete(Profile p) {
 }
 
 
-public Vector<Profile> findByLastName(String name) {
-	Connection con = DBConnection.connection();
-    Vector<Profile> result = new Vector<Profile>();
-
-    try {
-      Statement stmt = con.createStatement();
-
-      ResultSet rs = stmt.executeQuery("SELECT id, firstName, lastName "
-          + "FROM profiles " + "WHERE lastName LIKE '" + name
-          + "' ORDER BY lastName");
-
-      // Für jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
-      // erstellt.
-      while (rs.next()) {
-        Profile p = new Profile();
-        p.setId(rs.getInt("id"));
-        p.setFirstName(rs.getString("firstName"));
-        p.setLastName(rs.getString("lastName"));
-
-        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.addElement(p);
-      }
-    }
-    catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    // Ergebnisvektor zurückgeben
-    return result;
-  }
-
-
-public Profile findByKey(String ownerId) {
-	// TODO Auto-generated method stub
-	return null;
-}
 }
 
 
