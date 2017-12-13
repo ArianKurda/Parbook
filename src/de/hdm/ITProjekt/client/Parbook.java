@@ -23,7 +23,7 @@ public class Parbook implements EntryPoint {
 	  private Anchor signInLink = new Anchor("Sign In");
 	  private Anchor signOutLink = new Anchor("Sign Out");
 
-	
+	/*Bsp*/
 	private Button saveButton = new Button("Speichern");
 	
 	
