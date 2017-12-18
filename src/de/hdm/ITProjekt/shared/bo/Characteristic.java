@@ -15,6 +15,7 @@ public class Characteristic extends BusinessObject {
    * @param descriptiontext: Der eigentliche Name eines Hobbies
    */
   private String name = "";
+  
   private String descriptiontext = "";
   
   /**

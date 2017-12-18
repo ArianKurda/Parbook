@@ -62,8 +62,8 @@ public class DescriptionMapper {
 
 
   /**
-   * Die Methode findByName erfüllt eine Suchfunktion und liefert Objekte des Typs Description aus
-   * der Datenbank zurück,
+   * Die Methode findByName erfüllt eine Suchfunktion und liefert Objekte
+   * des Typs Description aus der Datenbank zurück.
    *
    * @param name
    * 
@@ -246,7 +246,7 @@ public class DescriptionMapper {
       /*
        * Zunächst schauen wir nach, welches der momentan höchste Primärschlüsselwert ist.
        */
-      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM Characteristic ");
+      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM characteristic ");
 
       // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
       if (rs.next()) {
@@ -258,7 +258,7 @@ public class DescriptionMapper {
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-        stmt.executeUpdate("INSERT INTO Characteristic (id, Name, Beschreibungstext, e_typ) VALUES ("
+        stmt.executeUpdate("INSERT INTO characteristic (id, Name, Beschreibungstext, e_typ) VALUES ("
             + d.getId() + ",'" + d.getName() + "','" + d.getDescriptiontext() + "','d')");
       }
     } catch (SQLException e) {
@@ -289,7 +289,7 @@ public class DescriptionMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE Characteristic SET Name='" + d.getName() + "', Beschreibungstext='"
+      stmt.executeUpdate("UPDATE characteristic SET Name='" + d.getName() + "', Beschreibungstext='"
           + d.getDescriptiontext() + "', e_typ='d' WHERE id=" + d.getId());
 
     } catch (SQLException e) {
