@@ -1,10 +1,9 @@
 package de.hdm.ITProjekt.server.db;
 
 import java.sql.*;
-import java.util.Vector;
+import java.util.ArrayList;
 
-import de.hdm.ITProjekt.shared.bo.Blocklist;
-import de.hdm.ITProjekt.shared.bo.Profile;
+import de.hdm.ITProjekt.shared.bo.*;;
 
 /**
  * Mapper-Klasse, die <code>Sperrliste</code>-Objekte auf eine relationale
@@ -64,7 +63,7 @@ public class BlocklistMapper {
    * @return Sperrlisten-Objekt, das dem übergebenen Schlüssel entspricht, null bei
    *         nicht vorhandenem DB-Tupel.
    */
-  public Blocklist findByKey(int id) {
+  public Blocklist findById(int id) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 
@@ -73,8 +72,7 @@ public class BlocklistMapper {
       Statement stmt = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs = stmt.executeQuery("SELECT id, owner FROM blocklists "
-          + "WHERE id=" + id + " ORDER BY owner");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM blocklist WHERE ID='" + id + "ORDER BY fromProfile");
 
       /*
        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -83,8 +81,7 @@ public class BlocklistMapper {
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
     	Blocklist b = new Blocklist();
-        b.setId(rs.getInt("id"));
-        b.setOwnerId(rs.getInt("owner"));
+        b.setId(rs.getInt("ID"));
         return b;
       }
     }
@@ -95,100 +92,7 @@ public class BlocklistMapper {
 
     return null;
   }
-
-  /**
-   * Auslesen der Sperrliste.
-   * 
-   * @return Ein Vektor mit Sperrlisten-Objekten, die sämtliche Profile
-   * repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
-   * oder ggf. auch leerer Vetor zurückgeliefert.
-   */
   
-  public Vector<Blocklist> findAll() {
-    Connection con = DBConnection.connection();
-
-    // Ergebnisvektor vorbereiten
-    Vector<Blocklist> result = new Vector<Blocklist>();
-
-    try {
-      Statement stmt = con.createStatement();
-
-      ResultSet rs = stmt.executeQuery("SELECT id, owner FROM blocklists "
-          + " ORDER BY id");
-
-      // Für jeden Eintrag im Suchergebnis wird nun ein Sperrlisten-Objekt erstellt.
-      while (rs.next()) {
-    	  Blocklist b = new Blocklist();
-        b.setId(rs.getInt("id"));
-        b.setOwnerId(rs.getInt("owner"));
-
-        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.addElement(b);
-      }
-    }
-    catch (SQLException e2) {
-      e2.printStackTrace();
-    }
-
-    // Ergebnisvektor zurückgeben
-    return result;
-  }
-
-  /**
-   * Auslesen aller Sperrlisten eines durch Fremdschlüssel (ProfilID) gegebenen
-   * Profilen.
-   * 
-   * @see findByOwner(Blocklist owner)
-   * @param ownerID Schlüssel des zugehörigen Profils.
-   * @return Ein Vektor mit Sperrlisten-Objekten, die die Sperrliste des
-   *         betreffenden Profils repräsentiert. Bei evtl. Exceptions wird ein
-   *         partiell gefüllter oder ggf. auch leerer Vetor zurückgeliefert.
-   */
-  public Vector<Blocklist> findByOwner(int ownerID) {
-    Connection con = DBConnection.connection();
-    Vector<Blocklist> result = new Vector<Blocklist>();
-
-    try {
-      Statement stmt = con.createStatement();
-
-      ResultSet rs = stmt.executeQuery("SELECT id, owner FROM blocklists "
-          + "WHERE owner=" + ownerID + " ORDER BY id");
-
-      // Für jeden Eintrag im Suchergebnis wird nun ein Sperrlisten-Objekt erstellt.
-      while (rs.next()) {
-    	  Blocklist b = new Blocklist();
-        b.setId(rs.getInt("id"));
-        b.setOwnerId(rs.getInt("owner"));
-
-        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.addElement(b);
-      }
-    }
-    catch (SQLException e2) {
-      e2.printStackTrace();
-    }
-
-    // Ergebnisvektor zurückgeben
-    return result;
-  }
-
-  /**
-   * Auslesen der Sperrliste eines Profils (durch <code>Sperrlisten</code>-Objekt
-   * gegeben).
-   * 
-   * @see findByOwner(int ownerID)
-   * @param owner Profilobjekt, dessen Sperrzettel wir auslesen möchten.
-   * @return Sperrzettel des Profils
-   */
-  public Vector<Blocklist> findByOwner(Profile owner) {
-
-    /*
-     * Wir lesen einfach die Profilnummer (Primärschlüssel) des Profil-Objekts
-     * aus und delegieren die weitere Bearbeitung an findByOwner(int ownerID).
-     */
-    return findByOwner(owner.getId());
-  }
-
   /**
    * Einfügen eines <code>Sperrlisten</code>-Objekts in die Datenbank. Dabei wird
    * auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
@@ -208,8 +112,7 @@ public class BlocklistMapper {
        * Zunächst schauen wir nach, welches der momentan höchste
        * Primärschlüsselwert ist.
        */
-      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-          + "FROM blocklists ");
+      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM blocklist");
 
       // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
       if (rs.next()) {
@@ -222,8 +125,13 @@ public class BlocklistMapper {
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-        stmt.executeUpdate("INSERT INTO blocklists (id, owner) " + "VALUES ("
-            + b.getId() + "," + b.getOwnerID() + ")");
+        stmt.executeUpdate("INSERT INTO blocklist (id, fromProfile, toProfile) " + "VALUES ("
+        		+ b.getId() 
+        		+ "," 
+        		+ b.getFromProfile().getId()
+        		+ ","
+        		+ b.getToProfile().getId()
+        		+ "')");
       }
     }
     catch (SQLException e2) {
@@ -232,16 +140,10 @@ public class BlocklistMapper {
 
     /*
      * Rückgabe, des evtl. korrigierten Sperrliste.
-     * 
-     * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-     * Objekte übergeben werden, wäre die Anpassung des Profil-Objekts auch
-     * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
-     * explizite Rückgabe von p ist eher ein Stilmittel, um zu signalisieren,
-     * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
      */
     return b;
   }
-
+  
   /**
    * Wiederholtes Schreiben eines Objekts in die Datenbank.
    * 
@@ -254,8 +156,14 @@ public class BlocklistMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE blocklists " + "SET owner=\"" + b.getOwnerID()
-          + "\" " + "WHERE id=" + b.getId());
+      stmt.executeUpdate("UPDATE blocklist SET fromProfile="
+    		  + b.getFromProfile()
+    		  + "',"
+    		  + "toProfile="
+    		  + b.getToProfile()
+    		  + "',"
+    		  + "WHERE ID="
+    		  + b.getId());
 
     }
     catch (SQLException e2) {
@@ -265,7 +173,7 @@ public class BlocklistMapper {
     // Um Analogie zu insert(Blocklist b) zu wahren, geben wir b zurück
     return b;
   }
-
+  
   /**
    * Löschen der Daten eines <code>Sperrlisten</code>-Objekts aus der Datenbank.
    * 
@@ -277,7 +185,7 @@ public class BlocklistMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM blocklists " + "WHERE id=" + b.getId());
+      stmt.executeUpdate("DELETE FROM blocklist " + "WHERE ID=" + b.getId());
 
     }
     catch (SQLException e2) {
@@ -286,56 +194,38 @@ public class BlocklistMapper {
   }
 
   /**
-   * Löschen sämtlicher Profile (<code>Profil</code>-Objekt) einer Sperrliste.
-   * Diese Methode sollte aufgerufen werden, bevor ein <code>Sperrlisten</code>
-   * -Objekt gelöscht wird.
+   * Auslesen aller Kontaktsperren eines Profils.
    * 
-   * @param p das <code>Profil</code>-Objekt, zu dem der Sperrliste gehört.
+   * @param p das Profil, dessen Sperrliste wir auslesen möchten
+   * @return Sperrliste des Profils
    */
-  public void deleteBlocklistsOf(Profile p) {
-    Connection con = DBConnection.connection();
+  
+  public ArrayList<Profile> findAll(Profile p) {
+		  Connection con = DBConnection.connection();
+		  
+		  //Ergebnis vorbereiten
+		  ArrayList<Profile> result = new ArrayList<>();
+		  
+		  try {
+			  Statement stmt = con.createStatement();
+			  
+			  ResultSet rs = stmt.executeQuery(
+					  "SELECT toProfile" + "FROM profile WHERE fromProfile=" + p.getId());
+			  
+			  //Für jeden Eintrag im Suchergebnis wird nun ein Blocklist-Objekt erstellt.
+			  while (rs.next()) {
+				  Profile profile = ProfileMapper.profileMapper().findById(rs.getInt("toProfile"));
+				  result.add(p);
 
-    try {
-      Statement stmt = con.createStatement();
+			  }
+		  }
+		  catch (SQLException e2) {
+			  e2.printStackTrace();
+		  }
+		  
+		  //Ergebnis zurück geben
+		  return result;
 
-      stmt.executeUpdate("DELETE FROM blocklists " + "WHERE owner=" + p.getId());
-
-    }
-    catch (SQLException e2) {
-      e2.printStackTrace();
-    }
   }
-
-  /**
-   * Auslesen des zugehörigen <code>Sperrlisten</code>-Objekts zu einem gegebenen
-   * Profil.
-   * 
-   * @param b das Sperrlisten, dessen Profil wir auslesen möchten
-   * @return ein Objekt, das den Eigentümer des Profils darstellt
-   */
-  public Profile getOwner(Blocklist b) {
-    /*
-     * Wir bedienen uns hier einfach des ProfilMapper. Diesem geben wir
-     * einfach den in dem Sperrlisten-Objekt enthaltenen Fremdschlüssel für den
-     * Profilinhaber. Der ProfilMapper lässt uns dann diese ID in ein Objekt
-     * auf.
-     */
-    return ProfileMapper.profileMapper().findByKey(b.getOwnerID());
-  }
-
-public void insertForProfile(Profile a, Profile b) {
-	// TODO Auto-generated method stub
-	
-}
-
-public void deleteLockFor(Profile remover, Profile remoter) {
-	// TODO Auto-generated method stub
-	
-}
-
-public Blocklist findAllForProfile(Profile profile) {
-	// TODO Auto-generated method stub
-	return null;
-}
 
 }

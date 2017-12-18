@@ -30,7 +30,7 @@ public class ProfileMapper {
 
   /** Profile anhand der ID suchen**/
 
-  public Profile findByKey(int id) {
+  public Profile findById(int id) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 
@@ -262,12 +262,6 @@ public Vector<Profile> findByLastName(String name) {
     // Ergebnisvektor zurückgeben
     return result;
   }
-
-
-public Profile findByKey(String ownerId) {
-	// TODO Auto-generated method stub
-	return null;
-}
 }
 
 

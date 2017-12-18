@@ -1,75 +1,56 @@
 package de.hdm.ITProjekt.shared.bo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Blocklist extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
   
-  private String title;
+  	/*
+  	 * Eingeloggtes Profil von dem die Kontaktsperre ausgeht.
+  	 */
+  	private Profile fromProfile = null;
   
-  private Profile blocker;
-  
-  /*private int blockerID; */
-  
-  
-  private ArrayList<Profile> blocklist = new ArrayList<Profile>();
-  
-  public List<String> blocks = new ArrayList<String>();
-  
-  public ArrayList<Profile> getBlockList() {
-		return blocklist;
+  	/*
+  	 * Profil, das gesperrt werden soll.
+  	 */
+  	private Profile toProfile = null;
+	
+  	/*
+  	 * Eingeloggtes Profil auslesen.
+	 * 
+	 * @return Nutzerprofil
+	 */
+	public Profile getFromProfile() {
+		return fromProfile;
 	}
 	
-	public void setBlockList(ArrayList<Profile> blocklist) {
-		this.blocklist = blocklist;
+	public void setFromProfile(Profile fromProfile) {
+		this.fromProfile = fromProfile;
 	}
 	
-	public Profile getBlocker() {
-		return blocker;
-	}
-
-	public void setBlocker(Profile blocker) {
-		this.blocker = blocker;
+	/*
+	 * Auslesen des gesperrten Profils.
+	 * 
+	 * @return Gesperrtes Profil
+	 */
+	public Profile getToProfile() {
+		return toProfile;
 	}
 	
-	public String getTitle() {
-		return title;
+	/*
+	 * Profil, das gesperrt werden soll
+	 * 
+	 * @param toProfile Profil, das gesperrt wird.
+	 */
+	public void setToProfile(Profile toProfile) {
+		this.toProfile = toProfile;
 	}
-
-	public void setTitle(String title) {
-		this.title = "Kontaktsperre";
-	} 
 	
-
-	
-	public Blocklist() {};
-	
-	public Blocklist(Profile blocker, String title) {
-		this.title = "Kontaktsperre";
-		this.blocker = blocker;
-		this.blocklist.add(blocker);	
-		}
-
-	public ArrayList<Profile> getBlockedProfiles() {
-		// TODO Auto-generated method stub
-		return null;
+	/*
+	 * Textuelle Darstellung der jeweiligen Instanz.
+	 */
+	public String toString() {
+		return super.toString()+ this.fromProfile + " "+ this.toProfile;
 	}
-
-	public int getOwnerID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void setOwnerId(int int1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	
-	
   
 }
 

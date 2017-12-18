@@ -17,6 +17,8 @@ public class Profile extends BusinessObject {
 	
 	private int googleID;
 	
+	private int id;
+	
 	private Date birthdate; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
 	
 	private String haircolor = "";

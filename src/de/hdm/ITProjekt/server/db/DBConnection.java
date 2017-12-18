@@ -25,11 +25,11 @@ public class DBConnection {
 				if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
 					
 					Class.forName("com.mysql.jbdc.GoogleDriver");
-<<<<<<< HEAD
+
 					//url = googleUrl;
-=======
+
 					/*url = googleUrl;*/
->>>>>>> refs/remotes/origin/master
+
 				} else {
 					
 					Class.forName("com.mysql.jbdc.Driver");
