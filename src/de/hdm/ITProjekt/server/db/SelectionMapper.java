@@ -108,7 +108,7 @@ public class SelectionMapper {
   }
 
   /**
-   * Die Methode findByKey implementiert die Suche nach genau einer id aus der Datenbank,
+   * Die Methode findById implementiert die Suche nach genau einer id aus der Datenbank,
    * entsprechend wird genau ein Objekt zurückgegeben.
    *
    * @param id
@@ -116,7 +116,7 @@ public class SelectionMapper {
    * @return Selection-Objekt, das der übergegebenen id entspricht bzw. null bei nicht vorhandenem
    *         DB-Tupel.
    */
-  public Selection findByKey(int id) {
+  public Selection findById(int id) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 

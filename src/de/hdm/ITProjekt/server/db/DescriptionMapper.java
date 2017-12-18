@@ -110,7 +110,7 @@ public class DescriptionMapper {
   }
 
   /**
-   * Die Methode findByKey implementiert die Suche nach genau einer id aus der Datenbank,
+   * Die Methode findById implementiert die Suche nach genau einer id aus der Datenbank,
    * entsprechend wird genau ein Objekt zurückgegeben.
    *
    * @param id
@@ -118,7 +118,7 @@ public class DescriptionMapper {
    * @return Description, Description-Objekt, das der übergegebenen id entspricht, bzw. null bei
    *         nicht vorhandenem DB-Tupel.
    */
-  public Description findByKey(int id) {
+  public Description findById(int id) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 
