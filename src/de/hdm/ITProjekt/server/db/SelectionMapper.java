@@ -202,47 +202,6 @@ public class SelectionMapper {
   }
 
   /**
-   * Auslesen aller Selection-Tupel.
-   *
-   * @return Eine ArrayList mit Selection-Objekten, bei einem Fehler wird eine SQL-Exception ausgelöst.
-   */
-  public ArrayList<Selection> findAllProfilAtrribute() {
-    Connection con = DBConnection.connection();
-    // Ergebnisvektor vorbereiten
-    ArrayList<Selection> result = new ArrayList<Selection>();
-
-    try {
-      Statement stmt1 = con.createStatement();
-      ResultSet rs1 = stmt1.executeQuery(
-          "SELECT id, Name, Beschreibungstext" + " FROM Characteristic WHERE e_typ='p_s'");
-
-      Statement stmt2 = con.createStatement();
-
-      while (rs1.next()) {
-    	Selection s = new Selection();
-        s.setId(rs1.getInt("id"));
-        s.setName(rs1.getString("Name"));
-        s.setDescriptiontext(rs1.getString("Beschreibungstext"));
-        ResultSet rs2 = stmt2
-            .executeQuery("SELECT Text FROM Alternative " + "WHERE Selection_id=" + rs1.getInt("id"));
-        ArrayList<String> al = new ArrayList<String>();
-        while (rs2.next()) {
-          al.add(rs2.getString("Text"));
-        }
-        s.setAlternatives(al);
-        result.add(s);
-
-      }
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-      ClientsideSettings.getLogger().severe("Fehler beim schreiben in die DB" + e.getMessage() + " " + e.getCause() + " ");
-    }
-
-    return result;
-  }
-
-  /**
    * Hinzufügen eines Selection-Objekts in die Datenbank.
    *
    * @param s - das zu speichernde Objekt

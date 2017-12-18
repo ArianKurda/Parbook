@@ -191,45 +191,6 @@ public class DescriptionMapper {
     return result;
   }
 
-
-  /**
-   * Auslesen aller auf die Datenbank abgebildeten Datenbank-Objekte.
-   *
-   * @return ArrayList <Description> - ArrayList mit Description-Objekten, bei einem Fehler wird
-   *         eine SQL-Exception ausgelöst
-   */
-  public ArrayList<Description> findAllProfilAttribute() {
-    Connection con = DBConnection.connection();
-    // Ergebnisvektor vorbereiten
-    ArrayList<Description> result = new ArrayList<Description>();
-
-    try {
-      Statement stmt1 = con.createStatement();
-      ResultSet rs1 = stmt1
-          .executeQuery("SELECT id, Name, Beschreibungstext FROM Characteristic WHERE e_typ='p_d'");
-
-
-      // Für jeden Eintrag im Suchergebnis wird nun ein Description-Objekt
-      // erstellt.
-
-      while (rs1.next()) {
-    	Description d = new Description();
-        d.setId(rs1.getInt("id"));
-        d.setName(rs1.getString("Name"));
-        d.setDescriptiontext(rs1.getString("Beschreibungstext"));
-        result.add(d);
-
-      }
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-      ClientsideSettings.getLogger().severe("Fehler beim schreiben in die DB" + e.getMessage() + " " + e.getCause() + " ");
-    }
-
-    // Ergebnisvektor zurückgeben
-    return result;
-  }
-
   /**
    * Hinzufügen eines Description-Objekts in die Datenbank.
    *
