@@ -247,7 +247,7 @@ public class SelectionMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE Eigenschaft SET Name='" + s.getName() + "', Beschreibungstext='"
+      stmt.executeUpdate("UPDATE characteristic SET Name='" + s.getName() + "', Beschreibungstext='"
           + s.getDescriptiontext() + "', e_typ='s' WHERE id=" + s.getId());
 
     } catch (SQLException e) {
