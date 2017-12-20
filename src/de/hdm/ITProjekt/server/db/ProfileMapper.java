@@ -216,17 +216,9 @@ public void delete(Profile p) {
 	try {
 	      Statement stmt = con.createStatement();
 	      stmt.executeUpdate("DELETE FROM Info WHERE Profile_id=" + p.getId());
-	      stmt.executeUpdate(
-	          "DELETE FROM Notepad WHERE Flag_id=" + p.getId() + " OR Noted_id=" + p.getId());
-	      stmt.executeUpdate("DELETE FROM Blocklist WHERE Blocker_id=" + p.getId()
-	          + " OR Locked_id=" + p.getId());
-	      stmt.executeUpdate("DELETE FROM Profile WHERE id=" + p.getId());
-	      ClientsideSettings.getLogger().info("Profile " + p.getLastName() + "  aus DB gelöscht");
 
 	    } catch (SQLException e) {
 	      e.printStackTrace();
-	      ClientsideSettings.getLogger()
-	          .severe("Fehler beim schreiben in die DB: " + e.getMessage() + " " + e.getCause() + " ");
 	    }
 	
 }
