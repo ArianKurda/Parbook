@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import de.hdm.ITProjekt.shared.bo.*;;
 
 /**
- * Mapper-Klasse, die <code>Sperrliste</code>-Objekte auf eine relationale
+ * Mapper-Klasse, die <code>Kontaktsperre</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
  * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
@@ -45,7 +45,7 @@ public class BlocklistMapper {
    * instantiiert werden, sondern stets durch Aufruf dieser statischen Methode.
    * 
    * @return DAS <code>BlocklistMapper</code>-Objekt.
-   * @see profilMapper
+   * @see profileMapper
    */
   public static BlocklistMapper blocklistMapper() {
     if (blocklistMapper == null) {
@@ -56,11 +56,11 @@ public class BlocklistMapper {
   }
 
   /**
-   * Suchen einer Sperrliste mit vorgegebener Sperrlistennummer. Da diese eindeutig ist,
-   * wird genau ein Objekt zur�ckgegeben.
+   * Suchen einer Kontaktsperre mit vorgegebener Id. Da diese eindeutig ist,
+   * wird genau ein Objekt zurückgegeben.
    * 
    * @param id Primärschlüsselattribut (->DB)
-   * @return Sperrlisten-Objekt, das dem übergebenen Schlüssel entspricht, null bei
+   * @return Kontaktsperre-Objekt, das dem übergebenen Schlüssel entspricht, null bei
    *         nicht vorhandenem DB-Tupel.
    */
   public Blocklist findById(int id) {
@@ -94,7 +94,7 @@ public class BlocklistMapper {
   }
   
   /**
-   * Einfügen eines <code>Sperrlisten</code>-Objekts in die Datenbank. Dabei wird
+   * Einfügen eines <code>Kontaktsperre</code>-Objekts in die Datenbank. Dabei wird
    * auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
    * berichtigt.
    * 
@@ -175,7 +175,7 @@ public class BlocklistMapper {
   }
   
   /**
-   * Löschen der Daten eines <code>Sperrlisten</code>-Objekts aus der Datenbank.
+   * Löschen der Daten eines <code>Kontaktsperre</code>-Objekts aus der Datenbank.
    * 
    * @param b das aus der DB zu löschende "Objekt"
    */
@@ -241,11 +241,10 @@ public class BlocklistMapper {
 	/**
 	 * Auslesen aller Kontaktsperren eines bestimmten Profils mit Hilfe eines
 	 * Profil-Objekts. Da ein Profil mehrere Kontaktsperren erheben kann, können
-	 * mehrere Blocking-Objekte in einer ArrayList ausgegeben werden.
+	 * mehrere Blocklist-Objekte in einer ArrayList ausgegeben werden.
 	 * 
-	 * @param profile,
-	 *            das Profil dessen Kontaktsperren ausgelesen werden sollen
-	 * @return Eine ArrayList mit Blocking-Objekten, die sämtliche
+	 * @param profile, das Profil dessen Kontaktsperren ausgelesen werden sollen
+	 * @return Eine ArrayList mit Blocklist-Objekten, die sämtliche
 	 *         Kontaktsperren des vorgegebenen Profils repräsentieren.
 	 */
 	public ArrayList<Blocklist> findByProfile(Profile profile) {
@@ -256,9 +255,8 @@ public class BlocklistMapper {
 	/**
 	 * Diese Methode bildet das Resultset auf ein Java - Objekt ab.
 	 * 
-	 * @param rs,
-	 *            das Resultset das auf ein Java-Objekt abgebildet werden soll
-	 * @return Blocking-Objekt
+	 * @param rs, das Resultset das auf ein Java-Objekt abgebildet werden soll
+	 * @return Blocklist-Objekt
 	 */
 	private Blocklist map(ResultSet rs) throws SQLException {
 		Blocklist b = new Blocklist();
@@ -298,8 +296,8 @@ public class BlocklistMapper {
   /**
    * Auslesen aller Kontaktsperren eines Profils.
    * 
-   * @param p das Profil, dessen Sperrliste wir auslesen möchten
-   * @return Sperrliste des Profils
+   * @param p das Profil, dessen Kontaktsperre wir auslesen möchten
+   * @return Kontaktsperre des Profils
    */
   
   public ArrayList<Profile> findAll(Profile p) {
