@@ -200,23 +200,100 @@ public class BlocklistMapper {
    * @return Sperre des Profils
    */
   
-  public ArrayList<Blocklist> findByProfile(int profileId) {
-	  Connection con = DBConnection.connection();
-	  
-	  ArrayList<Blocklist> result = new ArrayList<Blocklist>();
-	  
-	  try {
-		  Statement stmt = con.createStatement();
-		  ResultSet rs = stmt.executeQuery("SELECT blocklist" + "WHERE fromProfile=" + profileId);
-		  while (rs.next()) {
-			  ArrayList<Blocklist> b = BlocklistMapper.blocklistMapper().findByProfile(profileId);
-		  }
-	  }
-	  catch (SQLException e2) {
-		  e2.printStackTrace();
-  }
-	  return result;
-  }
+  /**
+	 * Auslesen aller Kontaktsperren eines bestimmten Profils mit Hilfe der
+	 * Profil-ID. Da ein Profil mehrere Kontaktsperren erheben kann, können
+	 * mehrere Blocking-Objekte in einer ArrayList ausgegeben werden.
+	 * 
+	 * @param profileId
+	 *            Fremdschlüsselattribut in DB
+	 * @return Eine ArrayList mit Blocking-Objekten, die sämtliche
+	 *         Kontaktsperren des vorgegebenen Profils repräsentieren.
+	 */
+
+	public ArrayList<Blocklist> findByProfile(int profileId) {
+
+		// DB-Verbindung holen
+		Connection con = DBConnection.connection();
+
+		// Vorbereitung der Ergebnis-ArrayList
+		ArrayList<Blocklist> result = new ArrayList<Blocklist>();
+
+		try {
+			// Leeres SQL-Statement (JDBC) anlegen
+			Statement stmt = con.createStatement();
+
+			ResultSet rs = stmt.executeQuery("SELECT blocklist" + " WHERE fromProfile=" + profileId);
+
+			// Für jeden Eintrag im Suchergebnis wird nun ein Blocking-Objekt
+			// erstellt und zur Ergebnis-ArrayList hinzugefügt.
+			while (rs.next()) {
+				result.add(map(rs));
+			}
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+
+		// Ergebnis-ArrayList zurückgeben
+		return result;
+	}
+
+	/**
+	 * Auslesen aller Kontaktsperren eines bestimmten Profils mit Hilfe eines
+	 * Profil-Objekts. Da ein Profil mehrere Kontaktsperren erheben kann, können
+	 * mehrere Blocking-Objekte in einer ArrayList ausgegeben werden.
+	 * 
+	 * @param profile,
+	 *            das Profil dessen Kontaktsperren ausgelesen werden sollen
+	 * @return Eine ArrayList mit Blocking-Objekten, die sämtliche
+	 *         Kontaktsperren des vorgegebenen Profils repräsentieren.
+	 */
+	public ArrayList<Blocklist> findByProfile(Profile profile) {
+
+		return findByProfile(profile.getId());
+	}
+
+	/**
+	 * Diese Methode bildet das Resultset auf ein Java - Objekt ab.
+	 * 
+	 * @param rs,
+	 *            das Resultset das auf ein Java-Objekt abgebildet werden soll
+	 * @return Blocking-Objekt
+	 */
+	private Blocklist map(ResultSet rs) throws SQLException {
+		Blocklist b = new Blocklist();
+		b.setId(rs.getInt("bid"));
+
+		Profile fp = new Profile(); //fp = fromProfile
+		fp.setId(rs.getInt("tpId"));
+		fp.setFirstName(rs.getString("firstname"));
+		fp.setLastName(rs.getString("lastname"));
+		fp.setGender(rs.getBoolean("gender"));
+		fp.setEmail(rs.getString("email"));
+		fp.setBirthdate(rs.getDate("birthdate"));
+		fp.setBodyHeight(rs.getInt("bodyheight"));
+		fp.setSmoker(rs.getBoolean("smoker"));
+		fp.setHairColor(rs.getString("haircolor"));
+		fp.setReligion(rs.getString("religion"));
+
+		Profile tp = new Profile(); //tp = toProfile
+		tp.setId(rs.getInt("id"));
+		tp.setFirstName(rs.getString("firstname"));
+		tp.setLastName(rs.getString("lastname"));
+		tp.setGender(rs.getBoolean("gender"));
+		tp.setEmail(rs.getString("email"));
+		tp.setBirthdate(rs.getDate("birthdate"));
+		tp.setBodyHeight(rs.getInt("bodyheight"));
+		tp.setSmoker(rs.getBoolean("smoker"));
+		tp.setHairColor(rs.getString("haircolor"));
+		tp.setReligion(rs.getString("religion"));
+
+		b.setFromProfile(fp);
+		b.setToProfile(tp);
+
+		return b;
+	}
+
 
   /**
    * Auslesen aller Kontaktsperren eines Profils.
