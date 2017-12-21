@@ -192,6 +192,31 @@ public class BlocklistMapper {
       e2.printStackTrace();
     }
   }
+  
+  /**
+   * Auslesen einer Kontaktsperren eines Profils.
+   * 
+   * @param p das Profil, dessen Sperrliste wir auslesen möchten
+   * @return Sperre des Profils
+   */
+  
+  public ArrayList<Blocklist> findByProfile(int profileId) {
+	  Connection con = DBConnection.connection();
+	  
+	  ArrayList<Blocklist> result = new ArrayList<Blocklist>();
+	  
+	  try {
+		  Statement stmt = con.createStatement();
+		  ResultSet rs = stmt.executeQuery("SELECT blocklist" + "WHERE fromProfile=" + profileId);
+		  while (rs.next()) {
+			  ArrayList<Blocklist> b = BlocklistMapper.blocklistMapper().findByProfile(profileId);
+		  }
+	  }
+	  catch (SQLException e2) {
+		  e2.printStackTrace();
+  }
+	  return result;
+  }
 
   /**
    * Auslesen aller Kontaktsperren eines Profils.
@@ -215,7 +240,6 @@ public class BlocklistMapper {
 			  //Für jeden Eintrag im Suchergebnis wird nun ein Blocklist-Objekt erstellt.
 			  while (rs.next()) {
 				  Profile profile = ProfileMapper.profileMapper().findById(rs.getInt("toProfile"));
-				  result.add(p);
 
 			  }
 		  }
