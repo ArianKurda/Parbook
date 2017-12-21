@@ -265,7 +265,7 @@ public class BlocklistMapper {
 		b.setId(rs.getInt("bid"));
 
 		Profile fp = new Profile(); //fp = fromProfile
-		fp.setId(rs.getInt("tpId"));
+		fp.setId(rs.getInt("id"));
 		fp.setFirstName(rs.getString("firstname"));
 		fp.setLastName(rs.getString("lastname"));
 		fp.setGender(rs.getBoolean("gender"));
