@@ -130,7 +130,7 @@ public class Profile extends BusinessObject {
 	}
 	
 	
-	public void setDateOfBirth(Date newBirthdate){
+	public void setBirthdate(Date newBirthdate){
 		birthdate = newBirthdate;
 	}
 	
