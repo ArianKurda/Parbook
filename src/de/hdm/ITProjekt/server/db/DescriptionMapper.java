@@ -165,19 +165,18 @@ public class DescriptionMapper {
     ArrayList<Description> result = new ArrayList<Description>();
 
     try {
-      Statement stmt1 = con.createStatement();
-      ResultSet rs1 =
-          stmt1.executeQuery("SELECT id, Name, Beschreibungstext FROM Characteristic WHERE e_typ='d'");
+      Statement stmt = con.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT id, Name, Beschreibungstext FROM Characteristic WHERE e_typ='d'");
 
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Description-Objekt
       // erstellt.
 
-      while (rs1.next()) {
+      while (rs.next()) {
     	Description d = new Description();
-        d.setId(rs1.getInt("id"));
-        d.setName(rs1.getString("Name"));
-        d.setDescriptiontext(rs1.getString("Beschreibungstext"));
+        d.setId(rs.getInt("id"));
+        d.setName(rs.getString("Name"));
+        d.setDescriptiontext(rs.getString("Beschreibungstext"));
         result.add(d);
 
       }
