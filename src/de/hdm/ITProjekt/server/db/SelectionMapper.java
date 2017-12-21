@@ -65,49 +65,6 @@ public class SelectionMapper {
   }
 
   /**
-   * Die Methode findByName erfüllt eine Suchfunktion und liefert Objekte des Typs Selection aus der
-   * Datenbank zurück.
-   *
-   * @param name
-   * @return Selection - Ein Selection-Objekt in dem Informationen des Objekts Selection aus der Datenbank gespeichert werden.
-   */
-
-  public Selection findByName(String name) {
-    Connection con = DBConnection.connection();
-
-    try {
-      Statement stmt = con.createStatement();
-      Statement stmt2 = con.createStatement();
-
-      ResultSet rs1 =
-          stmt.executeQuery("SELECT id, Name, Beschreibungstext FROM Characteristic WHERE Name=\""
-              + name + "\" AND e_typ='p_s'"); //was heißt das nochmal?
-
-
-      if (rs1.next()) {
-    	Selection s = new Selection();
-        s.setId(rs1.getInt("id"));
-        s.setName(rs1.getString("Name"));
-        s.setDescriptiontext(rs1.getString("Beschreibungstext"));
-        ResultSet rs2 =
-            stmt2.executeQuery("SELECT Text FROM Alternative WHERE Selection_id=" + rs1.getInt("id"));
-        ArrayList<String> al = new ArrayList<String>();
-        while (rs2.next()) {
-          al.add(rs2.getString("Text"));
-        }
-        s.setAlternatives(al);
-
-        return s;
-      }
-    } catch (SQLException a) {
-      a.printStackTrace();
-      return null;
-    }
-
-    return null;
-  }
-
-  /**
    * Die Methode findById implementiert die Suche nach genau einer id aus der Datenbank,
    * entsprechend wird genau ein Objekt zurückgegeben.
    *
@@ -168,21 +125,20 @@ public class SelectionMapper {
     ArrayList<Selection> result = new ArrayList<Selection>();
 
     try {
-      Statement stmt1 = con.createStatement();
-      ResultSet rs1 = stmt1
-          .executeQuery("SELECT id, Name, Beschreibungstext" + " FROM Characteristic WHERE e_typ='s'");
+      Statement stmt = con.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT id, Name, Beschreibungstext" + " FROM Characteristic WHERE e_typ='s'");
 
       Statement stmt2 = con.createStatement();
 
 
 
-      while (rs1.next()) {
+      while (rs.next()) {
     	Selection s = new Selection();
-        s.setId(rs1.getInt("id"));
-        s.setName(rs1.getString("Name"));
-        s.setDescriptiontext(rs1.getString("Beschreibungstext"));
+        s.setId(rs.getInt("id"));
+        s.setName(rs.getString("Name"));
+        s.setDescriptiontext(rs.getString("Beschreibungstext"));
         ResultSet rs2 = stmt2
-            .executeQuery("SELECT Text FROM Alternative WHERE Selection_id=" + rs1.getInt("id"));
+            .executeQuery("SELECT Text FROM Alternative WHERE Selection_id=" + rs.getInt("id"));
         ArrayList<String> al = new ArrayList<String>();
         while (rs2.next()) {
           al.add(rs2.getString("Text"));
