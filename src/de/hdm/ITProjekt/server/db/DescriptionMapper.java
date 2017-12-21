@@ -81,7 +81,7 @@ public class DescriptionMapper {
       Statement stmt = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs1 =
+      ResultSet rs =
           stmt.executeQuery("SELECT id, Name, Beschreibungstext FROM Characteristic WHERE Name='"
               + name + "' AND e_typ='p_d'");
 
@@ -91,12 +91,12 @@ public class DescriptionMapper {
        * Ergebnis vorliegt.
        */
 
-      if (rs1.next()) {
+      if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
     	Description d = new Description();
-        d.setId(rs1.getInt("id"));
-        d.setName(rs1.getString("Name"));
-        d.setDescriptiontext(rs1.getString("Beschreibungstext"));
+        d.setId(rs.getInt("id"));
+        d.setName(rs.getString("Name"));
+        d.setDescriptiontext(rs.getString("Beschreibungstext"));
 
 
         return d;
