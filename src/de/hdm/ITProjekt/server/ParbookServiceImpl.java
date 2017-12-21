@@ -129,7 +129,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		p.setFirstName(firstname);
 		p.setLastName(lastname);
 		p.setEmail(email);
-		p.setDateOfBirth(birthdate);
+		p.setBirthdate(birthdate);
 		p.setHairColor(haircolor);
 		p.setBodyHeight(bodyheight);
 		p.setSmoker(smoker);
@@ -178,7 +178,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 
 	  @Override
 	  public Profile getProfileById(int id) {
-	    return profileMapper.findByKey(id);
+	    return profileMapper.findById(id);
 	  }
 
 	  /**
@@ -219,12 +219,12 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 
 	  @Override
 	  public String getCharacteristicsNameById(int id) throws IllegalArgumentException {
-	    if (descriptionMapper.findByKey(id) != null) {
-	      Description d = descriptionMapper.findByKey(id);
+	    if (descriptionMapper.findById(id) != null) {
+	      Description d = descriptionMapper.findById(id);
 	      String name = d.getName();
 	      return name;
-	    } else if (selectionMapper.findByKey(id) != null) {
-	      Selection s = selectionMapper.findByKey(id);
+	    } else if (selectionMapper.findById(id) != null) {
+	      Selection s = selectionMapper.findById(id);
 	      String name = s.getName();
 	      return name;
 	    }
@@ -237,12 +237,12 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 
 	  @Override
 	  public String getCharacteristicsDescriptionById(int id) throws IllegalArgumentException {
-	    if (descriptionMapper.findByKey(id) != null) {
-	      Description d = descriptionMapper.findByKey(id);
+	    if (descriptionMapper.findById(id) != null) {
+	      Description d = descriptionMapper.findById(id);
 	      String name = d.getDescriptiontext();
 	      return name;
-	    } else if (selectionMapper.findByKey(id) != null) {
-	      Selection s = selectionMapper.findByKey(id);
+	    } else if (selectionMapper.findById(id) != null) {
+	      Selection s = selectionMapper.findById(id);
 	      String name = s.getDescriptiontext();
 	      return name;
 	    }
@@ -258,7 +258,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	   * Auslesen der Auswahl mit einer bestimmten Id
 	   */
 	  public Selection getSelectionById(int id) throws IllegalArgumentException {
-	    return selectionMapper.findByKey(id);
+	    return selectionMapper.findById(id);
 	  }
 
 	  /**
@@ -294,13 +294,6 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  }
 
 	  /**
-	   * Auslesen der Auswahl-Objekte eines Profilattributs
-	   */
-	  public ArrayList<Selection> getAllSelectionProfileAttributes() {
-	    return selectionMapper.findAllProfilAtrribute();
-	  }
-
-	  /**
 	   * Auslesen der Beschreibungs-Objekte von Profilattributen mit einem bestimmten Namen
 	   */
 	  public Description getDescriptionProfileAttributesByName(String name)
@@ -311,8 +304,8 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  /**
 	   * Auslesen der Beschreibung mit einer bestimmten Id
 	   */
-	  public Description getDescriptionById(int id) throws IllegalArgumentException {
-	    return descriptionMapper.findByKey(id);
+	  public Description getDescriptionById(int id) {
+		  return descriptionMapper.findById(id);
 	  }
 
 	  /**
@@ -341,13 +334,6 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  public Description createDescription(String name, String descriptiontext)
 	      throws IllegalArgumentException {
 	    return null;
-	  }
-
-	  /**
-	   * Auslesen aller Beschreibungs-Objekte eines Profils
-	   */
-	  public ArrayList<Description> getAllDescriptionProfileAttributes() {
-	    return descriptionMapper.findAllProfilAttribute();
 	  }
 	  
 	  //------Info-Methoden------
@@ -463,28 +449,33 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  /**
 	   * Erstellen einer Kontaktsperre
 	   */
-	  public void createLock(Profile a, Profile b) throws IllegalArgumentException {
-	    blocklistMapper.insertForProfile(a, b);
+	  public Blocklist createLock(Profile fromProfile, Profile toProfile) throws IllegalArgumentException {
+		  Blocklist b = new Blocklist();
+		  
+		  b.setFromProfile(fromProfile);
+		  b.setToProfile(toProfile);
+		  
+		  return this.blocklistMapper.insert(b);
 
 	  }
 
 	  /**
 	   * Löschen einer Kontaktsperre
 	   */
-	  public void deleteLock(Profile remover, Profile remoter) throws IllegalArgumentException {
-	    blocklistMapper.deleteLockFor(remover, remoter);
+	  public void deleteLock(Blocklist b) throws IllegalArgumentException {
+		  this.blocklistMapper.delete(b);
 	  }
-
+	  
 	  /**
-	   * Auslesen der gesamten gesperrten Profile eines Profils
+	   * Speichern einer Kontaktsperre
 	   */
-	  public Blocklist getBlocklistForProfile(Profile profile) throws IllegalArgumentException {
-	    Blocklist b = blocklistMapper.findAllForProfile(profile);
-	    b.getBlockedProfiles();
-
-	    return b;
-		
-	}
+	  public void saveLock(Blocklist b) throws IllegalArgumentException {
+		  if (b.getId() != 0) {
+			  blocklistMapper.update(b);
+		  } else {
+			  blocklistMapper.insert(b);
+		  }
+	  }
 
 	@Override
 	public Profile createProfile(String firstname, String lastname, String email, java.util.Date birthdate,
