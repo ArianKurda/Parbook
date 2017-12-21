@@ -208,17 +208,17 @@ public interface ParbookService extends RemoteService {
 	/**
 	 * Erstellen einer Kontaktsperre
 	 */
-	  public void createLock(Profile a, Profile b) throws IllegalArgumentException;
+	  public Blocklist createLock(Profile fromProfile, Profile toProfile) throws IllegalArgumentException;
 
 	/**
 	 * Löschen einer Kontaktsperre
 	 */
-	  public void deleteLock(Profile remover, Profile remoter);
-
-	 /**
-	  * Auslesen der gesamten gesperrten Profile eines Profils
-	  */
-		  public Blocklist getBlocklistForProfile(Profile profile) throws IllegalArgumentException;
+	  public void deleteLock(Blocklist b);
+	  
+	/**
+	 * Speichern einer Kontaktsperre
+	 */
+	  public void saveLock(Blocklist b);
 
 
 }

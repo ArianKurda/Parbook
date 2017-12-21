@@ -262,13 +262,6 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  }
 
 	  /**
-	   * Auslesen der Auswahl von Profilattributen mit einem bestimmten Namen
-	   */
-	  public Selection getSelectionProfileAttributeByName(String name) throws IllegalArgumentException {
-	    return selectionMapper.findByName(name);
-	  }
-
-	  /**
 	   * Löschen eines Auswahl-Objekts
 	   */
 	  public void delete(Selection selection) throws IllegalArgumentException {
@@ -476,6 +469,13 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 			  blocklistMapper.insert(b);
 		  }
 	  }
+	  
+	  /**
+	   * Auslesen einer Kontaktsperre eines Profils
+	   */
+	  public ArrayList<Blocklist> getBlocklistOfProfile(Profile p) {
+		  return this.blocklistMapper.findByProfile(p);
+	  }
 
 	@Override
 	public Profile createProfile(String firstname, String lastname, String email, java.util.Date birthdate,
@@ -524,6 +524,6 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	public void setNotepadMapper(NotepadMapper notepadMapper) {
 		this.notepadMapper = notepadMapper;
 	}
-};
+}
 
 	

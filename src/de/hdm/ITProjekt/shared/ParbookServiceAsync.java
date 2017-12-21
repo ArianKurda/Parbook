@@ -221,16 +221,16 @@ public interface ParbookServiceAsync {
 	/**
 	 * Erstellen einer Kontaktsperre
 	 */
-	  void createLock(Profile a, Profile b, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	  void createLock(Profile fromProfile, Profile toProfile, AsyncCallback<Blocklist> callback) throws IllegalArgumentException;
 
 	/**
 	 * Löschen einer Kontaktsperre
 	 */
-	  void deleteLock(Profile remover, Profile remoter, AsyncCallback<Void> callback);
-
+	  void deleteLock(Blocklist b, AsyncCallback<Void> callback);
+	  
 	/**
-	 * Auslesen der gesamten gesperrten Profile eines Profils
+	 * Speichern einer Kontaktsperre
 	 */
-	  void getBlocklistForProfile(Profile profile, AsyncCallback<Blocklist> callback) throws IllegalArgumentException;
+	  void saveLock(Blocklist b, AsyncCallback<Void> callback);
 
 }
