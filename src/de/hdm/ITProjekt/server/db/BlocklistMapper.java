@@ -225,7 +225,7 @@ public class BlocklistMapper {
 
 			ResultSet rs = stmt.executeQuery("SELECT blocklist" + " WHERE fromProfile=" + profileId);
 
-			// Für jeden Eintrag im Suchergebnis wird nun ein Blocking-Objekt
+			// Für jeden Eintrag im Suchergebnis wird nun ein Blocklist-Objekt
 			// erstellt und zur Ergebnis-ArrayList hinzugefügt.
 			while (rs.next()) {
 				result.add(map(rs));
@@ -300,11 +300,11 @@ public class BlocklistMapper {
    * @return Kontaktsperre des Profils
    */
   
-  public ArrayList<Profile> findAll(Profile p) {
+  public ArrayList<Blocklist> findAll(Profile p) {
 		  Connection con = DBConnection.connection();
 		  
 		  //Ergebnis vorbereiten
-		  ArrayList<Profile> result = new ArrayList<>();
+		  ArrayList<Blocklist> result = new ArrayList<>();
 		  
 		  try {
 			  Statement stmt = con.createStatement();
@@ -325,6 +325,53 @@ public class BlocklistMapper {
 		  //Ergebnis zurück geben
 		  return result;
 
+  }
+  
+  /**
+   * Einfügen eines gesperrten Profil-Objekts zur Sperrliste.
+   * 
+   * @param b das zu speichernde Objekt
+   * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
+   *         <code>id</code>.
+   */
+  public Blocklist addProfileToBlocklist(Blocklist b) {
+    Connection con = DBConnection.connection();
+
+    try {
+      Statement stmt = con.createStatement();
+
+      /*
+       * Zunächst schauen wir nach, welches der momentan höchste
+       * Primärschlüsselwert ist.
+       */
+      ResultSet rs = stmt.executeQuery("SELECT toProfile" + "FROM profile WHERE fromProfile=" + b.getId());
+
+      // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
+      if (rs.next()) {
+        /*
+         * b erhält den bisher maximalen, nun um 1 inkrementierten
+         * Primärschlüssel.
+         */
+        b.setId(rs.getInt("maxid") + 1);
+
+        stmt = con.createStatement();
+
+        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
+        stmt.executeUpdate("INSERT INTO blocklist (id, toProfile) " + "VALUES ("
+        		+ b.getId()
+        		+ ","
+        		+ b.getToProfile().getId()
+        		+ "')");
+      }
+    }
+    catch (SQLException e2) {
+      e2.printStackTrace();
+    }
+
+    /*
+     * Rückgabe, des evtl. korrigierten Sperrliste.
+     */
+    return b;
   }
 
 }
