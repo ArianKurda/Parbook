@@ -11,13 +11,9 @@ public class Notepad extends BusinessObject {
 	
 	private String title;
 	
-	private Profile creator;
-	
 	private Profile fromProfile;
 	
 	private Profile toProfile;
-	
-	private int creatorID;
 	
 	private ArrayList<Profile> profilelist = new ArrayList<Profile>();
 	
@@ -31,10 +27,6 @@ public class Notepad extends BusinessObject {
 		this.profilelist = profilelist;
 	}
 	
-	public Profile getCreator(){
-		return creator;
-	}
-	
 	public Profile getFromProfile() {
 		return fromProfile;
 	}
@@ -43,18 +35,13 @@ public class Notepad extends BusinessObject {
 		this.fromProfile = fromProfile;
 	}
 	
-	public Profile toProfile() {
+	public Profile getToProfile() {
 		return toProfile;
 	}
 	
 	public void setToProfile(Profile toProfile) {
 		this.toProfile = toProfile;
 	}
-	
-	public void setCreator(Profile profile){
-		this.creator = profile;
-	}
-	
 
 	public String getTitle() {
 		return title;
@@ -63,21 +50,5 @@ public class Notepad extends BusinessObject {
 	public void setTitle(String title) {
 		this.title = "Merkzettel";
 	}
-	
-	
-	/* public int CreatorID() {
-	 * return creatorID;
-	 }
-	 
-	 public void setCreatorID(int creator ID) {
-	 this.creatorID = creatorID;
-	 
-	 wei� nicht ob das ben�tigt wird
-	 */
-	 public Notepad (Profile creator, String title){
-		 this.title = "Merkzettel";
-		 this.creator = creator;
-		 this.profilelist.add(creator);
-	 }
 
 }
