@@ -17,7 +17,7 @@ public class Notepad extends BusinessObject {
 	
 	private Profile toProfile;
 	
-	/*private int creatorID;*/
+	private int creatorID;
 	
 	private ArrayList<Profile> profilelist = new ArrayList<Profile>();
 	
@@ -79,19 +79,5 @@ public class Notepad extends BusinessObject {
 		 this.creator = creator;
 		 this.profilelist.add(creator);
 	 }
-
-	public Notepad() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public String getOwnerId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setOwnerId(int int1) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
