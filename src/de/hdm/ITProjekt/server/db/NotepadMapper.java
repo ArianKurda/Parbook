@@ -1,6 +1,7 @@
 package de.hdm.ITProjekt.server.db;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import de.hdm.ITProjekt.shared.bo.Notepad;
@@ -64,7 +65,7 @@ public class NotepadMapper {
    * @return Merkzettel-Objekt, das dem übergebenen Schlüssel entspricht, null bei
    *         nicht vorhandenem DB-Tupel.
    */
-  public Notepad findByKey(int id) {
+  public Notepad findById(int id) {
     // DB-Verbindung holen
     Connection con = DBConnection.connection();
 
@@ -73,8 +74,8 @@ public class NotepadMapper {
       Statement stmt = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs = stmt.executeQuery("SELECT id, owner FROM notepads "
-          + "WHERE id=" + id + " ORDER BY owner");
+      ResultSet rs = stmt.executeQuery("SELECT id FROM notepads "
+          + "WHERE id=" + id + " ORDER BY fromProfile");
 
       /*
        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -84,7 +85,6 @@ public class NotepadMapper {
         // Ergebnis-Tupel in Objekt umwandeln
         Notepad n = new Notepad();
         n.setId(rs.getInt("id"));
-        n.setOwnerId(rs.getInt("owner"));
         return n;
       }
     }
@@ -103,11 +103,11 @@ public class NotepadMapper {
    *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public Vector<Notepad> findAll() {
+  public ArrayList<Notepad> findAll() {
     Connection con = DBConnection.connection();
 
     // Ergebnisvektor vorbereiten
-    Vector<Notepad> result = new Vector<Notepad>();
+    ArrayList<Notepad> result = new ArrayList<Notepad>();
 
     try {
       Statement stmt = con.createStatement();
@@ -122,7 +122,7 @@ public class NotepadMapper {
         n.setOwnerId(rs.getInt("owner"));
 
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.addElement(n);
+        result.add(n);
       }
     }
     catch (SQLException e2) {
@@ -131,61 +131,6 @@ public class NotepadMapper {
 
     // Ergebnisvektor zurückgeben
     return result;
-  }
-
-  /**
-   * Auslesen aller Profile eines durch Fremdschlüssel (Kundennr.) gegebenen
-   * Kunden.
-   * 
-   * @see findByOwner(Merkzettel owner)
-   * @param ownerID Schlüssel des zugehörigen Profils.
-   * @return Ein Vektor mit Merkzettel-Objekten, die dden Merkzettel des
-   *         betreffenden Profils repräsentiert. Bei evtl. Exceptions wird ein
-   *         partiell gefüllter oder ggf. auch leerer Vetor zurückgeliefert.
-   */
-  public Vector<Notepad> findByOwner(int ownerID) {
-    Connection con = DBConnection.connection();
-    Vector<Notepad> result = new Vector<Notepad>();
-
-    try {
-      Statement stmt = con.createStatement();
-
-      ResultSet rs = stmt.executeQuery("SELECT id, owner FROM notepads "
-          + "WHERE owner=" + ownerID + " ORDER BY id");
-
-      // Für jeden Eintrag im Suchergebnis wird nun ein Merkzettel-Objekt erstellt.
-      while (rs.next()) {
-    	  Notepad n = new Notepad();
-        n.setId(rs.getInt("id"));
-        n.setOwnerId(rs.getInt("owner"));
-
-        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.addElement(n);
-      }
-    }
-    catch (SQLException e2) {
-      e2.printStackTrace();
-    }
-
-    // Ergebnisvektor zurückgeben
-    return result;
-  }
-
-  /**
-   * Auslesen des Merkzettels eines Profils (durch <code>Merkzettel</code>-Objekt
-   * gegeben).
-   * 
-   * @see findByOwner(int ownerID)
-   * @param owner Profilobjekt, dessen Merkzettel wir auslesen möchten.
-   * @return Merkzettel des Profils
-   */
-  public Vector<Notepad> findByOwner(Profile owner) {
-
-    /*
-     * Wir lesen einfach die Profilnummer (Primärschlüssel) des Profil-Objekts
-     * aus und delegieren die weitere Bearbeitung an findByOwner(int ownerID).
-     */
-    return findByOwner(owner.getId());
   }
 
   /**
@@ -285,41 +230,30 @@ public class NotepadMapper {
   }
 
   /**
-   * Löschen sämtlicher Merkzettel (<code>Merkzettel</code>-Objekt) eines Profils.
-   * Diese Methode sollte aufgerufen werden, bevor ein <code>Merkzettel</code>
-   * -Objekt gelöscht wird.
-   * 
-   * @param n das <code>Merkzettel</code>-Objekt, zu dem das Profil gehört.
-   */
-  public void deleteNotepadsOf(Profile p) {
-    Connection con = DBConnection.connection();
-
-    try {
-      Statement stmt = con.createStatement();
-
-      stmt.executeUpdate("DELETE FROM notepads " + "WHERE owner=" + p.getId());
-
-    }
-    catch (SQLException e2) {
-      e2.printStackTrace();
-    }
-  }
-
-  /**
    * Auslesen des zugehörigen <code>Merkzettel</code>-Objekts zu einem gegebenen
-   * Profil.
+   * Profil mithilfe der ProfilId.
    * 
    * @param p das Merkzettel, dessen Profil wir auslesen möchten
    * @return ein Objekt, das den Eigentümer des Profils darstellt
    */
-  public Profile getOwner(Notepad n) {
-    /*
-     * Wir bedienen uns hier einfach des ProfilMapper. Diesem geben wir
-     * einfach den in dem Merkzettel-Objekt enthaltenen Fremdschlüssel für den
-     * Profilinhaber. Der ProfilMapper lässt uns dann diese ID in ein Objekt
-     * auf.
-     */
-    return ProfileMapper.profileMapper().findByKey(n.getOwnerId());
-  }
+  public ArrayList<Notepad> NotepadOfProfile(int profileId) {
+	  
+	  Connection con = DBConnection.connection();
+	  
+	  ArrayList<Notepad> result = new ArrayList<Notepad>();
+	  
+	  try {
+	  
+	  Statement stmt = con.createStatement();
+	  
+	  ResultSet rs = stmt.executeQuery("SELECT notepad WHERE fromProfile=" + profileId);
+	  
+	} catch (SQLException e) {
+
+		e.printStackTrace();
+		}
+	  
+	  return result;
+	}
 
 }
