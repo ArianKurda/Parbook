@@ -2,7 +2,6 @@ package de.hdm.ITProjekt.server.db;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import de.hdm.ITProjekt.shared.bo.Notepad;
 import de.hdm.ITProjekt.shared.bo.Profile;
@@ -246,7 +245,7 @@ public class NotepadMapper {
 	  
 	  Statement stmt = con.createStatement();
 	  
-	  ResultSet rs = stmt.executeQuery("SELECT notepad WHERE fromProfile=" + profileId);
+	  ResultSet rs = stmt.executeQuery("SELECT notepad WHERE Profile=" + profileId);
 	  
 	} catch (SQLException e) {
 
