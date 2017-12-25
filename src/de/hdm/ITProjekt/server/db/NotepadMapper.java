@@ -233,8 +233,8 @@ public class NotepadMapper {
    * Auslesen des zugehörigen <code>Merkzettel</code>-Objekts zu einem gegebenen
    * Profil mithilfe der ProfilId.
    * 
-   * @param p das Merkzettel, dessen Profil wir auslesen möchten
-   * @return ein Objekt, das den Eigentümer des Profils darstellt
+   * @param profileId das Profil, dessen Merkzettel wir auslesen möchten
+   * @return eine Liste, das den Eigentümer des Merkzettels darstellt
    */
   public ArrayList<Notepad> NotepadOfProfile(int profileId) {
 	  
