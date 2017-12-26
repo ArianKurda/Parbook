@@ -2,6 +2,8 @@ package de.hdm.ITProjekt.shared;
 
 import java.io.Serializable;
 
+import de.hdm.ITProjekt.shared.bo.Profile;
+
 public class LoginInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -9,6 +11,7 @@ public class LoginInfo implements Serializable {
 	private String loginUrl;
 	private String logoutUrl;
 	private String emailAddress;
+	private Profile profile;
 
 	public boolean isLoggedIn() {
 		return loggedIn;
@@ -40,6 +43,14 @@ public class LoginInfo implements Serializable {
 
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+	}
+	
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 	
 }
