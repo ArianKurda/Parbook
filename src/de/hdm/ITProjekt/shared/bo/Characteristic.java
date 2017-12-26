@@ -14,32 +14,35 @@ public class Characteristic extends BusinessObject {
    * @param name Überbegriff, d.h. Begriffsbezeichnung eines Hobbies
    * @param descriptiontext: Der eigentliche Name eines Hobbies
    */
-  private String name = "";
+  private String characteristicName = "";
   
+  /**
+   *  Textuelle Beschreibung der Eigenschaft für ein Profil
+   */
   private String descriptiontext = "";
   
   /**
-   * Auslesen des Parameters Name
+   * Auslesen des Parameters Eigenschafts-Name
    * 
-   * @return name
+   * @return CharacteristicName
    */
-  public String getName() {
-	  return name;
+  public String getCharacteristicName() {
+	  return characteristicName;
   }
   
   /**
-   * Setzen des Parameters Name
+   * Setzen des Parameters Eigenschafts-Name
    * 
-   * @param name
+   * @param cn
    */
-  public void setName(String name) {
-	  this.name = name;
+  public void setCharacteristicName(String cn) {
+	  this.characteristicName = cn;
   }
   
   /**
-   * Auslesen des Beschreibungstextes
+   * Auslesen des Beschreibungstextes einer Eigenschaft eines Profils
    * 
-   *@return descriptiontext 
+   *@return descriptiontext, textuelle Beschreibung für ein Profil
    */
   public String getDescriptiontext() {
 	  return descriptiontext;
@@ -53,5 +56,12 @@ public class Characteristic extends BusinessObject {
   public void setDescriptiontext(String descriptiontext) {
 	  this.descriptiontext = descriptiontext;
   }
+  
+  /**
+   * Einfache textuelle Darstellung der jeweiligen Instanzen.
+   */
+	public String toString() {
+		return super.toString() + " " + this.characteristicName + " " + this.descriptiontext;
+	}
 
 }
