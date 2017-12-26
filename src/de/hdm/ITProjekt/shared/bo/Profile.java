@@ -5,7 +5,6 @@ import java.sql.Date;
 public class Profile extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
-	
 
 	private String firstname = "";
 	
@@ -17,9 +16,7 @@ public class Profile extends BusinessObject {
 	
 	private int googleID;
 	
-	private int id;
-	
-	private Date birthdate; /** müssen nachschauen wie wir das mit dem Geburtsdatum machen*/
+	private Date birthdate = null;
 	
 	private String haircolor = "";
 	
@@ -31,7 +28,7 @@ public class Profile extends BusinessObject {
 	
 	private boolean gender = true;  /* true = maennlich , false = weiblich*/
 
-	private boolean loggedIn;
+	private boolean loggedIn = false;
 
 	private int match;
 
@@ -39,7 +36,7 @@ public class Profile extends BusinessObject {
 
 	private String logoutUrl;
 
-	private boolean isCreated;
+	private boolean isCreated = false;
 	
 
 	public static final boolean raucher = true;
@@ -47,6 +44,7 @@ public class Profile extends BusinessObject {
 	public static final boolean maennlich = true;
 	public static final boolean weiblich = false;
 	
+	//------ Methoden ------//
 	public String getFirstName() {
 		return this.firstname;	
 	}
@@ -62,8 +60,6 @@ public class Profile extends BusinessObject {
 	public void setLastName (String name) {
 		this.lastname = name;
 	}
-	
-	/* geburtsdatum*/
 	
 	public String getHairColor() {
 		return this.haircolor;
@@ -135,7 +131,6 @@ public class Profile extends BusinessObject {
 	public Date getBirthdate() {
 		return birthdate;
 	}
-	
 	
 	public void setBirthdate(Date newBirthdate){
 		birthdate = newBirthdate;
