@@ -156,13 +156,14 @@ public class BlocklistMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE blocklist SET fromProfile="
+      stmt.executeUpdate("UPDATE blocklist " 
+    		  + "SET fromProfile="
     		  + b.getFromProfile()
     		  + "',"
     		  + "toProfile="
     		  + b.getToProfile()
     		  + "',"
-    		  + "WHERE ID="
+    		  + "WHERE id="
     		  + b.getId());
 
     }
@@ -185,7 +186,7 @@ public class BlocklistMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM blocklist " + "WHERE ID=" + b.getId());
+      stmt.executeUpdate("DELETE FROM blocklist " + "WHERE id=" + b.getId());
 
     }
     catch (SQLException e2) {
@@ -310,11 +311,11 @@ public class BlocklistMapper {
 			  Statement stmt = con.createStatement();
 			  
 			  ResultSet rs = stmt.executeQuery(
-					  "SELECT toProfile" + "FROM profile WHERE fromProfile=" + p.getId());
+					  "SELECT toProfile" + "FROM blocklist WHERE fromProfile=" + p.getId());
 			  
 			  //Für jeden Eintrag im Suchergebnis wird nun ein Blocklist-Objekt erstellt.
 			  while (rs.next()) {
-				  Profile profile = ProfileMapper.profileMapper().findById(rs.getInt("toProfile"));
+				  ProfileMapper.profileMapper().findById(rs.getInt("toProfile"));
 
 			  }
 		  }
@@ -328,50 +329,31 @@ public class BlocklistMapper {
   }
   
   /**
-   * Einfügen eines gesperrten Profil-Objekts zur Sperrliste.
+   * Auslesen, ob eine Kontaktsperre vorliegt.
    * 
-   * @param b das zu speichernde Objekt
-   * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
-   *         <code>id</code>.
+   * @param fromProfile & toProfile
+   * @return true or false
    */
-  public Blocklist addProfileToBlocklist(Blocklist b) {
+  public boolean doLockExistForProfile(Profile fromProfile, Profile toProfile) {
     Connection con = DBConnection.connection();
 
     try {
       Statement stmt = con.createStatement();
 
-      /*
-       * Zunächst schauen wir nach, welches der momentan höchste
-       * Primärschlüsselwert ist.
-       */
-      ResultSet rs = stmt.executeQuery("SELECT toProfile" + "FROM profile WHERE fromProfile=" + b.getId());
+      ResultSet rs = stmt.executeQuery("SELECT fromProfile FROM blocklist WHERE fromProfile=" 
+    		  + fromProfile.getId() 
+    		  + " AND toProfile=" 
+    		  + toProfile.getId());
 
-      // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
-      if (rs.next()) {
-        /*
-         * b erhält den bisher maximalen, nun um 1 inkrementierten
-         * Primärschlüssel.
-         */
-        b.setId(rs.getInt("maxid") + 1);
-
-        stmt = con.createStatement();
-
-        // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-        stmt.executeUpdate("INSERT INTO blocklist (id, toProfile) " + "VALUES ("
-        		+ b.getId()
-        		+ ","
-        		+ b.getToProfile().getId()
-        		+ "')");
+      while (rs.next()) {
+    	  return true;
       }
     }
     catch (SQLException e2) {
       e2.printStackTrace();
     }
-
-    /*
-     * Rückgabe, des evtl. korrigierten Sperrliste.
-     */
-    return b;
+    
+    return false;
   }
 
 }
