@@ -95,7 +95,7 @@ public class SelectionMapper {
         // Ergebnis-Tupel in Objekt umwandeln
     	Selection s = new Selection();
         s.setId(rs1.getInt("id"));
-        s.setName(rs1.getString("Name"));
+        s.setCharacteristicName(rs1.getString("Name"));
         s.setDescriptiontext(rs1.getString("Beschreibungstext"));
         ResultSet rs2 =
             stmt2.executeQuery("SELECT Text FROM Alternative WHERE Selection_id=" + rs1.getInt("id"));
@@ -132,7 +132,7 @@ public class SelectionMapper {
     	  Selection s = new Selection();
   		s.setId(rs.getInt("id"));
   		s.setDescriptiontext(rs.getString("Descriptiontxt"));
-  		s.setName(rs.getString("CharacteristicName"));
+  		s.setCharacteristicName(rs.getString("CharacteristicName"));
   		return result;
     	  
       }
@@ -169,7 +169,7 @@ public class SelectionMapper {
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
         stmt.executeUpdate("INSERT INTO selection (id, Name, " + "descriptiontext) VALUES (" + s.getId()
-                + ",'" + s.getName() + "','" + s.getDescriptiontext());
+                + ",'" + s.getCharacteristicName() + "','" + s.getDescriptiontext());
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -190,7 +190,7 @@ public class SelectionMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE characteristic SET Name='" + s.getName() + "', Beschreibungstext='"
+      stmt.executeUpdate("UPDATE characteristic SET Name='" + s.getCharacteristicName() + "', Beschreibungstext='"
           + s.getDescriptiontext() + "WHERE id=" + s.getId());
 
     } catch (SQLException e) {
