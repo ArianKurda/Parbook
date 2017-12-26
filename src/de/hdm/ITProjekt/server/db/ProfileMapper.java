@@ -234,41 +234,5 @@ public void delete(Profile p) {
 	      e.printStackTrace();
 	    }
 	
-}
-
-
-public ArrayList<Profile> findByName(String lastname, String firstname) {
-	Connection con = DBConnection.connection();
-    ArrayList<Profile> result = new ArrayList<Profile>();
-
-    try {
-      Statement stmt = con.createStatement();
-
-      ResultSet rs = stmt.executeQuery("SELECT id, firstName, lastName "
-          + "FROM profiles " + "WHERE lastName=" + lastname + "WHERE firstName =" + firstname
-          + " ORDER BY firstName, lastName");
-
-      // Für jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
-      // erstellt.
-      while (rs.next()) {
-        Profile p = new Profile();
-        p.setId(rs.getInt("id"));
-        p.setFirstName(rs.getString("firstName"));
-        p.setLastName(rs.getString("lastName"));
-
-      
-      }
-    } catch (SQLException e) {
-    	
-      ClientsideSettings.getLogger().severe("Fehler beim Zurückgbeen byEmail");
-      return null;
-    }
-
-    // Ergebnisvektor zurückgeben
-    return result;
   }
 }
-
-
-
-
