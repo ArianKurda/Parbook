@@ -73,8 +73,7 @@ public class NotepadMapper {
       Statement stmt = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs = stmt.executeQuery("SELECT id FROM notepads "
-          + "WHERE id=" + id + " ORDER BY fromProfile");
+      ResultSet rs = stmt.executeQuery("SELECT id FROM notepad " + "WHERE id=" + id + " ORDER BY fromProfile");
 
       /*
        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -102,7 +101,7 @@ public class NotepadMapper {
    *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
-  public ArrayList<Notepad> findAll() {
+  public ArrayList<Notepad> findAll(Profile p) {
     Connection con = DBConnection.connection();
 
     // Ergebnisvektor vorbereiten
@@ -111,17 +110,11 @@ public class NotepadMapper {
     try {
       Statement stmt = con.createStatement();
 
-      ResultSet rs = stmt.executeQuery("SELECT id, owner FROM notepads "
-          + " ORDER BY id");
+      ResultSet rs = stmt.executeQuery("SELECT toProfile=" + "FROM notepad WHERE fromProfile=" + p.getId());
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Merkzettel-Objekt erstellt.
       while (rs.next()) {
-    	  Notepad n = new Notepad();
-        n.setId(rs.getInt("id"));
-        n.setOwnerId(rs.getInt("owner"));
-
-        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.add(n);
+    	  NotepadMapper.notepadMapper().findById(rs.getInt("toProfile"));
       }
     }
     catch (SQLException e2) {
@@ -151,8 +144,7 @@ public class NotepadMapper {
        * Zunächst schauen wir nach, welches der momentan höchste
        * Primärschlüsselwert ist.
        */
-      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-          + "FROM notepads ");
+      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid " + "FROM notepad ");
 
       // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
       if (rs.next()) {
@@ -165,8 +157,14 @@ public class NotepadMapper {
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-        stmt.executeUpdate("INSERT INTO accounts (id, owner) " + "VALUES ("
-            + n.getId() + "," + n.getOwnerId() + ")");
+        stmt.executeUpdate("INSERT INTO notepad (id, fromProfile, toProfile) " 
+        		+ "VALUES ("
+        		+ n.getId() 
+        		+ "," 
+        		+ n.getFromProfile().getId()
+        		+ ","
+        		+ n.getToProfile().getId()
+        		+ ")");
       }
     }
     catch (SQLException e2) {
@@ -174,14 +172,8 @@ public class NotepadMapper {
     }
 
     /*
-     * Rückgabe, des evtl. korrigierten Merkzettels.
-     * 
-     * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-     * Objekte übergeben werden, wäre die Anpassung des Profil-Objekts auch
-     * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
-     * explizite Rückgabe von p ist eher ein Stilmittel, um zu signalisieren,
-     * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
-     */
+     * Rückgabe, des evtl. korrigierten Merkzettels.*/
+
     return n;
   }
 
@@ -197,8 +189,15 @@ public class NotepadMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE notepads " + "SET owner=\"" + n.getOwnerId()
-          + "\" " + "WHERE id=" + n.getId());
+      stmt.executeUpdate("UPDATE notepad " 
+    		  + "SET fromProfile=" 
+    		  + n.getFromProfile()
+    		  + ","
+    		  + "toProfile="
+    		  + n.getToProfile()
+    		  + ","
+    		  + "WHERE id=" 
+    		  + n.getId());
 
     }
     catch (SQLException e2) {
@@ -220,7 +219,7 @@ public class NotepadMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("DELETE FROM notepads " + "WHERE id=" + n.getId());
+      stmt.executeUpdate("DELETE FROM notepad " + "WHERE id=" + n.getId());
 
     }
     catch (SQLException e2) {
@@ -228,31 +227,5 @@ public class NotepadMapper {
     }
   }
 
-  /**
-   * Auslesen des zugehörigen <code>Merkzettel</code>-Objekts zu einem gegebenen
-   * Profil mithilfe der ProfilId.
-   * 
-   * @param profileId das Profil, dessen Merkzettel wir auslesen möchten
-   * @return eine Liste, das den Eigentümer des Merkzettels darstellt
-   */
-  public ArrayList<Notepad> NotepadOfProfile(int profileId) {
-	  
-	  Connection con = DBConnection.connection();
-	  
-	  ArrayList<Notepad> result = new ArrayList<Notepad>();
-	  
-	  try {
-	  
-	  Statement stmt = con.createStatement();
-	  
-	  ResultSet rs = stmt.executeQuery("SELECT notepad WHERE Profile=" + profileId);
-	  
-	} catch (SQLException e) {
-
-		e.printStackTrace();
-		}
-	  
-	  return result;
-	}
 
 }

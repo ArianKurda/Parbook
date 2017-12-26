@@ -315,7 +315,7 @@ public class BlocklistMapper {
 			  
 			  //Für jeden Eintrag im Suchergebnis wird nun ein Blocklist-Objekt erstellt.
 			  while (rs.next()) {
-				  ProfileMapper.profileMapper().findById(rs.getInt("toProfile"));
+				  BlocklistMapper.blocklistMapper().findById(rs.getInt("toProfile")); //verbessern
 
 			  }
 		  }

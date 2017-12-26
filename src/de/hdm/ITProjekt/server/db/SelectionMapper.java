@@ -126,27 +126,15 @@ public class SelectionMapper {
 
     try {
       Statement stmt = con.createStatement();
-      ResultSet rs = stmt.executeQuery("SELECT id, Name, Beschreibungstext" + " FROM Characteristic WHERE e_typ='s'");
-
-      Statement stmt2 = con.createStatement();
-
-
-
+      ResultSet rs = stmt.executeQuery("SELECT name FROM characteristic");
+      
       while (rs.next()) {
-    	Selection s = new Selection();
-        s.setId(rs.getInt("id"));
-        s.setName(rs.getString("Name"));
-        s.setDescriptiontext(rs.getString("Beschreibungstext"));
-        ResultSet rs2 = stmt2
-            .executeQuery("SELECT Text FROM Alternative WHERE Selection_id=" + rs.getInt("id"));
-        ArrayList<String> al = new ArrayList<String>();
-        while (rs2.next()) {
-          al.add(rs2.getString("Text"));
-        }
-        s.setAlternatives(al);
-        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.add(s);
-
+    	  Selection s = new Selection();
+  		s.setId(rs.getInt("id"));
+  		s.setDescriptiontext(rs.getString("Descriptiontxt"));
+  		s.setName(rs.getString("CharacteristicName"));
+  		return result;
+    	  
       }
 
     } catch (SQLException e) {
@@ -180,9 +168,8 @@ public class SelectionMapper {
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-        stmt.executeUpdate(
-            "INSERT INTO Eigenschaft (id, Name, " + "Beschreibungstext, e_typ) VALUES (" + s.getId()
-                + ",'" + s.getName() + "','" + s.getDescriptiontext() + "','a')");
+        stmt.executeUpdate("INSERT INTO selection (id, Name, " + "descriptiontext) VALUES (" + s.getId()
+                + ",'" + s.getName() + "','" + s.getDescriptiontext());
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -204,7 +191,7 @@ public class SelectionMapper {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE characteristic SET Name='" + s.getName() + "', Beschreibungstext='"
-          + s.getDescriptiontext() + "', e_typ='s' WHERE id=" + s.getId());
+          + s.getDescriptiontext() + "WHERE id=" + s.getId());
 
     } catch (SQLException e) {
       e.printStackTrace();
