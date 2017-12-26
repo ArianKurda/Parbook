@@ -105,7 +105,7 @@ public class DescriptionMapper {
         // Ergebnis-Tupel in Objekt umwandeln
     	Description d = new Description();
         d.setId(rs1.getInt("id"));
-        d.setName(rs1.getString("Name"));
+        d.setCharacteristicName(rs1.getString("Name"));
         d.setDescriptiontext(rs1.getString("Beschreibungstext"));
 
 
@@ -140,7 +140,7 @@ public class DescriptionMapper {
       while (rs.next()) {
     	Description d = new Description();
         d.setId(rs.getInt("id"));
-        d.setName(rs.getString("Name"));
+        d.setCharacteristicName(rs.getString("Name"));
         d.setDescriptiontext(rs.getString("Beschreibungstext"));
         result.add(d);
 
@@ -184,7 +184,7 @@ public class DescriptionMapper {
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
         stmt.executeUpdate("INSERT INTO characteristic (id, Name, Beschreibungstext, e_typ) VALUES ("
-            + d.getId() + ",'" + d.getName() + "','" + d.getDescriptiontext() + "','d')");
+            + d.getId() + ",'" + d.getCharacteristicName() + "','" + d.getDescriptiontext() + "','d')");
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -206,7 +206,7 @@ public class DescriptionMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE characteristic SET Name='" + d.getName() + "', Beschreibungstext='"
+      stmt.executeUpdate("UPDATE characteristic SET Name='" + d.getCharacteristicName() + "', Beschreibungstext='"
           + d.getDescriptiontext() + "', e_typ='d' WHERE id=" + d.getId());
 
     } catch (SQLException e) {
