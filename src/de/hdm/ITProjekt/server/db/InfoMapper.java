@@ -6,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import de.hdm.ITProjekt.shared.bo.Description;
 import de.hdm.ITProjekt.shared.bo.Info;
-import de.hdm.ITProjekt.shared.bo.Profile;
-import de.hdm.ITProjekt.shared.bo.Selection;
 
 /**
  * Mapper-Klasse, die <code>Info</code>-Objekte auf eine relationale
