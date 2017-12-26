@@ -57,7 +57,7 @@ public class ProfileMapper {
         p.setEmail(rs.getString("email"));
         p.setHairColor(rs.getString("haircolor"));
         p.setBodyHeight(rs.getDouble("bodyheight"));
-       /* p.setBirthdate(rs.getString("firstname")); */
+        p.setBirthdate(rs.getDate("birthdate"));
         p.setSmoker(rs.getBoolean("smoker"));
         p.setReligion(rs.getString("religion"));
         p.setGender(rs.getBoolean("gender"));
@@ -90,29 +90,29 @@ public class ProfileMapper {
 
       // Statement ausfüllen und als Query an die DB schicken
       ResultSet rs = stmt.executeQuery(
-          "SELECT id, Firstname, Lastname, Email, DateOfBirth, HairColor, "
-              + "BodyHeight, Smoker, Religion, Gender FROM Profile " + "WHERE Email LIKE '"
+          "SELECT id, Firstname, Lastname, Email, Birthdate, HairColor, "
+              + "BodyHeight, Smoker, Religion, Gender FROM Profile " + "WHERE Email="
               + email + "'");
 
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
         Profile p = new Profile();
         p.setId(rs.getInt("id"));
-        p.setFirstName(rs.getString("Vorname"));
-        p.setLastName(rs.getString("Nachname"));
-        p.setEmail(rs.getString("Email"));
-        p.setDateOfBirth(rs.getDate("Geburtsdatum"));
-        p.setHairColor(rs.getString("Haarfarbe"));
-        p.setBodyHeight(rs.getInt("Koerpergroesse"));
-        p.setSmoker(rs.getBoolean("Raucher"));
-        p.setReligion(rs.getString("Religion"));
-        p.setGender(rs.getBoolean("Geschlecht"));
+        p.setFirstName(rs.getString("firstname"));
+        p.setLastName(rs.getString("lastname"));
+        p.setEmail(rs.getString("email"));
+        p.setBirthdate(rs.getDate("birthdate"));
+        p.setHairColor(rs.getString("haircolor"));
+        p.setBodyHeight(rs.getInt("bodyheight"));
+        p.setSmoker(rs.getBoolean("smoker"));
+        p.setReligion(rs.getString("religion"));
+        p.setGender(rs.getBoolean("gender"));
         p.setCreated(true);
 
         return p;
       }
     } catch (SQLException e) {
-      //
+    	
       ClientsideSettings.getLogger().severe("Fehler beim Zurückgbeen byEmail");
       return null;
     }
@@ -130,9 +130,9 @@ public class ProfileMapper {
 	  try {
 	      Statement stmt = con.createStatement();
 	  
-	  ResultSet rs = stmt.executeQuery("SELECT id,firstname,lastname,email,haircolor,bodyheight,"
+	  ResultSet rs = stmt.executeQuery("SELECT id,firstname,lastname,email,haircolor,bodyheight, birthdate"
 	      		+ "smoker, religion,gender, dbo "
-	    		  + "FROM Profile");
+	    		+ "FROM Profile");
 	  
 	  while (rs.next()) {
 		  
@@ -144,7 +144,7 @@ public class ProfileMapper {
 	        p.setEmail(rs.getString("email"));
 	        p.setHairColor(rs.getString("haircolor"));
 	        p.setBodyHeight(rs.getDouble("bodyheight"));
-	       /* p.setBirthdate(rs.getString("birthdate")); */
+	        p.setBirthdate(rs.getDate("birthdate"));
 	        p.setSmoker(rs.getBoolean("smoker"));
 	        p.setReligion(rs.getString("religion"));
 	        p.setGender(rs.getBoolean("gender"));
@@ -154,6 +154,9 @@ public class ProfileMapper {
 	        
 	  } catch (SQLException e) {
 	      e.printStackTrace();
+	      
+	      ClientsideSettings.getLogger()
+          .severe("Fehler beim schreiben in die DB" + e.getMessage() + " " + e.getCause() + " ");
 	      
 	  }
 	return result;
@@ -168,11 +171,11 @@ public Profile insert(Profile p) {
 		/* Zunaechst wird ueberprueft , 
 		 * welches momentan der hoechste Primaerschluesselwert ist*/
 		
-		ResultSet rs1 = stmt.executeQuery("SELECT MAX(id) As maxid FROM Profile");
+		ResultSet rs = stmt.executeQuery("SELECT MAX(id) As maxid FROM Profile");
 				
-				if (rs1.next()) {
+				if (rs.next()) {
 					
-					p.setId(rs1.getInt("maxid")+1);
+					p.setId(rs.getInt("maxid")+1);
 					
 					stmt = con.createStatement();
 					
@@ -181,16 +184,20 @@ public Profile insert(Profile p) {
 							+ "VALUES (" + p.getId() + ",'" + p.getFirstName() + "','" + p.getLastName()
 				            + "','" + p.getEmail() + "','" + p.getHairColor() + "'," + p.getBodyHeight() + ",'"
 				            + p.isSmoker() + "','" + p.getReligion() + "','" + p.isGender() + "','"
-				           /* + p.getdbo()*/ + "')"); // TODO
+				            + p.getBirthdate() + "')");
+					
+					ClientsideSettings.getLogger().info("Profile " + p.getLastName() + "  in DB geschrieben");
 							
 				}
 	} catch (SQLException e) {
 	      e.printStackTrace();
+	      ClientsideSettings.getLogger()
+          .severe("Fehler beim schreiben in die DB" + e.getMessage() + " " + e.getCause() + " ");
 }
     return p;
 
 }
-/** Profil �ndern**/
+/** Profil aendern**/
 
 public Profile update(Profile p) {
 	Connection con = DBConnection.connection();
@@ -201,10 +208,16 @@ public Profile update(Profile p) {
 		stmt.executeUpdate("UPDATE Profile SET  Firstname='" + p.getFirstName() + "', Lastname='"
 		          + p.getLastName() + "', Haircolor ='" + p.getHairColor() + "', Bodyheight="
 		          + p.getBodyHeight() + ", Smoker='" + p.isSmoker() + "', Religion='" + p.getReligion()
-		          + /*"', Dbo='" + p.getDbo() +*/ "' WHERE id=" + p.getId()); // TODO
+		          + "', Dbo='" + p.getBirthdate() + "' WHERE id=" + p.getId());
+		
+		ClientsideSettings.getLogger()
+        .info("Profiländerungen " + p.getLastName() + " in DB geschrieben");
 		
 	}catch (SQLException e) {
-		      e.printStackTrace();
+		e.printStackTrace();
+		
+		ClientsideSettings.getLogger()
+		        .severe("Fehler beim schreiben in die DB" + e.getMessage() + " " + e.getCause() + " ");
 }
 	return p;
 } 
@@ -215,7 +228,7 @@ public void delete(Profile p) {
 	
 	try {
 	      Statement stmt = con.createStatement();
-	      stmt.executeUpdate("DELETE FROM Info WHERE Profile_id=" + p.getId());
+	      stmt.executeUpdate("DELETE FROM Profile WHERE profileId=" + p.getId());
 
 	    } catch (SQLException e) {
 	      e.printStackTrace();
@@ -224,16 +237,16 @@ public void delete(Profile p) {
 }
 
 
-public Vector<Profile> findByLastName(String name) {
+public ArrayList<Profile> findByName(String lastname, String firstname) {
 	Connection con = DBConnection.connection();
-    Vector<Profile> result = new Vector<Profile>();
+    ArrayList<Profile> result = new ArrayList<Profile>();
 
     try {
       Statement stmt = con.createStatement();
 
       ResultSet rs = stmt.executeQuery("SELECT id, firstName, lastName "
-          + "FROM profiles " + "WHERE lastName LIKE '" + name
-          + "' ORDER BY lastName");
+          + "FROM profiles " + "WHERE lastName=" + lastname + "WHERE firstName =" + firstname
+          + " ORDER BY firstName, lastName");
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Profile-Objekt
       // erstellt.
@@ -243,12 +256,12 @@ public Vector<Profile> findByLastName(String name) {
         p.setFirstName(rs.getString("firstName"));
         p.setLastName(rs.getString("lastName"));
 
-        // Hinzufügen des neuen Objekts zum Ergebnisvektor
-        result.addElement(p);
+      
       }
-    }
-    catch (SQLException e) {
-      e.printStackTrace();
+    } catch (SQLException e) {
+    	
+      ClientsideSettings.getLogger().severe("Fehler beim Zurückgbeen byEmail");
+      return null;
     }
 
     // Ergebnisvektor zurückgeben
