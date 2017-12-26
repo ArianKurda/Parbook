@@ -27,7 +27,7 @@ public class Blocklist extends BusinessObject {
 		this.fromProfile = fromProfile;
 	}
 	
-	/*
+	/**
 	 * Auslesen des gesperrten Profils.
 	 * 
 	 * @return Gesperrtes Profil
@@ -36,7 +36,7 @@ public class Blocklist extends BusinessObject {
 		return toProfile;
 	}
 	
-	/*
+	/**
 	 * Profil, das gesperrt werden soll
 	 * 
 	 * @param toProfile Profil, das gesperrt wird.
