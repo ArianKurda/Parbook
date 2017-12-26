@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import de.hdm.ITProjekt.shared.bo.Description;
 import de.hdm.ITProjekt.shared.bo.Info;
+import de.hdm.ITProjekt.shared.bo.Profile;
+import de.hdm.ITProjekt.shared.bo.Selection;
 
 /**
  * Mapper-Klasse, die <code>Info</code>-Objekte auf eine relationale
@@ -59,54 +62,6 @@ public class InfoMapper {
   }
 
   /**
-   * Suchen eines Info-Objekts durch die profileID. Da diese eindeutig ist,
-   * wird genau ein Objekt zur�ckgegeben.
-   * 
-   * @param id Fremdschlüsselattribut (->DB)
-   * 
-   * @return Info-Objekt, das dem übergebenen Schlüssel entspricht, null bei
-   * nicht vorhandenem DB-Tupel.
-   */
-  public ArrayList<Info> findAllByProfileID(int id) {
-    // DB-Verbindung holen
-    Connection con = DBConnection.connection();
-
-    try {
-      // Leeres SQL-Statement (JDBC) anlegen
-      Statement stmt = con.createStatement();
-
-      // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs = stmt.executeQuery("SELECT id, Text, ProfileID, CharacteristicID FROM Infos "
-          + "WHERE ProfileID=" + id + " ORDER BY id");
-
-      /**
-       * Da die ID den Primärschlüssel wiederspiegelt,
-       * kann max. nur ein Tupel zurückgegeben werden. Prüfe, ob ein
-       * Ergebnis vorliegt.
-       */
-      ArrayList<Info> result = new ArrayList<>();
-      
-      
-      while (rs.next()) {
-        // Ergebnis-Tupel in Objekt umwandeln
-    	Info i = new Info();
-        i.setId(rs.getInt("id"));
-        i.setText(rs.getString("Text"));
-        i.setProfileID(rs.getInt("ProfileID"));
-        i.setCharacteristicID(rs.getInt("CharacteristicID"));
-        result.add(i);
-      }
-      return result;
-    }
-    catch (SQLException e2) {
-      e2.printStackTrace();
-
-      return null;
-    }
-
-  }
-
-  /**
    * Auslesen eines Info-Objekts.
    * 
    * Die Methode findByKey implementiert die Suche nach einer id aus der DB.
@@ -116,7 +71,7 @@ public class InfoMapper {
    * 
    * @return Info-Objekt, das der id entspricht.
    */
-  public Info findByKey(int id) {
+  public Info findById(int id) {
 	//DB-Verbindung holen
     Connection con = DBConnection.connection();
 
@@ -222,8 +177,14 @@ public class InfoMapper {
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-        stmt.executeUpdate("INSERT INTO Info (Text, ProfileID, CharacteristidID, id) " + "VALUES ('"
-            + i.getText() + "'," + i.getProfileID() + "," + i.getCharacteristicID() + i.getId() + ")");
+        stmt.executeUpdate("INSERT INTO Info (Text, ProfileID, CharacteristidID, id) " 
+        		+ "VALUES ('"
+        		+ i.getText() 
+        		+ "'," 
+        		+ i.getProfileID() 
+        		+ "," 
+        		+ i.getCharacteristicID() 
+        		+ i.getId() + ")");
       }
     }
     catch (SQLException e2) {
@@ -254,8 +215,12 @@ public class InfoMapper {
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE Info SET Text='" + i.getText() + "' WHERE ProfileID="
-    		  + i.getProfileID() + " AND CharacteristicID=" + i.getCharacteristicID());
+      stmt.executeUpdate("UPDATE Info SET Text='" 
+    		  + i.getText() 
+    		  + "' WHERE ProfileID="
+    		  + i.getProfileID() 
+    		  + " AND CharacteristicID=" 
+    		  + i.getCharacteristicID());
 
     }
     catch (SQLException e2) {
@@ -283,6 +248,28 @@ public class InfoMapper {
     catch (SQLException e2) {
       e2.printStackTrace();
     }
+  }
+
+  public ArrayList<Info> findByProfile(int profileId) {
+	  ArrayList<Info> result = new ArrayList<Info>();
+	  
+	  Connection con = DBConnection.connection();
+	  
+	  try {
+		  Statement stmt = con.createStatement();
+		  ResultSet rs = stmt.executeQuery("SELECT info " + "WHERE info.profileId=" + profileId + " ORDER BY id");
+		  
+		  while (rs.next()) {
+			  Info i = new Info();
+			  i.setProfileID(rs.getInt(profileId));
+			  
+			  result.add(i);
+		  }
+	  } catch (SQLException e) {
+		  e.printStackTrace();
+		  return null;
+	  }
+	  return result;
   }
 
 }
