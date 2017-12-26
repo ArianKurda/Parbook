@@ -2,8 +2,6 @@ package de.hdm.ITProjekt.server.db;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Vector;
-
 import de.hdm.ITProjekt.client.ClientsideSettings;
 import de.hdm.ITProjekt.shared.bo.Profile;
 import de.hdm.ITProjekt.server.db.DBConnection;
