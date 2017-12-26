@@ -5,7 +5,7 @@ import de.hdm.ITProjekt.shared.bo.BusinessObject;
 
 /**
  * Realisierung eines exemplarischen Profilkontos. Ein Profil besitzt einen Inhaber
- * sowie eine Reihe von Attributen, mit deren.
+ * sowie eine Reihe von Attributen.
  * 
  * @author kurda
  */
@@ -25,7 +25,7 @@ public class Similarity extends BusinessObject {
 	/**
 	 * Auslesen des Nutzerprofils
 	 * 
-	 * @return Nutzerprofil
+	 * @return fromProfile
 	 */
 
 	public Profile getFromProfile() {
@@ -36,7 +36,6 @@ public class Similarity extends BusinessObject {
 	 * Setzen des Nutzerprofils
 	 * 
 	 * @param fromProfile
-	 *            Nutzerprofil
 	 */
 	public void setFromProfile(Profile fromProfile) {
 		this.fromProfile = fromProfile;

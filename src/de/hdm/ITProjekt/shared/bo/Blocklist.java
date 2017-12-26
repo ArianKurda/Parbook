@@ -4,17 +4,13 @@ public class Blocklist extends BusinessObject {
 
   private static final long serialVersionUID = 1L;
   
-  	/*
-  	 * Eingeloggtes Profil von dem die Kontaktsperre ausgeht.
-  	 */
+  	//Eingeloggtes Profil von dem die Kontaktsperre ausgeht.
   	private Profile fromProfile = null;
   
-  	/*
-  	 * Profil, das gesperrt werden soll.
-  	 */
+  	//Profil, das gesperrt werden soll.
   	private Profile toProfile = null;
 	
-  	/*
+  	/**
   	 * Eingeloggtes Profil auslesen.
 	 * 
 	 * @return Nutzerprofil
@@ -30,7 +26,7 @@ public class Blocklist extends BusinessObject {
 	/**
 	 * Auslesen des gesperrten Profils.
 	 * 
-	 * @return Gesperrtes Profil
+	 * @return toProfile
 	 */
 	public Profile getToProfile() {
 		return toProfile;
@@ -39,7 +35,7 @@ public class Blocklist extends BusinessObject {
 	/**
 	 * Profil, das gesperrt werden soll
 	 * 
-	 * @param toProfile Profil, das gesperrt wird.
+	 * @param toProfile
 	 */
 	public void setToProfile(Profile toProfile) {
 		this.toProfile = toProfile;
@@ -50,7 +46,5 @@ public class Blocklist extends BusinessObject {
 	 */
 	public String toString() {
 		return super.toString()+ this.fromProfile + " "+ this.toProfile;
-	}
-  
+	} 
 }
-
