@@ -113,6 +113,11 @@ public class SearchProfile extends BusinessObject {
 		this.gender = maennlich;
 	}
 	
+	//Auslesen des Geburtsdatums.
+	public Date getBirthdate() {
+		return birthdate;
+	}
+	
 	//Geburtstag des Suchprofils setzen
 	public void setBirthdate(Date newBirthdate){
 		birthdate = newBirthdate;

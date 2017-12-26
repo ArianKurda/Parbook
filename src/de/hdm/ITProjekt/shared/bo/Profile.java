@@ -132,7 +132,6 @@ public class Profile extends BusinessObject {
 	/**
 	 * Auslesen des Geburtsdatums.
 	 */
-
 	public Date getBirthdate() {
 		return birthdate;
 	}

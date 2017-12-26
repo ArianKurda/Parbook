@@ -92,7 +92,7 @@ public class SearchProfileMapper {
 				sp.setEmail(rs.getString("email"));
 				sp.setHairColor(rs.getString("haircolor"));
 				sp.setBodyHeight(rs.getDouble("bodyheight"));
-				/* sp.setBirthdate(rs.getDate("birthdate"));*/
+				sp.setBirthdate(rs.getDate("birthdate"));
 				sp.setSmoker(rs.getBoolean("smoker"));
 				sp.setReligion(rs.getString("religion"));
 				sp.setGender(rs.getBoolean("gender"));
@@ -168,7 +168,7 @@ public class SearchProfileMapper {
 			stmt.executeUpdate("UPDATE searchprofile SET  Firstname='" + sp.getFirstName() + "', Lastname='"
 			          + sp.getLastName() + "', Haircolor ='" + sp.getHairColor() + "', Bodyheight="
 			          + sp.getBodyHeight() + ", Smoker='" + sp.isSmoker() + "', Religion='" + sp.getReligion()
-			          + /*"', Dbo='" + p.getDbo() +*/ "' WHERE id=" + sp.getId()); // TODO
+			          + "', Birthdate='" + sp.getBirthdate() + "' WHERE id=" + sp.getId()); // TODO
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

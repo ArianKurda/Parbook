@@ -114,7 +114,7 @@ public class NotepadMapper {
 
       // Für jeden Eintrag im Suchergebnis wird nun ein Merkzettel-Objekt erstellt.
       while (rs.next()) {
-    	  NotepadMapper.notepadMapper().findById(rs.getInt("toProfile"));
+    	  NotepadMapper.notepadMapper().findById(rs.getInt("toProfile")); //verbessern
       }
     }
     catch (SQLException e2) {
