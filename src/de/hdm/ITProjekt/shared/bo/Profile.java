@@ -129,9 +129,25 @@ public class Profile extends BusinessObject {
 		this.gender = maennlich;
 	}
 	
+	/**
+	 * Auslesen des Geburtsdatums.
+	 */
+
+	public Date getBirthdate() {
+		return birthdate;
+	}
+	
 	
 	public void setBirthdate(Date newBirthdate){
 		birthdate = newBirthdate;
+	}
+	
+	/**
+	 * Auslesen des aktuellen Nutzeralters.
+	 */
+
+	public int getAge() {
+		return (int) ((System.currentTimeMillis() - getBirthdate().getTime()) / 1000 / 60 / 60 / 24 / 365);
 	}
 	
 	/** Überprüfung, ob Profil angelegt wurde
