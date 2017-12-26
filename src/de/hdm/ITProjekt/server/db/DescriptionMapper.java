@@ -72,42 +72,7 @@ public class DescriptionMapper {
    */
 
 
-  public Description findByName(String name) {
-    // DB-Verbindung holen
-    Connection con = DBConnection.connection();
-
-    try {
-      // Leeres SQL-Statement (JDBC) anlegen
-      Statement stmt = con.createStatement();
-
-      // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs =
-          stmt.executeQuery("SELECT id, Name, Beschreibungstext FROM Characteristic WHERE Name='"
-              + name + "' AND e_typ='p_d'");
-
-
-      /*
-       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben werden. Prüfe, ob ein
-       * Ergebnis vorliegt.
-       */
-
-      if (rs.next()) {
-        // Ergebnis-Tupel in Objekt umwandeln
-    	Description d = new Description();
-        d.setId(rs.getInt("id"));
-        d.setName(rs.getString("Name"));
-        d.setDescriptiontext(rs.getString("Beschreibungstext"));
-
-
-        return d;
-      }
-    } catch (SQLException a) {
-      a.printStackTrace();
-      return null;
-    }
-
-    return null;
-  }
+  // evlt. findByName-Methode hinzufügen.
 
   /**
    * Die Methode findById implementiert die Suche nach genau einer id aus der Datenbank,
@@ -225,14 +190,6 @@ public class DescriptionMapper {
       e.printStackTrace();
     }
 
-    /*
-     * Rückgabe, des evtl. korrigierten Profils.
-     *
-     * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen Objekte übergeben werden,
-     * wäre die Anpassung des Description-Objekts auch ohne diese explizite Rückgabe außerhalb dieser
-     * Methode sichtbar. Die explizite Rückgabe von d ist eher ein Stilmittel, um zu signalisieren,
-     * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
-     */
     return d;
   }
 
