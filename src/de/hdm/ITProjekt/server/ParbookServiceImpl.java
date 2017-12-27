@@ -152,15 +152,15 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	 * Methode, um ein bestehendes Profil zu löschen.
 	 */
 	
-	public void deleteProfile(Profile profile) throws IllegalArgumentException {
-		profileMapper.delete(profile);
+	public void deleteProfile(Profile p) throws IllegalArgumentException {
+		profileMapper.delete(p);
 	}
 	
 	/**
 	 * Methode, um ein Profil zu speichern.
 	 */
-	public void saveProfile(Profile profile) throws IllegalArgumentException {
-		profileMapper.update(profile);
+	public void saveProfile(Profile p) throws IllegalArgumentException {
+		profileMapper.update(p);
 	}
 	
 	/**
@@ -190,42 +190,60 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	    return profileMapper.findByEmail(email);
 
 	  }
-
-	
 		
 		//------Merkzettel Methoden------
 		
 		/**
 		 * Erstellen eines Merkzettels für ein Profil
 		 */
+	  public Notepad createNotepadOfProfile(Profile fromProfile, Profile toProfile) {
+			Notepad n = new Notepad();
 
-			
-		
+			n.setFromProfile(fromProfile);
+			n.setToProfile(toProfile);
+
+			return n;
+	  }
 
 		/**
 		 * Löschen einer Notiz für ein Profil.
 		 */
+	  public void deleteNotepad(Notepad n) throws IllegalArgumentException {
+		  this.notepadMapper.delete(n);
+	  }
+	  
+	  /**
+	   * Speichern eines Merkzettel-Objekts
+	   */
+	  public void save(Notepad n) throws IllegalArgumentException {
+		  if (n.getId() != 0) {
+				notepadMapper.update(n);
+			} else {
+				notepadMapper.insert(n);
+				}
+			}
 		  
 		  /**
-		   * Auslesen des Merkzettels für ein Profil
+		   * Auslesen eines Merkzettels eines Profils
 		   */
-
+	  public Notepad getNotepadOfProfile(int profileId) {
+		  return this.notepadMapper.findById(profileId);
+	  }
 	
 	//------Eigenschaft-Methoden------
 	
 	/**
 	   * Auslesen der Eigenschaftsnamen mit einer bestimmten Id
 	   */
-
 	  @Override
 	  public String getCharacteristicsNameById(int id) throws IllegalArgumentException {
 	    if (descriptionMapper.findById(id) != null) {
 	      Description d = descriptionMapper.findById(id);
-	      String name = d.getName();
+	      String name = d.getCharacteristicName();
 	      return name;
 	    } else if (selectionMapper.findById(id) != null) {
 	      Selection s = selectionMapper.findById(id);
-	      String name = s.getName();
+	      String name = s.getCharacteristicName();
 	      return name;
 	    }
 	    return null;
@@ -234,7 +252,6 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  /**
 	   * Auslesen der Eigenschaftsbeschreibung mit einer bestimmten Id
 	   */
-
 	  @Override
 	  public String getCharacteristicsDescriptionById(int id) throws IllegalArgumentException {
 	    if (descriptionMapper.findById(id) != null) {
@@ -265,34 +282,50 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	   * Löschen eines Auswahl-Objekts
 	   */
 	  public void delete(Selection selection) throws IllegalArgumentException {
-	    // TODO Auto-generated method stub
+		  ArrayList<Info> infos = infoMapper.findBySelection(selection);
+			for (Info i : infos) {
+				this.infoMapper.delete(i);
+			}
 
-	  }
+			this.selectionMapper.delete(selection);
+		}
 
 	  /**
 	   * Speichern eines Auswahl-Objekts
 	   */
 	  public void save(Selection selection) throws IllegalArgumentException {
-	    // TODO Auto-generated method stub
-
+		  if (selection.getId() != 0) {
+				selectionMapper.update(selection);
+			} else {
+				selectionMapper.insert(selection);
+			}
 	  }
 
 	  /**
 	   * Erstellen der Auswahl-Objekte
 	   */
-	  public Selection createSelection(String name, String descriptiontext,
-	      ArrayList<String> alternatives) throws IllegalArgumentException {
-	    // TODO Auto-generated method stub
-	    return null;
-	  }
-
+	  public Selection createSelection(int id, String characteristicName, String descriptiontext) throws IllegalArgumentException {
+		  Selection s = new Selection();
+		  
+		  s.setId(id);
+		  s.setCharacteristicName(characteristicName);
+		  s.setDescriptiontext(descriptiontext);
+		  
+		  return this.selectionMapper.insert(s);
+		  }
+	  
 	  /**
-	   * Auslesen der Beschreibungs-Objekte von Profilattributen mit einem bestimmten Namen
+	   * Erstellen von Info-Objekten für ein Profil mit Freitext
 	   */
-	  public Description getDescriptionProfileAttributesByName(String name)
-	      throws IllegalArgumentException {
-	    return descriptionMapper.findByName(name);
-	  }
+	  public Description createDescription(int id, String characteristicName, String descriptiontext) {
+			Description d = new Description();
+
+			d.setId(id);
+			d.setCharacteristicName(characteristicName);
+			d.setDescriptiontext(descriptiontext);
+
+			return this.descriptionMapper.insert(d);
+		}
 
 	  /**
 	   * Auslesen der Beschreibung mit einer bestimmten Id
@@ -332,63 +365,16 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  //------Info-Methoden------
 	  
 	  /**
-	   * Erstellen von Info-Objekte für ein Profil mit vorgegebener Auswahl
+	   * Erstellen von Info-Objekte für ein Profil
 	   */
-	  public Info createInfoFor(Profile profile, Selection selection, String text)
+	  public Info createInfoF(int id, String infoText)
 	      throws IllegalArgumentException {
+		  
+		  Info i = new Info();
+		  i.setId(id);
+		  i.setInfoText(infoText);
 
-
-	    Info i = new Info();
-	    i.setText(text);
-	    i.setCharacteristicID(selection.getId());
-	    i.setProfileID(profile.getId());
-
-	    ArrayList<Info> infoListe = infoMapper.findAllByProfileID(profile.getId());
-
-	    for (Info info : infoListe) {
-	      if ((info.getCharacteristicID() == i.getCharacteristicID())
-	          && (info.getProfileID() == i.getProfileID()) && !info.getText().equals(i.getText())) {
-
-	        this.log("Info upgedatet");
-	        return infoMapper.update(i);
-
-	      } else if ((info.getCharacteristicID() == i.getCharacteristicID())
-	          && (info.getProfileID() == i.getProfileID()) && info.getText().equals(i.getText())) {
-	        return null;
-	      }
-	    }
-	    this.log("Info neuangelegt");
-	    return infoMapper.insert(i);
-
-	  }
-
-	  /**
-	   * Erstellen von Info-Objekten für ein Profil mit Freitext
-	   */
-
-	  @Override
-	  public Info createInfoFor(Profile profile, Description description, String text)
-	      throws IllegalArgumentException {
-	    Info i = new Info();
-	    i.setText(text);
-	    i.setCharacteristicID(description.getId());
-	    i.setProfileID(profile.getId());
-
-	    ArrayList<Info> infoListe = infoMapper.findAllByProfileID(profile.getId());
-
-	    for (Info info : infoListe) {
-	      if ((info.getCharacteristicID() == i.getCharacteristicID())
-	          && (info.getProfileID() == i.getProfileID()) && !info.getText().equals(i.getText())) {
-
-	        this.log("Info upgedatet");
-	        return infoMapper.update(i);
-	      } else if ((info.getCharacteristicID() == i.getCharacteristicID())
-	          && (info.getProfileID() == i.getProfileID()) && info.getText().equals(i.getText())) {
-	        return null;
-	      }
-	    }
-	    this.log("Info wurde angelegt");
-	    return infoMapper.insert(i);
+			return this.infoMapper.insert(i);
 	  }
 
 	  /**
@@ -414,9 +400,8 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  /**
 	   * Auslesen von Info-Objekten eines Profils
 	   */
-	  @Override
-	  public ArrayList<Info> getInfoByProfile(Profile profile) throws IllegalArgumentException {
-	    return infoMapper.findAllByProfileID(profile.getId());
+	  public ArrayList<Info> getInfoByProfileId(int id) throws IllegalArgumentException {
+	    return infoMapper.findByProfileId(id);
 	  }
 
 	  /**
@@ -425,7 +410,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 
 	  @Override
 	  public Info getInfoByCharacteristicID(int id) throws IllegalArgumentException {
-	    return infoMapper.findByKey(id);
+	    return infoMapper.findById(id);
 	  }
 
 	  /**
@@ -434,7 +419,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 
 	  @Override
 	  public Info getInfoById(int id) throws IllegalArgumentException {
-	    return infoMapper.findByKey(id);
+	    return infoMapper.findById(id);
 	  }
 	  
 	  //------Sperrliste-Methoden------
@@ -492,12 +477,6 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	}
 
 	@Override
-	public Notepad createNotepad(Profile a, Profile b) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void deleteNote(Profile remover, Profile remoter) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		
@@ -525,5 +504,3 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		this.notepadMapper = notepadMapper;
 	}
 }
-
-	

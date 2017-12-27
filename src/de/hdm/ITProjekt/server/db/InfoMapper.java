@@ -250,7 +250,7 @@ public class InfoMapper {
     }
   }
 
-  public ArrayList<Info> findByProfile(int id) {
+  public ArrayList<Info> findByProfileId(int id) {
 	  ArrayList<Info> result = new ArrayList<Info>();
 	  
 	  Connection con = DBConnection.connection();

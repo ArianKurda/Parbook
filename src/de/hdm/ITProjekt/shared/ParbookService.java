@@ -33,12 +33,12 @@ public interface ParbookService extends RemoteService {
 	/**
 	 * Methode, um ein bestehendes Profil zu löschen.
 	 */
-	public void deleteProfile(Profile profile) throws IllegalArgumentException;
+	public void deleteProfile(Profile p) throws IllegalArgumentException;
 	
 	/**
 	 * Methode, um ein Profil zu speichern.
 	 */
-	public void saveProfile(Profile profile) throws IllegalArgumentException;
+	public void saveProfile(Profile p) throws IllegalArgumentException;
 	
 	/**
 	 * Auslesen aller Profile
@@ -67,7 +67,7 @@ public interface ParbookService extends RemoteService {
 	/**
 	 * Erstellen eines Merkzettels für ein Profil
 	 */
-	public Notepad createNotepad(Profile a, Profile b) throws IllegalArgumentException;
+	public Notepad createNotepadOfProfile(Profile fromProfile, Profile toProfile) throws IllegalArgumentException;
 
 	/**
 	 * Löschen einer Notiz für ein Profil.
@@ -190,7 +190,7 @@ public interface ParbookService extends RemoteService {
 	/**
 	 * Auslesen von Info-Objekten eines Profils
 	 */
-	  public ArrayList<Info> getInfoByProfile(Profile profile) throws IllegalArgumentException;
+	  public ArrayList<Info> getInfoByProfileId(int id) throws IllegalArgumentException;
 
 	/**
 	 * Auslesen von Info-Objekten mit einer bestimmten Eigenschafts-Id

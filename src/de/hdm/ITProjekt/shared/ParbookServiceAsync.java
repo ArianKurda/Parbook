@@ -29,12 +29,12 @@ public interface ParbookServiceAsync {
 	/**
 	 * Methode, um ein bestehendes Profil zu löschen.
 	 */
-	void deleteProfile(Profile profile, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	void deleteProfile(Profile p, AsyncCallback<Void> callback) throws IllegalArgumentException;
 	
 	/**
 	 * Methode, um ein Profil zu speichern.
 	 */
-	  void saveProfile(Profile profile, AsyncCallback<Void> callback) throws IllegalArgumentException;
+	  void saveProfile(Profile p, AsyncCallback<Void> callback) throws IllegalArgumentException;
 	
 	/**
 	 * Auslesen aller Profile
@@ -80,7 +80,7 @@ public interface ParbookServiceAsync {
 	/**
 	 * Erstellen eines Merkzettels für ein Profil
 	 */
-	  void createNotepad(Profile a, Profile b, AsyncCallback<Notepad> callback) throws IllegalArgumentException;
+	  void createNotepadOfProfile(Profile fromProfile, Profile toProfile, AsyncCallback<Notepad> callback) throws IllegalArgumentException;
 
 	/**
 	 * Löschen einer Notiz für ein Profil.
@@ -204,7 +204,7 @@ public interface ParbookServiceAsync {
 	/**
 	 * Auslesen von Info-Objekten eines Profils
 	 */
-	  void getInfoByProfile(Profile profile, AsyncCallback<ArrayList<Info>> callback) throws IllegalArgumentException;
+	  void getInfoByProfileId(int id, AsyncCallback<ArrayList<Info>> callback) throws IllegalArgumentException;
 
 	/**
 	 * Auslesen von Info-Objekten mit einer bestimmten Eigenschafts-Id
