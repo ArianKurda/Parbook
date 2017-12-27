@@ -91,8 +91,8 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
         Row infoRow = new Row();
 
         infoRow.addColumn(
-            new Column(service.getCharacteristicsDescriptionById(i.getCharacteristicID())));
-        infoRow.addColumn(new Column(i.getText()));
+            new Column(service.getCharacteristicsDescriptionById(i.getCharacteristicId())));
+        infoRow.addColumn(new Column(i.getInfoText()));
         result.addRow(infoRow);
       }
     }
@@ -124,5 +124,4 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
     // TODO: alle Profile abfragen
 
   }
-  
 }
