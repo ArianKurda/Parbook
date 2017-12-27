@@ -39,7 +39,7 @@ public class Info extends BusinessObject {
    * 
    * @param infoText
    */
-  public void setText(String infoText) {
+  public void setInfoText(String infoText) {
 	  this.infoText = infoText;
   }
   
