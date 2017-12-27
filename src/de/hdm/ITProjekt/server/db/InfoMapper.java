@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import de.hdm.ITProjekt.shared.bo.Description;
 import de.hdm.ITProjekt.shared.bo.Info;
+import de.hdm.ITProjekt.shared.bo.Selection;
 
 /**
  * Mapper-Klasse, die <code>Info</code>-Objekte auf eine relationale
@@ -268,5 +270,123 @@ public class InfoMapper {
 	  }
 	  return result;
   }
+  
+  /**
+	 * Auslesen aller Infos einer bestimmten Auwahl mit Hilfe der Auswahl-ID. Da
+	 * eine Auswahl mehrere Infos haben kann, können mehrere Info-Objekte in
+	 * einer ArrayList ausgegeben werden.
+	 * 
+	 * @param selectionId
+	 *            Fremdschlüsselattribut in DB
+	 * @return Eine ArrayList mit Info-Objekten, die sämtliche Infos der
+	 *         vorgegebenen Auswahl repräsentieren.
+	 */
+
+	public ArrayList<Info> findBySelection(int selectionId) {
+
+		// Vorbereitung der Ergebnis-ArrayList
+		ArrayList<Info> result = new ArrayList<Info>();
+
+		// DB-Verbindung holen
+		Connection con = DBConnection.connection();
+
+		try {
+
+			// Leeres SQL-Statement (JDBC) anlegen
+			Statement stmt = con.createStatement();
+
+			// Für jeden Eintrag im Suchergebnis wird nun ein Info-Objekt
+			// erstellt und zur Ergebnis-ArrayList hinzugefügt.
+
+			String sql = "SELECT info" + " WHERE selectionId=" + selectionId + " ORDER BY id";
+
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				result.add(map(rs));
+				
+				Info i = new Info();
+				  i.setSelectionID(rs.getInt(selectionId));
+				  
+				  result.add(i);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		// Ergebnis-ArrayList zurückgeben
+		return result;
+	}
+
+	/**
+	 * Auslesen aller Infos einer bestimmten Auswahl mit Hilfe eines
+	 * Selection-Objekts. Da ein Auswahl mehrere Infos haben kann, können
+	 * mehrere Info-Objekte in einer ArrayList ausgegeben werden.
+	 * 
+	 * @param selection Selection Objekt
+	 * @return Eine ArrayList mit Info-Objekten, die sämtliche Infos der
+	 *         vorgegebenen Selection repräsentieren.
+	 */
+	public ArrayList<Info> findBySelection(Selection selection) {
+
+		return findBySelection(selection.getId());
+	}
+
+	/**
+	 * Auslesen aller Infos einer bestimmten Beschreibung mit Hilfe der
+	 * Beschreibungs-ID. Da eine Beschreibung mehrere Infos haben kann, können
+	 * mehrere Info-Objekte in einer ArrayList ausgegeben werden.
+	 * 
+	 * @param descriptionId
+	 *            Fremdschlüsselattribut in DB
+	 * @return Eine ArrayList mit Info-Objekten, die sämtliche Infos der
+	 *         vorgegebenen Description repräsentieren.
+	 */
+	public ArrayList<Info> findByDescription(int descriptionId) {
+
+		// Vorbereiten der Ergebnis-ArrayList
+		ArrayList<Info> result = new ArrayList<Info>();
+
+		// DB-Verbindung holen
+		Connection con = DBConnection.connection();
+
+		try {
+
+			// Leeres SQL-Statement (JDBC) anlegen
+			Statement stmt = con.createStatement();
+
+			// Für jeden Eintrag im Suchergebnis wird nun ein Info-Objekt
+			// erstellt und zur Ergebnis-ArrayList hinzugefügt.
+
+			String sql = "SELECT info" + " WHERE descriptions.id=" + descriptionId + " ORDER BY id";
+
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				result.add(map(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		// Ergebnis-ArrayList zurückgeben
+		return result;
+
+	}
+
+	/**
+	 * Auslesen aller Infos einer bestimmten Beschreibung mit Hilfe eines
+	 * Description-Objekts. Da ein Beschreibung mehrere Infos haben kann, können
+	 * mehrere Info-Objekte in einer ArrayList ausgegeben werden.
+	 * 
+	 * @param description Description Objekt
+	 * @return Eine ArrayList mit Info-Objekten, die sämtliche Infos der
+	 *         vorgegebenen Description repräsentieren.
+	 */
+	public ArrayList<Info> findByDescription(Description description) {
+		return findByDescription(description.getId());
+	}
 
 }
