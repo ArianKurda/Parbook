@@ -13,100 +13,117 @@ public class Info extends BusinessObject {
   /**
    * Deklaration der Parameter eines Infoobjektes
    *
-   * @param text: Eigenschaftsbezeichnung
-   * @param eigenschaftID: Die ID der Eigenschaft, zu der das Infoobjekt gehört.
-   * @param profilID: Die ID des Profils des eingeloggten Nutzers, zu dem das Infoobjekt gehört.
+   * @param infoText: Informationsbezeichnung des Profilinfos
+   * @param profile: Nutzerprofil der anzulegenden Info.
+   * @param searchProfile: Suchprofil der anzulegenden Info.
+   * @param selection: Auswahl einer Profilinfo.
+   * @param description: Beschreibung der Profilinfo.
    */
-  private String text = "";
-  private int characteristicID = 0;
-  private int profileID = 0;
+  private String infoText = "";
+  private Profile profile;
+  private SearchProfile searchProfile;
+  private Selection selection;
+  private Description description;
 
   /**
-   * Auslesen des Parameters text
+   * Auslesen des Parameters infoText
    * 
-   * @param text
+   * @param infoText
    */
-  public String getText() {
-	  return text;
+  public String getInfoText() {
+	  return infoText;
   }
   
   /**
-   * Setzen des Parameters text
+   * Setzen des Parameters infoText
    * 
-   * @param text
+   * @param infoText
    */
-  public void setText(String text) {
-	  this.text = text;
+  public void setText(String infoText) {
+	  this.infoText = infoText;
   }
   
   /**
-   * Erzeugen einer ganzen Zahl, die das Info-Objekt charakterisiert.
-   * 
-   * @see java.lang.Object#hashcode()
-   */
-  @Override
-  public int hashCode() {
-	  final int prime = 31;
-	  int result = super.hashCode();
-	  result = (prime * result) + characteristicID;
-	  result = (prime * result) + ((text == null) ? 0 : text.hashCode());
-	  return result;
-  }
+	 * Auslesen des Nutzerprofils einer Profilinfo
+	 * 
+	 * @return profile
+	 */
+	public Profile getProfile() {
+		return profile;
+	}
+
+	/**
+	 * Setzen des Nutzerprofils einer Profilinfo
+	 * 
+	 * @param profile
+	 */
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
+	
+	/**
+	 * Auslesen des Suchprofils einer Profilinfo
+	 * 
+	 * @return searchProfile
+	 */
+
+	public SearchProfile getSearchProfile() {
+		return searchProfile;
+	}
+
+	/**
+	 * Setzen des Suchprofils einer Profilinfo
+	 * 
+	 * @param searchProfile
+	 */
+
+	public void setSearchProfile(SearchProfile searchProfile) {
+		this.searchProfile = searchProfile;
+	}
   
   /**
-   * Feststellen der inhaltlichen Gleichheit zweier Info-Objekte anhand
-   * der CharacteristicID
-   * 
-   * @see java.lang.Object#equals(Object)
-   */
-  @Override
-  public boolean equals(Object object) {
-	  boolean result = false;
-	  if ((object == null) || (object.getClass() != this.getClass())) {
-		  result = false;
-	  } else {
-		  Info i = (Info) object;
-		  if (getText().equals(i.getText()) && (getCharacteristicID() == i.getCharacteristicID())) {
-			  result = true;
-		  }
-	    }
-	    return result;
-	  }
-  
-  /**
-   * Auslesen der CharacteristicID
-   * 
-   * @return characteristicID
-   */
-  public int getCharacteristicID() {
-	  return characteristicID;
-  }
-  
-  /**
-   * Setzen der CharateristicID
-   * 
-   * @param characteristicID
-   */
-  public void setCharacteristicID(int characteristicID) {
-	  this.characteristicID = characteristicID;
-  }
-  
-  /**
-   * Auslesen der ProfileID
-   * 
-   * @return profileID
-   */
-  public int getProfileID() {
-	  return profileID;
-  }
-  
-  /**
-   * Setzen der ProfileID
-   * 
-   * @param profileID
-   */
-  public void setProfileID(int profileID) {
-	  this.profileID = profileID;
-  }
+	 * Auslesen einer Auswahl einer Profilinfo
+	 * 
+	 * @return selection
+	 */
+
+	public Selection getSelection() {
+		return selection;
+	}
+
+	/**
+	 * Setzen einer Auswahl einer Profilinfo.
+	 * 
+	 * @param selection
+	 */
+	public void setSelection(Selection selection) {
+		this.selection = selection;
+	}
+
+	/**
+	 * Auslesen einer textuellen Beschreibung einer Profilinfo
+	 * 
+	 * @return description
+	 */
+	public Description getDescription() {
+		return description;
+	}
+
+	/**
+	 * Setzen einer textuellen Beschreibung einer Profilinfo
+	 * 
+	 * @param description
+	 */
+	public void setDescription(Description description) {
+		this.description = description;
+	}
+	
+	/**
+	 * Einfache textuelle Darstellung der jeweiligen Instanzen.
+	 */
+	public String toString() {
+		return super.toString() + " " + " " + this.selection + " " + this.description + " "
+				+ this.profile + " " + this.searchProfile;
+	}
 
 }
