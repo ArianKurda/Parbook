@@ -21,9 +21,13 @@ public class Info extends BusinessObject {
    */
   private String infoText = "";
   private Profile profile;
+  private int profileId;
+  private int characteristicId;
   private SearchProfile searchProfile;
   private Selection selection;
+  private int selectionId;
   private Description description;
+  private int descriptionId;
 
   /**
    * Auslesen des Parameters infoText
@@ -59,6 +63,22 @@ public class Info extends BusinessObject {
 	 */
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}
+	
+	public int getProfileId() {
+		return profileId;
+	}
+
+	public void setProfileId(int profileId) {
+		this.profileId = profileId;
+	}
+	
+	public int getCharacteristicId() {
+		return characteristicId;
+	}
+	
+	public void setCharacteristicId(int characteristicId) {
+		this.characteristicId = characteristicId;
 	}
 	
 	/**
@@ -99,6 +119,14 @@ public class Info extends BusinessObject {
 	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}
+	
+	public int getSelectionId() {
+		return selectionId;
+	}
+	
+	public void setSelectionId(int selectionId) {
+		this.selectionId = selectionId;
+	}
 
 	/**
 	 * Auslesen einer textuellen Beschreibung einer Profilinfo
@@ -118,6 +146,14 @@ public class Info extends BusinessObject {
 		this.description = description;
 	}
 	
+	public int getDescriptionId() {
+		return descriptionId;
+	}
+	
+	public void setDescriptionId(int descriptionId) {
+		this.descriptionId = descriptionId;
+	}
+	
 	/**
 	 * Einfache textuelle Darstellung der jeweiligen Instanzen.
 	 */
@@ -125,5 +161,4 @@ public class Info extends BusinessObject {
 		return super.toString() + " " + " " + this.selection + " " + this.description + " "
 				+ this.profile + " " + this.searchProfile;
 	}
-
 }
