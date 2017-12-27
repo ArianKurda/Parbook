@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import de.hdm.ITProjekt.client.ClientsideSettings;
 import de.hdm.ITProjekt.shared.bo.Description;
 import de.hdm.ITProjekt.shared.bo.Info;
 import de.hdm.ITProjekt.shared.bo.Selection;
@@ -86,9 +87,9 @@ public class InfoMapper {
       if (rs.next()) {
     	Info i = new Info();
         i.setId(rs.getInt("id"));
-        i.setText(rs.getString("Text"));
-        i.setProfileID(rs.getInt("ProfileID"));
-        i.setCharacteristicID(rs.getInt("CharacteristicID"));
+        i.setInfoText(rs.getString("infotext"));
+        i.setProfileId(rs.getInt("profileid"));
+        i.setCharacteristicId(rs.getInt("characteristicid"));
 
         return i;
       }
@@ -118,7 +119,7 @@ public class InfoMapper {
       
       // Statement ausfüllen und an die DB zurückgeben.
       ResultSet rs = stmt.executeQuery("SELECT id, Text, ProfileID, CharacteristicID "
-      		+ "FROM Info ORDER BY id DESC");
+      		+ "FROM Info ORDER BY id");
 
       /**
        * Da die id den Primärschlüssel wiederspiegelt, kann höchstens
@@ -128,9 +129,9 @@ public class InfoMapper {
       while (rs.next()) {
     	Info i = new Info();
         i.setId(rs.getInt("id"));
-        i.setText(rs.getString("Text"));
-        i.setProfileID(rs.getInt("ProfileID"));
-        i.setCharacteristicID(rs.getInt("CharacteristicID"));
+        i.setInfoText(rs.getString("infotext"));
+        i.setProfileId(rs.getInt("profileid"));
+        i.setCharacteristicId(rs.getInt("characteristicid"));
 
         result.add(i);
       }
@@ -176,13 +177,13 @@ public class InfoMapper {
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-        stmt.executeUpdate("INSERT INTO Info (Text, ProfileID, CharacteristidID, id) " 
+        stmt.executeUpdate("INSERT INTO Info (infoText, ProfileId, CharacteristidId, id) " 
         		+ "VALUES ('"
-        		+ i.getText() 
+        		+ i.getInfoText() 
         		+ "'," 
-        		+ i.getProfileID() 
+        		+ i.getProfileId() 
         		+ "," 
-        		+ i.getCharacteristicID() 
+        		+ i.getCharacteristicId() 
         		+ i.getId() + ")");
       }
     }
@@ -215,11 +216,11 @@ public class InfoMapper {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE Info SET Text='" 
-    		  + i.getText() 
-    		  + "' WHERE ProfileID="
-    		  + i.getProfileID() 
-    		  + " AND CharacteristicID=" 
-    		  + i.getCharacteristicID());
+    		  + i.getInfoText() 
+    		  + "' WHERE ProfileId="
+    		  + i.getProfileId() 
+    		  + " AND CharacteristicId=" 
+    		  + i.getCharacteristicId());
 
     }
     catch (SQLException e2) {
@@ -249,26 +250,32 @@ public class InfoMapper {
     }
   }
 
-  public ArrayList<Info> findByProfile(int profileId) {
+  public ArrayList<Info> findByProfile(int id) {
 	  ArrayList<Info> result = new ArrayList<Info>();
 	  
 	  Connection con = DBConnection.connection();
 	  
 	  try {
 		  Statement stmt = con.createStatement();
-		  ResultSet rs = stmt.executeQuery("SELECT info " + "WHERE info.profileId=" + profileId + " ORDER BY id");
+		  ResultSet rs = stmt.executeQuery("SELECT id, infoText, profileId, characteristicId FROM info WHERE profileId=" + id + " ORDER BY id");
 		  
 		  while (rs.next()) {
-			  Info i = new Info();
-			  i.setProfileID(rs.getInt(profileId));
-			  
-			  result.add(i);
-		  }
-	  } catch (SQLException e) {
-		  e.printStackTrace();
-		  return null;
-	  }
-	  return result;
+		        // Ergebnis-Tupel in Objekt umwandeln
+		        Info i = new Info();
+		        i.setId(rs.getInt("id"));
+		        i.setInfoText(rs.getString("infotext"));
+		        i.setProfileId(rs.getInt("profileId"));
+		        i.setCharacteristicId(rs.getInt("characteristicid"));
+
+		        result.add(i);
+		      }
+		      return result;
+		    } catch (SQLException e) {
+		      e.printStackTrace();
+		      ClientsideSettings.getLogger()
+		          .severe("Fehler beim Lesen aus der DB" + e.getMessage() + " " + e.getCause() + " ");
+		      return null;
+		    }
   }
   
   /**
@@ -282,7 +289,7 @@ public class InfoMapper {
 	 *         vorgegebenen Auswahl repräsentieren.
 	 */
 
-	public ArrayList<Info> findBySelection(int selectionId) {
+	public ArrayList<Info> findBySelection(int id) {
 
 		// Vorbereitung der Ergebnis-ArrayList
 		ArrayList<Info> result = new ArrayList<Info>();
@@ -295,28 +302,25 @@ public class InfoMapper {
 			// Leeres SQL-Statement (JDBC) anlegen
 			Statement stmt = con.createStatement();
 
-			// Für jeden Eintrag im Suchergebnis wird nun ein Info-Objekt
-			// erstellt und zur Ergebnis-ArrayList hinzugefügt.
+			ResultSet rs = stmt.executeQuery("SELECT id, infoText, profileId, selectionId FROM info WHERE profileId=" + id + " ORDER BY id");
+			  
+			  while (rs.next()) {
+			        // Ergebnis-Tupel in Objekt umwandeln
+			        Info i = new Info();
+			        i.setId(rs.getInt("id"));
+			        i.setInfoText(rs.getString("infotext"));
+			        i.setProfileId(rs.getInt("profileId"));
+			        i.setSelectionId(rs.getInt("selectionid"));
 
-			String sql = "SELECT info" + " WHERE selectionId=" + selectionId + " ORDER BY id";
-
-			ResultSet rs = stmt.executeQuery(sql);
-
-			while (rs.next()) {
-				result.add(map(rs));
-				
-				Info i = new Info();
-				  i.setSelectionID(rs.getInt(selectionId));
-				  
-				  result.add(i);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		// Ergebnis-ArrayList zurückgeben
-		return result;
+			        result.add(i);
+			      }
+			      return result;
+			    } catch (SQLException e) {
+			      e.printStackTrace();
+			      ClientsideSettings.getLogger()
+			          .severe("Fehler beim Lesen aus der DB" + e.getMessage() + " " + e.getCause() + " ");
+			      return null;
+			    }
 	}
 
 	/**
@@ -343,7 +347,7 @@ public class InfoMapper {
 	 * @return Eine ArrayList mit Info-Objekten, die sämtliche Infos der
 	 *         vorgegebenen Description repräsentieren.
 	 */
-	public ArrayList<Info> findByDescription(int descriptionId) {
+	public ArrayList<Info> findByDescription(int id) {
 
 		// Vorbereiten der Ergebnis-ArrayList
 		ArrayList<Info> result = new ArrayList<Info>();
@@ -356,25 +360,27 @@ public class InfoMapper {
 			// Leeres SQL-Statement (JDBC) anlegen
 			Statement stmt = con.createStatement();
 
-			// Für jeden Eintrag im Suchergebnis wird nun ein Info-Objekt
-			// erstellt und zur Ergebnis-ArrayList hinzugefügt.
+			ResultSet rs = stmt.executeQuery("SELECT id, infoText, profileId, descriptionId FROM info WHERE profileId=" + id + " ORDER BY id");
+			  
+			  while (rs.next()) {
+			        // Ergebnis-Tupel in Objekt umwandeln
+			        Info i = new Info();
+			        i.setId(rs.getInt("id"));
+			        i.setInfoText(rs.getString("infotext"));
+			        i.setProfileId(rs.getInt("profileId"));
+			        i.setDescriptionId(rs.getInt("descriptionid"));
 
-			String sql = "SELECT info" + " WHERE descriptions.id=" + descriptionId + " ORDER BY id";
-
-			ResultSet rs = stmt.executeQuery(sql);
-
-			while (rs.next()) {
-				result.add(map(rs));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		// Ergebnis-ArrayList zurückgeben
-		return result;
-
+			        result.add(i);
+			      }
+			      return result;
+			    } catch (SQLException e) {
+			      e.printStackTrace();
+			      ClientsideSettings.getLogger()
+			          .severe("Fehler beim Lesen aus der DB" + e.getMessage() + " " + e.getCause() + " ");
+			      return null;
+			    }
 	}
+
 
 	/**
 	 * Auslesen aller Infos einer bestimmten Beschreibung mit Hilfe eines
