@@ -80,10 +80,9 @@ public class SelectionMapper {
     try {
       // Leeres SQL-Statement (JDBC) anlegen
       Statement stmt = con.createStatement();
-      Statement stmt2 = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs1 = stmt.executeQuery(
+      ResultSet rs = stmt.executeQuery(
           "SELECT id, Name, Beschreibungstext FROM Characteristic WHERE id=" + id + " AND e_typ='s'");
 
       /*
@@ -91,19 +90,12 @@ public class SelectionMapper {
        * Ergebnis vorliegt.
        */
 
-      if (rs1.next()) {
+      if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
     	Selection s = new Selection();
-        s.setId(rs1.getInt("id"));
-        s.setCharacteristicName(rs1.getString("Name"));
-        s.setDescriptiontext(rs1.getString("Beschreibungstext"));
-        ResultSet rs2 =
-            stmt2.executeQuery("SELECT Text FROM Alternative WHERE Selection_id=" + rs1.getInt("id"));
-        ArrayList<String> al = new ArrayList<String>();
-        while (rs2.next()) {
-          al.add(rs2.getString("Text"));
-        }
-        s.setAlternatives(al);
+        s.setId(rs.getInt("id"));
+        s.setCharacteristicName(rs.getString("Name"));
+        s.setDescriptiontext(rs.getString("Beschreibungstext"));
 
         return s;
       }
