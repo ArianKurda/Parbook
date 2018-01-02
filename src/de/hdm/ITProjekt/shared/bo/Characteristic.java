@@ -11,7 +11,7 @@ public class Characteristic extends BusinessObject {
   /**
    * Deklaration der Parameter
    * 
-   * @param name Überbegriff, d.h. Begriffsbezeichnung eines Hobbies
+   * @param characteristicName Überbegriff, d.h. Begriffsbezeichnung eines Hobbies
    * @param descriptiontext: Der eigentliche Name eines Hobbies
    */
   private String characteristicName = "";
@@ -24,7 +24,7 @@ public class Characteristic extends BusinessObject {
   /**
    * Auslesen des Parameters Eigenschafts-Name
    * 
-   * @return CharacteristicName
+   * @return characteristicName
    */
   public String getCharacteristicName() {
 	  return characteristicName;

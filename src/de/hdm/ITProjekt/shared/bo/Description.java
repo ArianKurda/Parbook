@@ -12,23 +12,23 @@ public class Description extends Characteristic {
 
   private static final long serialVersionUID = 1L;
 
-  private String text = "";
+  private String descriptiontext = "";
 
   /**
    * Auslesen des Texts
    *
    * @return text Inhalt der Beschreibung
    */
-  public String getText() {
-    return text;
+  public String getDescriptionText() {
+    return descriptiontext;
   }
 
   /**
    * Setzen des Textes
    * @param text: Inhalt der Beschreibung
    */
-  public void setText(String text) {
-    this.text = text;
+  public void setDescriptionText(String descriptiontext) {
+    this.descriptiontext = descriptiontext;
   }
 
 }

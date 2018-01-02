@@ -19,10 +19,9 @@ public class Info extends BusinessObject {
    * @param selection: Auswahl einer Profilinfo.
    * @param description: Beschreibung der Profilinfo.
    */
-  private String infoText = "";
+  private String infoValue = "";
   private Profile profile;
   private int profileId;
-  private int characteristicId;
   private SearchProfile searchProfile;
   private Selection selection;
   private int selectionId;
@@ -34,8 +33,8 @@ public class Info extends BusinessObject {
    * 
    * @param infoText
    */
-  public String getInfoText() {
-	  return infoText;
+  public String getInfoValue() {
+	  return infoValue;
   }
   
   /**
@@ -43,8 +42,8 @@ public class Info extends BusinessObject {
    * 
    * @param infoText
    */
-  public void setInfoText(String infoText) {
-	  this.infoText = infoText;
+  public void setInfoValue(String infoValue) {
+	  this.infoValue = infoValue;
   }
   
   /**
@@ -68,17 +67,9 @@ public class Info extends BusinessObject {
 	public int getProfileId() {
 		return profileId;
 	}
-
+	
 	public void setProfileId(int profileId) {
 		this.profileId = profileId;
-	}
-	
-	public int getCharacteristicId() {
-		return characteristicId;
-	}
-	
-	public void setCharacteristicId(int characteristicId) {
-		this.characteristicId = characteristicId;
 	}
 	
 	/**
@@ -120,7 +111,7 @@ public class Info extends BusinessObject {
 		this.selection = selection;
 	}
 	
-	public int getSelectionId() {
+	public int getSelectionId(){
 		return selectionId;
 	}
 	

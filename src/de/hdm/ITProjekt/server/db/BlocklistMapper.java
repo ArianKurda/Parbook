@@ -72,7 +72,7 @@ public class BlocklistMapper {
       Statement stmt = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs = stmt.executeQuery("SELECT * FROM blocklist WHERE ID='" + id + "ORDER BY fromProfile");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM blocklist WHERE ID='" + id + "ORDER BY blockerProfile");
 
       /*
        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -125,12 +125,12 @@ public class BlocklistMapper {
         stmt = con.createStatement();
 
         // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-        stmt.executeUpdate("INSERT INTO blocklist (id, fromProfile, toProfile) " + "VALUES ("
+        stmt.executeUpdate("INSERT INTO blocklist (id, blockerProfile, blockedProfile) " + "VALUES ("
         		+ b.getId() 
         		+ "," 
-        		+ b.getFromProfile().getId()
+        		+ b.getBlockerProfile().getId()
         		+ ","
-        		+ b.getToProfile().getId()
+        		+ b.getBlockedProfile().getId()
         		+ "')");
       }
     }
@@ -157,11 +157,11 @@ public class BlocklistMapper {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE blocklist " 
-    		  + "SET fromProfile="
-    		  + b.getFromProfile()
+    		  + "SET blockerrofile="
+    		  + b.getBlockerProfile()
     		  + "',"
-    		  + "toProfile="
-    		  + b.getToProfile()
+    		  + "blockedProfile="
+    		  + b.getBlockedProfile()
     		  + "',"
     		  + "WHERE id="
     		  + b.getId());
@@ -224,7 +224,7 @@ public class BlocklistMapper {
 			// Leeres SQL-Statement (JDBC) anlegen
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT blocklist" + " WHERE fromProfile=" + profileId);
+			ResultSet rs = stmt.executeQuery("SELECT blocklist" + " WHERE blockedProfile=" + profileId);
 
 			// Für jeden Eintrag im Suchergebnis wird nun ein Blocklist-Objekt
 			// erstellt und zur Ergebnis-ArrayList hinzugefügt.
@@ -248,9 +248,9 @@ public class BlocklistMapper {
 	 * @return Eine ArrayList mit Blocklist-Objekten, die sämtliche
 	 *         Kontaktsperren des vorgegebenen Profils repräsentieren.
 	 */
-	public ArrayList<Blocklist> findByProfile(Profile profile) {
+	public ArrayList<Blocklist> findByProfile(Profile p) {
 
-		return findByProfile(profile.getId());
+		return findByProfile(p.getId());
 	}
 
 	/**
@@ -287,8 +287,8 @@ public class BlocklistMapper {
 		tp.setHairColor(rs.getString("haircolor"));
 		tp.setReligion(rs.getString("religion"));
 
-		b.setFromProfile(fp);
-		b.setToProfile(tp);
+		b.setBlockerProfile(fp);
+		b.setBlockedProfile(tp);
 
 		return b;
 	}
@@ -311,11 +311,11 @@ public class BlocklistMapper {
 			  Statement stmt = con.createStatement();
 			  
 			  ResultSet rs = stmt.executeQuery(
-					  "SELECT toProfile" + "FROM blocklist WHERE fromProfile=" + p.getId());
+					  "SELECT blockedProfile" + "FROM blocklist WHERE blockerProfile=" + p.getId());
 			  
 			  //Für jeden Eintrag im Suchergebnis wird nun ein Blocklist-Objekt erstellt.
 			  while (rs.next()) {
-				  BlocklistMapper.blocklistMapper().findById(rs.getInt("toProfile")); //verbessern
+				  BlocklistMapper.blocklistMapper().findById(rs.getInt("blockedProfile")); //verbessern
 
 			  }
 		  }
@@ -331,19 +331,19 @@ public class BlocklistMapper {
   /**
    * Auslesen, ob eine Kontaktsperre vorliegt.
    * 
-   * @param fromProfile & toProfile
+   * @param blockerProfile & blockedProfile
    * @return true or false
    */
-  public boolean doLockExistForProfile(Profile fromProfile, Profile toProfile) {
+  public boolean doLockExistForProfile(Profile blockerProfile, Profile blockedProfile) {
     Connection con = DBConnection.connection();
 
     try {
       Statement stmt = con.createStatement();
 
-      ResultSet rs = stmt.executeQuery("SELECT fromProfile FROM blocklist WHERE fromProfile=" 
-    		  + fromProfile.getId() 
+      ResultSet rs = stmt.executeQuery("SELECT blockerProfile FROM blocklist WHERE blockerProfile=" 
+    		  + blockerProfile.getId() 
     		  + " AND toProfile=" 
-    		  + toProfile.getId());
+    		  + blockedProfile.getId());
 
       while (rs.next()) {
     	  return true;

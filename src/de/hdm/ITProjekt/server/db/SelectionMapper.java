@@ -118,7 +118,7 @@ public class SelectionMapper {
 
     try {
       Statement stmt = con.createStatement();
-      ResultSet rs = stmt.executeQuery("SELECT name FROM characteristic");
+      ResultSet rs = stmt.executeQuery("SELECT characteristicName, descriptiontext FROM characteristic");
       
       while (rs.next()) {
     	  Selection s = new Selection();
