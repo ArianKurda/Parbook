@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import de.hdm.ITProjekt.client.ClientsideSettings;
-import de.hdm.ITProjekt.shared.bo.Info;
 import de.hdm.ITProjekt.shared.bo.Profile;
 import de.hdm.ITProjekt.shared.bo.SearchProfile;
 
