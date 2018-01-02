@@ -26,6 +26,8 @@ public class SearchProfile extends BusinessObject {
 	
 	private Profile profile;
 	
+	private int profileId;
+	
 	private boolean notVisited;
 
 	public static final boolean raucher = true;
@@ -131,6 +133,16 @@ public class SearchProfile extends BusinessObject {
 	//Name des Suchprofils auslesen
 	public void setProfile (Profile profile) {
 		this.profile= profile;
+	}
+	
+	//Id des Nutzerprofils auslesen
+	public int getProfileId() {
+		return profileId;
+	}
+	
+	//ID des Nutzerprofils setzen
+	public void setProfileId(int profileId) {
+		this.profileId = profileId;
 	}
 	
 	//Prüfen, ob ein Profil nicht besucht wurde
