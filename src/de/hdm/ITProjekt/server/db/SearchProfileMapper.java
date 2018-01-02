@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import de.hdm.ITProjekt.client.ClientsideSettings;
+import de.hdm.ITProjekt.shared.bo.Info;
+import de.hdm.ITProjekt.shared.bo.Profile;
 import de.hdm.ITProjekt.shared.bo.SearchProfile;
 
 /**
@@ -192,5 +197,52 @@ public class SearchProfileMapper {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Auslesen aller Suchprofile eines Profils anhand der Profilid.
+	 * 
+	 * @param profileId
+	 * @return
+	 */
+	public ArrayList<SearchProfile> findByProfile(int profileId) {
+		
+		//DB-Verbindung holen
+		Connection con = DBConnection.connection();
+		
+		//Vorbereitung des Ergebnisses
+		ArrayList<SearchProfile> result = new ArrayList<SearchProfile>();
+		
+		try {
+			
+			//Leeres SQL-Statement anlegen
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT searchprofile WHERE searchprofile.profileId=" + profileId + " ORDER BY id");
+			
+			while (rs.next()) {
+				// Ergebnis-Tupel in Objekt umwandeln
+		        SearchProfile sp = new SearchProfile();
+		        sp.setId(rs.getInt("id"));
+		        sp.setProfileId(rs.getInt("profileid"));
 
+		        result.add(sp);
+		        }
+			
+			return result;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			ClientsideSettings.getLogger().severe("Fehler beim Lesen aus der DB" + e.getMessage() + " " + e.getCause() + " ");
+			return null;
+			}
+		}
+	
+	/**
+	 * Auslesen alles Suchprofile eines Profils
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public ArrayList<SearchProfile> findByProfile(Profile p) {
+		return findByProfile(p.getId());
+	}
 }
