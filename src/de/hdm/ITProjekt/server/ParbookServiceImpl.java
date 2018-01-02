@@ -153,15 +153,19 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	 */
 	
 	public void deleteProfile(Profile p) throws IllegalArgumentException {
-		profileMapper.delete(p);
+		this.profileMapper.delete(p);
 	}
 	
 	/**
 	 * Methode, um ein Profil zu speichern.
 	 */
 	public void saveProfile(Profile p) throws IllegalArgumentException {
-		profileMapper.update(p);
-	}
+		if (p.getId() != 0) {
+			profileMapper.update(p);
+			} else {
+				profileMapper.insert(p);
+				}
+		}
 	
 	/**
 	   * Auslesen aller Profile
@@ -197,116 +201,98 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		 * Erstellen eines Merkzettels für ein Profil
 		 */
 	  public Notepad createNotepadOfProfile(Profile fromProfile, Profile toProfile) {
-			Notepad n = new Notepad();
-
-			n.setFromProfile(fromProfile);
-			n.setToProfile(toProfile);
-
-			return n;
-	  }
+		  Notepad n = new Notepad();
+		  
+		  n.setFromProfile(fromProfile);
+		  n.setToProfile(toProfile);
+		  return n;
+		  }
 
 		/**
 		 * Löschen einer Notiz für ein Profil.
 		 */
 	  public void deleteNotepad(Notepad n) throws IllegalArgumentException {
 		  this.notepadMapper.delete(n);
-	  }
+		  }
 	  
 	  /**
 	   * Speichern eines Merkzettel-Objekts
 	   */
 	  public void save(Notepad n) throws IllegalArgumentException {
 		  if (n.getId() != 0) {
-				notepadMapper.update(n);
-			} else {
-				notepadMapper.insert(n);
-				}
-			}
-		  
-		  /**
-		   * Auslesen eines Merkzettels eines Profils
-		   */
+			  notepadMapper.update(n);
+			  } else {
+				  notepadMapper.insert(n);
+				  }
+		  }
+	  
+	  /**
+	   * Auslesen des Merkzettels anhand der Id
+	   */
+		public Notepad getNotepadById(int id)
+				throws IllegalArgumentException {
+			return this.notepadMapper.findById(id);
+		}
+		
+	  /**
+	   * Auslesen eines Merkzettels eines Profils
+	   */
 	  public Notepad getNotepadOfProfile(int profileId) {
 		  return this.notepadMapper.findById(profileId);
-	  }
-	
-	//------Eigenschaft-Methoden------
-	
-	/**
+		  }
+	  
+	  //------Eigenschaft-Methoden------
+	  
+	  /**
 	   * Auslesen der Eigenschaftsnamen mit einer bestimmten Id
 	   */
-	  @Override
-	  public String getCharacteristicsNameById(int id) throws IllegalArgumentException {
-	    if (descriptionMapper.findById(id) != null) {
-	      Description d = descriptionMapper.findById(id);
-	      String name = d.getCharacteristicName();
-	      return name;
-	    } else if (selectionMapper.findById(id) != null) {
-	      Selection s = selectionMapper.findById(id);
-	      String name = s.getCharacteristicName();
-	      return name;
-	    }
-	    return null;
-	  }
+	
+	public String getCharacteristicNameById(int id) throws IllegalArgumentException {
+		
+		if (descriptionMapper.findById(id) != null) {
+			Description d = descriptionMapper.findById(id);
+			String name = d.getCharacteristicName();
+			
+			return name;
+			
+		} else if (selectionMapper.findById(id) != null) {
+			
+			Selection s = selectionMapper.findById(id);
+			String name = s.getCharacteristicName();
+			return name;
+			}
+		
+		return null;
+		}
 
 	  /**
 	   * Auslesen der Eigenschaftsbeschreibung mit einer bestimmten Id
 	   */
 	  @Override
 	  public String getCharacteristicsDescriptionById(int id) throws IllegalArgumentException {
-	    if (descriptionMapper.findById(id) != null) {
-	      Description d = descriptionMapper.findById(id);
-	      String name = d.getDescriptiontext();
-	      return name;
-	    } else if (selectionMapper.findById(id) != null) {
-	      Selection s = selectionMapper.findById(id);
-	      String name = s.getDescriptiontext();
-	      return name;
-	    }
-	    return null;
-	  }
+		  if (descriptionMapper.findById(id) != null) {
+			  Description d = descriptionMapper.findById(id);
+			  String name = d.getDescriptiontext();
+			  
+			  return name;
+			  
+		  } else if (selectionMapper.findById(id) != null) {
+			  Selection s = selectionMapper.findById(id);
+			  String name = s.getDescriptiontext();
+			  return name;
+			  }
+		  
+		  return null;
+		  }
 
-	
-	public ArrayList<Selection> getAllSelection() throws IllegalArgumentException {
-	    return selectionMapper.findAll();
-	  }
-
+	  //------Auswahl-Methoden------//
+	  
 	  /**
-	   * Auslesen der Auswahl mit einer bestimmten Id
-	   */
-	  public Selection getSelectionById(int id) throws IllegalArgumentException {
-	    return selectionMapper.findById(id);
-	  }
-
-	  /**
-	   * Löschen eines Auswahl-Objekts
-	   */
-	  public void delete(Selection selection) throws IllegalArgumentException {
-		  ArrayList<Info> infos = infoMapper.findBySelection(selection);
-			for (Info i : infos) {
-				this.infoMapper.delete(i);
-			}
-
-			this.selectionMapper.delete(selection);
-		}
-
-	  /**
-	   * Speichern eines Auswahl-Objekts
-	   */
-	  public void save(Selection selection) throws IllegalArgumentException {
-		  if (selection.getId() != 0) {
-				selectionMapper.update(selection);
-			} else {
-				selectionMapper.insert(selection);
-			}
-	  }
-
-	  /**
-	   * Erstellen der Auswahl-Objekte
+	   * Erstellen eines Auswahl-Objekts
 	   */
 	  public Selection createSelection(int id, String characteristicName, String descriptiontext) throws IllegalArgumentException {
-		  Selection s = new Selection();
 		  
+		  Selection s = new Selection();
 		  s.setId(id);
 		  s.setCharacteristicName(characteristicName);
 		  s.setDescriptiontext(descriptiontext);
@@ -315,76 +301,126 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		  }
 	  
 	  /**
-	   * Erstellen von Info-Objekten für ein Profil mit Freitext
+	   * Auslesen aller Auswahl-Objekte
 	   */
-	  public Description createDescription(int id, String characteristicName, String descriptiontext) {
-			Description d = new Description();
-
-			d.setId(id);
-			d.setCharacteristicName(characteristicName);
-			d.setDescriptiontext(descriptiontext);
-
-			return this.descriptionMapper.insert(d);
+	public ArrayList<Selection> getAllSelection() throws IllegalArgumentException {
+		return selectionMapper.findAll();
 		}
+
+	  /**
+	   * Auslesen der Auswahl mit einer bestimmten Id
+	   */
+	  public Selection getSelectionById(int id) throws IllegalArgumentException {
+		  return selectionMapper.findById(id);
+		  }
+
+	  /**
+	   * Löschen eines Auswahl-Objekts
+	   */
+	  public void delete(Selection selection) throws IllegalArgumentException {
+		  ArrayList<Info> infos = infoMapper.findBySelection(selection);
+		  
+		  for (Info i : infos) {
+			  this.infoMapper.delete(i);
+			  }
+		  
+		  this.selectionMapper.delete(selection);
+		  }
+
+	  /**
+	   * Speichern eines Auswahl-Objekts
+	   */
+	  public void save(Selection selection) throws IllegalArgumentException {
+		  if (selection.getId() != 0) {
+			  selectionMapper.update(selection);
+			  
+		  } else {
+			  selectionMapper.insert(selection);
+			  }
+		  }
+
+	  //------Beschreibung-Methoden------//
+	  
+	  /**
+	   * Erstellen von Beschreibungs-Objekten für ein Profil mit Freitext
+	   */
+	  public Description createDescription(int id, String characteristicName, String descriptiontext) throws IllegalArgumentException {
+		  Description d = new Description();
+		  
+		  d.setId(id);
+		  d.setCharacteristicName(characteristicName);
+		  d.setDescriptiontext(descriptiontext);
+		  
+		  return this.descriptionMapper.insert(d);
+		  }
 
 	  /**
 	   * Auslesen der Beschreibung mit einer bestimmten Id
 	   */
-	  public Description getDescriptionById(int id) {
+	  public Description getDescriptionById(int id) throws IllegalArgumentException {
 		  return descriptionMapper.findById(id);
-	  }
+		  }
 
 	  /**
 	   * Auslesen aller Beschreibungs-Objekte
 	   */
 	  public ArrayList<Description> getAllDescription() throws IllegalArgumentException {
-	    return descriptionMapper.findAll();
-	  }
+		  return descriptionMapper.findAll();
+		  }
 
 	  /**
 	   * Löschen eines Beschreibungs-Objekt
 	   */
 	  public void delete(Description description) throws IllegalArgumentException {
-	  }
+		  ArrayList<Info> infos = infoMapper.findByDescription(description);
+		  
+		  for (Info info : infos) {
+			  this.infoMapper.delete(info);
+			  }
+		  this.descriptionMapper.delete(description);
+		  }
 
 	  /**
 	   * Speichern eines Beschreibungs-Objekt
 	   */
 	  public void save(Description description) throws IllegalArgumentException {
-
-	  }
-
-	  /**
-	   * Erstellen eines Beschreibungs-Objekt
-	   */
-	  public Description createDescription(String name, String descriptiontext)
-	      throws IllegalArgumentException {
-	    return null;
-	  }
+		  
+		  if (description.getId() != 0) {
+			  descriptionMapper.update(description);
+			  
+		  } else {
+				  descriptionMapper.insert(description);
+				  }
+		  }
 	  
 	  //------Info-Methoden------
 	  
 	  /**
-	   * Erstellen von Info-Objekte für ein Profil
+	   * Erstellen eines Info-Objekts für ein Profil
 	   */
-	  public Info createInfoF(int id, String infoText)
-	      throws IllegalArgumentException {
+	  public Info createInfo(int id, String infoValue) throws IllegalArgumentException {
 		  
 		  Info i = new Info();
 		  i.setId(id);
-		  i.setInfoText(infoText);
-
-			return this.infoMapper.insert(i);
-	  }
+		  i.setInfoValue(infoValue);
+		  
+		  return this.infoMapper.insert(i);
+		  }
 
 	  /**
 	   * Speichern von Info-Objekten
 	   */
 
 	  @Override
-	  public void save(Info info) throws IllegalArgumentException {
-	    infoMapper.update(info);
-	  }
+	  public void save(Info i) throws IllegalArgumentException {
+		  
+		  if (i.getId() != 0) {
+			  infoMapper.update(i);
+			  
+		  } else {
+			  infoMapper.insert(i);
+			  }
+		  }
 
 	  /**
 	   * Löschen von Info-Objekten
@@ -392,83 +428,90 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 
 	  @Override
 	  public void delete(Info info) throws IllegalArgumentException {
-	    if (info != null) {
-	      infoMapper.delete(info);
-	    }
-	  }
+		  
+		  if (info != null) {
+			  infoMapper.delete(info);
+			  }
+		  }
 
 	  /**
 	   * Auslesen von Info-Objekten eines Profils
 	   */
-	  public ArrayList<Info> getInfoByProfileId(int id) throws IllegalArgumentException {
-	    return infoMapper.findByProfileId(id);
-	  }
+	  public ArrayList<Info> getInfoByProfile(Profile p) throws IllegalArgumentException {
+		  return infoMapper.findByProfile(p.getId());
+		  }
 
 	  /**
 	   * Auslesen von Info-Objekten mit einer bestimmten Eigenschafts-Id
 	   */
-
 	  @Override
 	  public Info getInfoByCharacteristicID(int id) throws IllegalArgumentException {
-	    return infoMapper.findById(id);
-	  }
+		  return infoMapper.findById(id);
+		  }
 
 	  /**
 	   * Auslesen eines Infoobjekts über seine ID
 	   */
-
 	  @Override
 	  public Info getInfoById(int id) throws IllegalArgumentException {
-	    return infoMapper.findById(id);
-	  }
+		  return infoMapper.findById(id);
+		  }
 	  
 	  //------Sperrliste-Methoden------
 	  
 	  /**
 	   * Erstellen einer Kontaktsperre
 	   */
-	  public Blocklist createLock(Profile fromProfile, Profile toProfile) throws IllegalArgumentException {
-		  Blocklist b = new Blocklist();
+	  public Blocklist createLock(Profile blockerProfile, Profile blockedProfile) throws IllegalArgumentException {
 		  
-		  b.setFromProfile(fromProfile);
-		  b.setToProfile(toProfile);
+		  Blocklist b = new Blocklist();
+		  b.setBlockerProfile(blockerProfile);
+		  b.setBlockedProfile(blockedProfile);
 		  
 		  return this.blocklistMapper.insert(b);
-
-	  }
+		  }
 
 	  /**
 	   * Löschen einer Kontaktsperre
 	   */
 	  public void deleteLock(Blocklist b) throws IllegalArgumentException {
 		  this.blocklistMapper.delete(b);
-	  }
+		  }
 	  
 	  /**
 	   * Speichern einer Kontaktsperre
 	   */
 	  public void saveLock(Blocklist b) throws IllegalArgumentException {
+		  
 		  if (b.getId() != 0) {
 			  blocklistMapper.update(b);
+			  
 		  } else {
 			  blocklistMapper.insert(b);
+			  }
 		  }
-	  }
 	  
 	  /**
 	   * Auslesen einer Kontaktsperre eines Profils
 	   */
 	  public ArrayList<Blocklist> getBlocklistOfProfile(Profile p) {
 		  return this.blocklistMapper.findByProfile(p);
-	  }
-
-	@Override
-	public Profile createProfile(String firstname, String lastname, String email, java.util.Date birthdate,
-			String haircolor, double bodyheight, boolean smoker, String religion, boolean gender)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		  }
+	  /**
+	   * Auslesen einer Kontaktsperre anhand der Id
+	   */
+	  public Blocklist getBlocklistById(int id) throws IllegalArgumentException {
+		  return blocklistMapper.findById(id);
+		  }
+	  
+	  /**
+	   * Prüft, ob eine Kontaktsperre vorhanden ist
+	   */
+	  public boolean isBlocked(Profile p) {
+		  Profile currentProfile = LoginServiceImpl.loginService().getCurrentProfile();
+		  
+		  return blocklistMapper.doLockExistForProfile(currentProfile, p);
+		  }
 
 	@Override
 	public ArrayList<Profile> findMatch() {
@@ -477,30 +520,10 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	}
 
 	@Override
-	public void deleteNote(Profile remover, Profile remoter) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Notepad getNotepadForProfile(Profile profile) throws IllegalArgumentException {
+	public Profile createProfile(String firstname, String lastname, String email, java.util.Date birthdate,
+			String haircolor, double bodyheight, boolean smoker, String religion, boolean gender)
+			throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public Profile editStandardProfileAttributes(Profile p, String firstName, String lastName, String email,
-			String password, java.util.Date dob, String hairColor, double bodyHeight, boolean smoker, String religion,
-			boolean gender) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public NotepadMapper getNotepadMapper() {
-		return notepadMapper;
-	}
-
-	public void setNotepadMapper(NotepadMapper notepadMapper) {
-		this.notepadMapper = notepadMapper;
 	}
 }
