@@ -1,6 +1,8 @@
 package de.hdm.ITProjekt.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.sql.Date;
 
 import com.google.appengine.api.users.User;
@@ -36,6 +38,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	private static final long serialVersionUID = 1L;
 	
 	private ProfileMapper profileMapper = null;
+	private SearchProfileMapper searchprofileMapper = null;
 	private NotepadMapper notepadMapper = null;
 	private InfoMapper infoMapper = null;
 	private BlocklistMapper blocklistMapper = null;
@@ -70,6 +73,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	public void init() throws IllegalArgumentException {
 		
 		this.profileMapper = ProfileMapper.profileMapper();
+		this.searchprofileMapper = SearchProfileMapper.searchProfileMapper();
 		this.notepadMapper(NotepadMapper.notepadMapper());
 		this.infoMapper = InfoMapper.infoMapper();
 		this.selectionMapper = SelectionMapper.selectionMapper();
@@ -168,32 +172,106 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		}
 	
 	/**
-	   * Auslesen aller Profile
-	   */
+	 * Auslesen aller Profile
+	 */
 
 	  @Override
 	  public ArrayList<Profile> getAllProfiles() throws IllegalArgumentException {
 	    return profileMapper.findAll();
 	  }
 
-	  /**
-	   * Auslesen eines Profils mit einer bestimmten Id
-	   */
+	/**
+	 * Auslesen eines Profils mit einer bestimmten Id
+	 */
 
 	  @Override
 	  public Profile getProfileById(int id) {
 	    return profileMapper.findById(id);
 	  }
 
-	  /**
-	   * Auslesen eines Profils mit einer bestimmten E-Mail-Adresse
-	   */
+	/**
+	 * Auslesen eines Profils mit einer bestimmten E-Mail-Adresse
+	 */
 
 	  @Override
 	  public Profile getProfileByMail(String email) {
 	    return profileMapper.findByEmail(email);
 
 	  }
+	  
+	  /**
+		 * Auslesen des Profils anhand des Such-Profils.
+		 * 
+		 */
+		@Override
+		public ArrayList<Profile> getBySearchProfile(SearchProfile sp) {
+			return this.profileMapper.findBySearchProfile(sp);
+		}
+	  
+	  //------Suchprofil-Methoden------
+	  public SearchProfile createSearchProfile(String firstname, String lastname, String email, Date birthdate, String haircolor,
+				double bodyheight, boolean smoker, String religion, boolean gender) throws IllegalArgumentException {
+			
+			SearchProfile sp = new SearchProfile();
+			
+			sp.setFirstName(firstname);
+			sp.setLastName(lastname);
+			sp.setEmail(email);
+			sp.setBirthdate(birthdate);
+			sp.setHairColor(haircolor);
+			sp.setBodyHeight(bodyheight);
+			sp.setSmoker(smoker);
+			sp.setReligion(religion);
+			sp.setGender(gender);
+			
+			// Objekt in der DB speichern.
+			return this.searchprofileMapper.insert(sp);
+		}
+	  
+	  /**
+		 * Methode, um ein bestehendes Suchprofil zu löschen.
+		 */
+		public void deleteSearchProfile(SearchProfile sp) throws IllegalArgumentException {
+			
+			ArrayList<Info> infos = infoMapper.findBySearchProfile(sp);
+			
+			for (Info info : infos) {
+				this.infoMapper.delete(info);
+				}
+			this.searchprofileMapper.delete(sp);
+			}
+		
+		/**
+		 * Methode, um ein Suchprofil zu speichern.
+		 */
+		public void saveSearchProfile(SearchProfile sp) throws IllegalArgumentException {
+			if (sp.getId() != 0) {
+				searchprofileMapper.update(sp);
+				} else {
+					searchprofileMapper.insert(sp);
+					}
+			}
+		
+		/**
+		   * Auslesen aller Suchprofile eines Profils
+		   */
+		  @Override
+		  public ArrayList<SearchProfile> getAllSearchProfilesOfProfile(Profile p) throws IllegalArgumentException {
+		    return searchprofileMapper.findByProfile(p);
+		  }
+
+		  /**
+		   * Auslesen eines Profils mit einer bestimmten Id
+		   */
+		  public SearchProfile getSearchProfileById(int id) {
+		    return searchprofileMapper.findById(id);
+		  }
+		  
+		  /**
+			 * Auslesen einer Info eines Such-Profils aus der Datenbank.
+			 * 
+			 */
+
 		
 		//------Merkzettel Methoden------
 		
@@ -523,6 +601,80 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	public Profile createProfile(String firstname, String lastname, String email, java.util.Date birthdate,
 			String haircolor, double bodyheight, boolean smoker, String religion, boolean gender)
 			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	//------Ähnlichkeitsmaß-Methoden------
+	
+	/**
+	   * Berechnen des Ähnlichkeitsmaß zwischen zwei Profilen
+	   *
+	   * @param p1
+	   * @param p2
+	   * @return result (Ähnlichkeitsmaß zwischen zwei Profilen)
+	   */
+	public int calculateSimilarity(Profile p1, Profile p2) {
+	    // 6 Profilattribute die gegeben sind
+		int count = 6;
+	    int matches = 0;
+
+	    // neues Profil mit "angepassten" Angaben anhand des Suchprofils erstellen
+	    
+	    if (p1.isSmoker() == p2.isSmoker()) {
+	    	matches++;
+	    }
+	    
+	    if (p1.isGender() == p2.isGender()) {
+	    	matches++;
+	    }
+	    
+	    if (p1.getReligion() == p2.getReligion()) {
+	    	matches++;
+	    }
+	    
+	    if (p1.getBirthdate() == p2.getBirthdate()) {
+	    	matches++;
+	    }
+	    
+	    if (p1.getBodyHeight() == p2.getBodyHeight()) {
+	    	matches++;
+	    }
+	    
+	    if (p1.getHairColor() == p2.getHairColor()) {
+	    	matches++;
+	    }
+	    
+	    ArrayList<Info> infosOfP1 = getInfoOf(p1);
+	    ArrayList<Info> infosOfP2 = getInfoOf(p2);
+
+	    for (Info infoOfP1 : infosOfP1) {
+	    	for (Info infoOfP2 : infosOfP2) {
+	    		if (infoOfP1.getDescription() != null && infoOfP2.getDescription() != null) {
+	    			if (infoOfP1.getDescription().getId() == infoOfP2.getDescription().getId()) {
+	    				count++;
+	    				if (infoOfP1.getInfoValue().equals(infoOfP2.getInfoValue())) {
+	    					matches++;
+	    					}
+	    				}
+	    			}
+	    		if (infoOfP1.getSelection() != null && infoOfP2.getSelection() != null) {
+	    			if (infoOfP1.getSelection().getId() == infoOfP2.getSelection().getId()) {
+	    				count++;
+	    				if (infoOfP1.getInfoValue().equals(infoOfP2.getInfoValue())) {
+	    					matches++;
+	    				}
+	    			}
+	    		}
+	    		int result = Math.round(matches * (100f / count)); //kp obs stimmt
+
+	    	    return result;
+	    	}
+	    }
+	 }
+	//Wie gehts weiter?
+	
+	private ArrayList<Info> getInfoOf(Profile p1) {
 		// TODO Auto-generated method stub
 		return null;
 	}

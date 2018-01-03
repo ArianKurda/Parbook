@@ -10,6 +10,7 @@ import de.hdm.ITProjekt.shared.bo.Description;
 import de.hdm.ITProjekt.shared.bo.Info;
 import de.hdm.ITProjekt.shared.bo.Notepad;
 import de.hdm.ITProjekt.shared.bo.Profile;
+import de.hdm.ITProjekt.shared.bo.SearchProfile;
 import de.hdm.ITProjekt.shared.bo.Selection;
 
 public interface ParbookServiceAsync {
@@ -190,5 +191,7 @@ public interface ParbookServiceAsync {
 	 * Auslesen der Kontaktsperre anhand der Id
 	 */
 	void getBlocklistById(int id, AsyncCallback<Blocklist> callback) throws IllegalArgumentException;
+
+	void getAllSearchProfilesOfProfile(Profile p, AsyncCallback<ArrayList<SearchProfile>> callback);
 	
 }

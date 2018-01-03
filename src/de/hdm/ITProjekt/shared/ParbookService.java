@@ -10,6 +10,7 @@ import de.hdm.ITProjekt.shared.bo.Description;
 import de.hdm.ITProjekt.shared.bo.Info;
 import de.hdm.ITProjekt.shared.bo.Notepad;
 import de.hdm.ITProjekt.shared.bo.Profile;
+import de.hdm.ITProjekt.shared.bo.SearchProfile;
 import de.hdm.ITProjekt.shared.bo.Selection;
 
 @RemoteServiceRelativePath("parbookservice")
@@ -200,5 +201,7 @@ public interface ParbookService extends RemoteService {
 	 * Auslesen der Kontaktsperre anhand der Id
 	 */
 	public Blocklist getBlocklistById(int id) throws IllegalArgumentException;
+
+	ArrayList<SearchProfile> getAllSearchProfilesOfProfile(Profile p) throws IllegalArgumentException;
 	
 }
