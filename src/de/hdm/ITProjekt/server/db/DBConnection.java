@@ -11,7 +11,7 @@ public class DBConnection {
 	
 	private static Connection con = null;
 	
-	/*private static String googleUrl = wir müssen hier die url einfügen
+	/*private static String googleUrl = wir mï¿½ssen hier die url einfï¿½gen
 	 * private static String localUrl = ""
 	 */
 	
@@ -25,7 +25,9 @@ public class DBConnection {
 				if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
 					
 					Class.forName("com.mysql.jbdc.GoogleDriver");
-					/*url = googleUrl;*/
+
+					//url = googleUrl;
+
 				} else {
 					
 					Class.forName("com.mysql.jbdc.Driver");
