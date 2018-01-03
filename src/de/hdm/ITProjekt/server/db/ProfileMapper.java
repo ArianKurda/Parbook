@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import de.hdm.ITProjekt.client.ClientsideSettings;
 import de.hdm.ITProjekt.shared.bo.Profile;
+import de.hdm.ITProjekt.shared.bo.SearchProfile;
 import de.hdm.ITProjekt.server.db.DBConnection;
 
 
@@ -233,4 +234,10 @@ public void delete(Profile p) {
 	    }
 	
   }
+
+
+public ArrayList<Profile> findBySearchProfile(SearchProfile sp) {
+	// TODO Auto-generated method stub
+	return null;
+}
 }

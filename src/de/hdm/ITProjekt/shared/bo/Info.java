@@ -152,4 +152,9 @@ public class Info extends BusinessObject {
 		return super.toString() + " " + " " + this.selection + " " + this.description + " "
 				+ this.profile + " " + this.searchProfile;
 	}
+
+	public void setCharacterId(int Id) {
+		// TODO Auto-generated method stub
+		
+	}
 }

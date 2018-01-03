@@ -10,6 +10,7 @@ import de.hdm.ITProjekt.client.ClientsideSettings;
 import de.hdm.ITProjekt.shared.bo.Description;
 import de.hdm.ITProjekt.shared.bo.Info;
 import de.hdm.ITProjekt.shared.bo.Profile;
+import de.hdm.ITProjekt.shared.bo.SearchProfile;
 import de.hdm.ITProjekt.shared.bo.Selection;
 
 /**
@@ -396,6 +397,11 @@ public class InfoMapper {
 	 */
 	public ArrayList<Info> findByDescription(Description description) {
 		return findByDescription(description.getId());
+	}
+
+	public ArrayList<Info> findBySearchProfile(SearchProfile sp) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

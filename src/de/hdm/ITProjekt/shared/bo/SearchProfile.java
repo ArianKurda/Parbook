@@ -1,6 +1,7 @@
 package de.hdm.ITProjekt.shared.bo;
 
 import java.sql.Date;
+import java.util.HashMap;
 
 public class SearchProfile extends BusinessObject {
 	
@@ -34,6 +35,13 @@ public class SearchProfile extends BusinessObject {
 	public static final boolean nichtraucher = false;
 	public static final boolean maennlich = true;
 	public static final boolean weiblich = false;
+	
+	/**
+	 * Deklaration des Parameters AuswahlListe
+	 *
+	 * @param auswahlListe Dieser Parameter ist eine HashMap vom Typ Integer und String. In dieser HashMap werden alle angelegten Suchprofile gespeichert.
+	 */
+	  private HashMap<Integer, String> selectionList = new HashMap<>();
 	
 	//Vorname des Suchprofils auslesen
 	public String getFirstName() {
@@ -153,6 +161,14 @@ public class SearchProfile extends BusinessObject {
 	//Nicht besuchtes Profil setzen
 	public void setNotVisited(boolean notVisited) {
 		this.notVisited = notVisited;
+	}
+	
+	public HashMap<Integer, String> getSelectionList() {
+		return selectionList;
+	}
+
+	public void setSelectionList(HashMap<Integer, String> selectionList) {
+		this.selectionList = selectionList;
 	}
 	
 	//Textuelle Darstellung
