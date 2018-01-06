@@ -193,5 +193,10 @@ public interface ParbookServiceAsync {
 	void getBlocklistById(int id, AsyncCallback<Blocklist> callback) throws IllegalArgumentException;
 
 	void getAllSearchProfilesOfProfile(Profile p, AsyncCallback<ArrayList<SearchProfile>> callback);
-	
+
+	void findByEmail(String email, AsyncCallback<Profile> callback);
+
+	void insertProfile(Profile p, AsyncCallback<Profile> asyncCallback);
+
+	void updateProfile(Profile p, AsyncCallback<Void> asyncCallback);
 }

@@ -203,5 +203,16 @@ public interface ParbookService extends RemoteService {
 	public Blocklist getBlocklistById(int id) throws IllegalArgumentException;
 
 	ArrayList<SearchProfile> getAllSearchProfilesOfProfile(Profile p) throws IllegalArgumentException;
+
+	/**
+	 * 
+	 * @param emailAddress
+	 * @return
+	 */
+	Profile findByEmail(String email);
+
+	Profile insertProfile(Profile p);
+
+	void updateProfile(Profile p);
 	
 }
