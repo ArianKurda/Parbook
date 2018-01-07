@@ -25,14 +25,16 @@ public abstract class SimpleReport extends Report {
    * Tabelle mit Attributen. Die Tabelle wird zeilenweise in diesem Vector
    * abgelegt.
    */
-  private Vector<Row> table = new Vector<Row>();
+  @SuppressWarnings("rawtypes")
+private Vector<Row> table = new Vector<Row>();
 
   /**
    * Hinzufügen einer Zeile.
    *
    * @param r die hinzuzufügende Zeile
    */
-  public void addRow(Row r) {
+  @SuppressWarnings("rawtypes")
+public void addRow(Row r) {
     table.addElement(r);
   }
 
@@ -41,7 +43,8 @@ public abstract class SimpleReport extends Report {
    *
    * @param r die zu entfernende Zeile.
    */
-  public void removeRow(Row r) {
+  @SuppressWarnings("rawtypes")
+public void removeRow(Row r) {
     table.removeElement(r);
   }
 
@@ -50,7 +53,8 @@ public abstract class SimpleReport extends Report {
    *
    * @return die Tabelle der Positionsdaten
    */
-  public Vector<Row> getRows() {
+  @SuppressWarnings("rawtypes")
+public Vector<Row> getRows() {
     return table;
   }
 }
