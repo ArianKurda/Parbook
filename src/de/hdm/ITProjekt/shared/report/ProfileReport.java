@@ -19,7 +19,7 @@ public class ProfileReport extends SimpleReport implements Serializable {
     return profileId;
   }
 
-  public void setProfileId(int profilId) {
+  public void setProfileId(int profileId) {
     this.profileId = profileId;
   }
 
