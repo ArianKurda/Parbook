@@ -139,16 +139,16 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		p.setReligion(religion);
 		p.setGender(gender);
 		
-		/*
-	     * Setzen einer vorläufigen Profilnr. Der insert-Aufruf liefert dann ein
-	     * Objekt, dessen Nummer mit der Datenbank konsistent ist.
-	     */
+	/*
+	 * Setzen einer vorläufigen Profilnr. Der insert-Aufruf liefert dann ein
+	 * Objekt, dessen Nummer mit der Datenbank konsistent ist.
+	 */
 		p.setId(1);
-		ClientsideSettings.setCurrentUser(p);
-		ClientsideSettings.getLogger().info("user " + p.getLastName() + " erstellt");
+			ClientsideSettings.setCurrentUser(p);
+			ClientsideSettings.getLogger().info("user " + p.getLastName() + " erstellt");
 		
-		// Objekt in der DB speichern.
-		return this.profileMapper.insert(p);
+	// Objekt in der DB speichern.
+	return this.profileMapper.insert(p);
 		}
 	
 	//Methode, die ein Profil über ihre Email findet

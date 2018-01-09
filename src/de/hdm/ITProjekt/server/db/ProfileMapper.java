@@ -169,43 +169,43 @@ public class ProfileMapper {
 	
 	/** Profil abbilden*/
 	public Profile insert(Profile p) {
-		
 		Connection con = DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
 			
 			/* Zunaechst wird ueberprueft, welches momentan der hoechste Primaerschluesselwert ist*/
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid FROM profile");
+			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
+					+ "FROM profile");
 			
 			if (rs.next()) {
-				p.setId(rs.getInt("maxId") +1);
+				p.setId(rs.getInt("maxid") +1);
 				
 				stmt = con.createStatement();
 				
 				stmt.executeQuery("INSERT INTO profile (id, firstname, lastname, email,"
-						+ "haircolor, bodyheight, birthdate, smoker, religion, gender)"
+						+ "haircolor, bodyheight, birthdate, smoker, religion, gender) "
 						+ "VALUES (" 
 						+ p.getId() 
-						+ "','" 
+						+ "," 
 						+ p.getFirstName() 
-						+ "','" 
+						+ "," 
 						+ p.getLastName()
-			            + "','" 
+			            + "," 
 						+ p.getEmail() 
-						+ "','" 
+						+ "," 
 						+ p.getHairColor() 
-						+ "','" 
+						+ "," 
 						+ p.getBodyHeight() 
-						+ "','" 
+						+ "," 
 						+ p.getBirthdate() 
-						+ "','"
+						+ ","
 						+ (p.isSmoker() ? 1 : 0) 
-						+ "','" 
+						+ "," 
 						+ p.getReligion() 
-						+ "','" 
+						+ "," 
 						+ (p.isGender() ? 1 : 0) 
-						+ "');");
+						+ ")");
 				
 				ClientsideSettings.getLogger().info("profile " + p.getLastName() + "  in DB geschrieben");
 				}
@@ -225,11 +225,34 @@ public class ProfileMapper {
 		try{
 			Statement stmt = con.createStatement();
 			//smoker, gender
-			stmt.executeUpdate("UPDATE profile SET  firstname='" + p.getFirstName() + "', lastname='"
-		          + p.getLastName() + "', email ='" + p.getEmail() +"', haircolor ='" + p.getHairColor() + "', Bodyheight='"
-		          + p.getBodyHeight() + "', birthdate ='" + p.getBirthdate() + "', smoker='" + (p.isSmoker() ? 1 : 0) 
-		          + "', religion='" + p.getReligion() + "', gender='" + (p.isGender() ? 1 : 0)
-		          + "' WHERE id='" + p.getId());
+			stmt.executeUpdate("UPDATE profile " + "SET firstname=\"" 
+			+ p.getFirstName() 
+			+ "\", "
+			+ "lastname=\""
+		    + p.getLastName() 
+		    + "\", "
+		    + "email=\""
+		    + p.getEmail() 
+		    + "\", "
+		    +"', haircolor=\"" 
+		    + p.getHairColor()
+		    + "\", "
+		    + "', Bodyheight=\""
+		    + p.getBodyHeight()
+		    + "\", "
+		    + "', birthdate=\"" 
+		    + p.getBirthdate()
+		    + "\", "
+		    + "', smoker=\"" 
+		    + (p.isSmoker() ? 1 : 0) 
+		    + "\", "
+		    + "', religion=\"" 
+		    + p.getReligion()
+		    + "\", "
+		    + "', gender=\""
+		    + (p.isGender() ? 1 : 0)
+		    + "\""
+		    + "WHERE id='" + p.getId());
 			
 			ClientsideSettings.getLogger().info("Profiländerungen " + p.getLastName() + " in DB geschrieben");
 			
@@ -249,7 +272,7 @@ public class ProfileMapper {
 		try {
 			Statement stmt = con.createStatement();
 			
-			stmt.executeUpdate("DELETE FROM profile WHERE id=" + p.getId());
+			stmt.executeUpdate("DELETE FROM profile " + "WHERE id=" + p.getId());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
