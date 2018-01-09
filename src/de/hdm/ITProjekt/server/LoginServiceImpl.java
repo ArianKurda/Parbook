@@ -40,8 +40,8 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		return loginInfo;
 	}
 
-	@Override
-	public Profile getCurrentProfile() {
+	
+	/*public Profile getCurrentProfile() {
 		LoginInfo login = login("");
 		if(login.isLoggedIn()){
 			return login.getProfile();
@@ -49,4 +49,5 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 			return null;
 		}
 	}
+	*/
 }

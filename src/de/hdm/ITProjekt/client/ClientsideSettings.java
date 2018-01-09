@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.ITProjekt.shared.CommonSettings;
+import de.hdm.ITProjekt.shared.LoginServiceAsync;
 import de.hdm.ITProjekt.shared.ParbookService;
 import de.hdm.ITProjekt.shared.ParbookServiceAsync;
 import de.hdm.ITProjekt.shared.ReportGenerator;
@@ -144,5 +145,10 @@ public class ClientsideSettings extends CommonSettings {
   public static void setCurrentUser(Profile currentUser) {
     ClientsideSettings.currentUser = currentUser;
   }
+
+public static LoginServiceAsync getLoginService() {
+	// TODO Auto-generated method stub
+	return null;
+}
 
 }

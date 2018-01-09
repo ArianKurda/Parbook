@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import de.hdm.ITProjekt.shared.bo.Blocklist;
 import de.hdm.ITProjekt.shared.bo.Description;
 import de.hdm.ITProjekt.shared.bo.Info;
@@ -20,7 +19,7 @@ public interface ParbookServiceAsync {
 	void login(String requestUri, AsyncCallback<Profile> callback);
 	
 	//------Profil Methoden------
-	void createProfile(String firstname, String lastname, String email, Date birthdate, String haircolor, double bodyheight,
+	void createProfile(String firstname, String lastname, String email, Date birthdate, String haircolor, int bodyheight,
 			boolean smoker, String religion, boolean gender, AsyncCallback<Profile> callback) throws IllegalArgumentException;
 	
 	/**
@@ -46,7 +45,7 @@ public interface ParbookServiceAsync {
 	/**
 	 * Auslesen eines Profils mit einer bestimmten E-Mail-Adresse
 	 */
-	void getProfileByMail(String email, AsyncCallback<Profile> callback);
+	void getProfileByEmail(String email, AsyncCallback<Profile> callback);
 	
 	//-----Match-Methode, muss noch ausformuliert werden------
 	void findMatch(AsyncCallback<ArrayList<Profile>> callback);
@@ -66,7 +65,7 @@ public interface ParbookServiceAsync {
     /**
 	 * Auslesen des Merkzettels für ein Profil
 	 */
-	void getNotepadOfProfile(int profileId, AsyncCallback<Notepad> callback) throws IllegalArgumentException;
+	void getNotepadOfProfile(Notepad n, AsyncCallback<ArrayList<Notepad>> asyncCallback) throws IllegalArgumentException;
 	
 	//------Eigenschaft Methoden------
 	  

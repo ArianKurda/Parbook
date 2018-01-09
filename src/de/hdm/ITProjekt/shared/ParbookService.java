@@ -23,7 +23,7 @@ public interface ParbookService extends RemoteService {
 	
 	//------Profil Methoden------
 	public Profile createProfile(String firstname, String lastname, String email, Date birthdate, String haircolor,
-			double bodyheight, boolean smoker, String religion, boolean gender) throws IllegalArgumentException;
+			int bodyheight, boolean smoker, String religion, boolean gender) throws IllegalArgumentException;
 	
 	/**
 	 * Methode, um ein bestehendes Profil zu löschen.
@@ -48,7 +48,7 @@ public interface ParbookService extends RemoteService {
 	/**
 	 * Auslesen eines Profils mit einer bestimmten E-Mail-Adresse
 	 */
-	public Profile getProfileByMail(String email);
+	public Profile getProfileByEmail(String email);
 	
 	//-----Match-Methode, muss noch ausformuliert werden------
 	public ArrayList<Profile> findMatch();
@@ -65,10 +65,7 @@ public interface ParbookService extends RemoteService {
 	 */
 	public void deleteNotepad(Notepad n) throws IllegalArgumentException;
 
-	/**
-	 * Auslesen des Merkzettels für ein Profil
-	 */
-	public Notepad getNotepadOfProfile(int profileId) throws IllegalArgumentException;
+	ArrayList<Notepad> getNotepadOfProfile(Notepad n);
 	  
 	
 	//------Eigenschaft-Methoden------

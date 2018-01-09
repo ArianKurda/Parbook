@@ -8,5 +8,5 @@ public interface LoginServiceAsync {
 	
   void login(String requestUri, AsyncCallback<LoginInfo> async);
   
-  void getCurrentProfile(AsyncCallback<Profile> callback);
+  //void getCurrentProfile(AsyncCallback<Profile> callback);
 }

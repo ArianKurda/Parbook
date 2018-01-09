@@ -1,8 +1,6 @@
 package de.hdm.ITProjekt.server;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.sql.Date;
 
 import com.google.appengine.api.users.User;
@@ -124,9 +122,10 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  }
 
 	  //------Profil-Methoden------
-	  
+	 
+	//Methode, die ein Profil erstellt
 	public Profile createProfile(String firstname, String lastname, String email, Date birthdate, String haircolor,
-			double bodyheight, boolean smoker, String religion, boolean gender) throws IllegalArgumentException {
+			int bodyheight, boolean smoker, String religion, boolean gender) throws IllegalArgumentException {
 		
 		Profile p = new Profile();
 		
@@ -150,7 +149,22 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		
 		// Objekt in der DB speichern.
 		return this.profileMapper.insert(p);
-	}
+		}
+	
+	//Methode, die ein Profil über ihre Email findet
+	public Profile findByEmail(String email) {
+		return profileMapper.findByEmail(email);
+		}
+	
+	//Methode, um ein Profil hinzuzufügen
+	public Profile insertProfile(Profile p) {
+		return profileMapper.insert(p);
+		}
+	
+	//Methode, um ein Profil zu aktualisieren
+	public void updateProfile(Profile p) {
+		profileMapper.update(p);
+		}
 	
 	/**
 	 * Methode, um ein bestehendes Profil zu löschen.
@@ -159,6 +173,8 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	public void deleteProfile(Profile p) throws IllegalArgumentException {
 		this.profileMapper.delete(p);
 	}
+	
+	
 	
 	/**
 	 * Methode, um ein Profil zu speichern.
@@ -193,8 +209,7 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	 * Auslesen eines Profils mit einer bestimmten E-Mail-Adresse
 	 */
 
-	  @Override
-	  public Profile getProfileByMail(String email) {
+	  public Profile getProfileByEmail(String email) {
 	    return profileMapper.findByEmail(email);
 
 	  }
@@ -203,7 +218,6 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		 * Auslesen des Profils anhand des Such-Profils.
 		 * 
 		 */
-		@Override
 		public ArrayList<Profile> getBySearchProfile(SearchProfile sp) {
 			return this.profileMapper.findBySearchProfile(sp);
 		}
@@ -585,22 +599,14 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	  /**
 	   * Prüft, ob eine Kontaktsperre vorhanden ist
 	   */
-	  public boolean isBlocked(Profile p) {
+	  /*public boolean isBlocked(Profile p) {
 		  Profile currentProfile = LoginServiceImpl.loginService().getCurrentProfile();
 		  
 		  return blocklistMapper.doLockExistForProfile(currentProfile, p);
 		  }
-
+*/
 	@Override
 	public ArrayList<Profile> findMatch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Profile createProfile(String firstname, String lastname, String email, java.util.Date birthdate,
-			String haircolor, double bodyheight, boolean smoker, String religion, boolean gender)
-			throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -666,11 +672,12 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 	    				}
 	    			}
 	    		}
-	    		int result = Math.round(matches * (100f / count)); //kp obs stimmt
+	    		int result = Math.round(matches * (100f / count)); //bearbeiten
 
 	    	    return result;
 	    	}
 	    }
+		return matches;
 	 }
 	//Wie gehts weiter?
 	
@@ -678,4 +685,19 @@ public class ParbookServiceImpl extends RemoteServiceServlet implements ParbookS
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public ArrayList<Notepad> getNotepadOfProfile(Notepad n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Profile createProfile(String firstname, String lastname, String email, java.util.Date birthdate,
+			String haircolor, int bodyheight, boolean smoker, String religion, boolean gender)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

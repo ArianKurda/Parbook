@@ -16,6 +16,6 @@ public interface LoginService extends RemoteService {
   public LoginInfo login(String requestUri);
   
   //Auslesen des aktuellen Profils
-	Profile getCurrentProfile();
+	//Profile getCurrentProfile();
   
 }
